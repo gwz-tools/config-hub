@@ -3,7 +3,7 @@ name: Daily update
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 6 * * *"
+    - cron: "0 */6 * * *"
 
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests
+          python -m pip install --upgrade pip
 
 
       - name: Run collector
@@ -55,24 +55,25 @@ jobs:
           python stats.py
 
 
-      - name: Generate quality score
-        run: |
-          python quality_score.py
-
-
       - name: Save history
         run: |
           python history_manager.py
 
 
+      - name: Build TOP pool
+        run: |
+          python top_pool.py
+
+
       - name: Save results
         run: |
+
           git config user.name "config-hub-bot"
+
           git config user.email "actions@github.com"
 
-          git add data history logs
+          git add .
 
-          git diff --cached --quiet || (
-            git commit -m "Update data snapshot"
-            git push
-          )
+          git commit -m "Update data snapshot" || exit 0
+
+          git push
