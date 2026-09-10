@@ -3,14 +3,20 @@ Config Hub
 Collector
 
 Downloads configuration data from registered sources.
+Tracks source availability.
 """
+
 
 import os
 import hashlib
 import urllib.request
+
 from datetime import datetime
 
+
 from sources import get_sources
+from source_status import update_source
+
 
 
 # ============================================================
@@ -21,12 +27,20 @@ RAW_FILE = "data/raw.txt"
 LOG_FILE = "logs/collector.log"
 
 
-os.makedirs("data", exist_ok=True)
-os.makedirs("logs", exist_ok=True)
+os.makedirs(
+    "data",
+    exist_ok=True
+)
+
+os.makedirs(
+    "logs",
+    exist_ok=True
+)
+
 
 
 # ============================================================
-# LOGGING
+# LOG
 # ============================================================
 
 def log(message):
@@ -37,13 +51,16 @@ def log(message):
 
     line = f"{timestamp} {message}"
 
+
     print(line)
+
 
     with open(
         LOG_FILE,
         "a",
         encoding="utf-8"
     ) as f:
+
         f.write(line + "\n")
 
 
@@ -57,9 +74,11 @@ def download(url):
     request = urllib.request.Request(
         url,
         headers={
-            "User-Agent": "Config-Hub-Collector/1.0"
+            "User-Agent":
+            "Config-Hub-Collector/1.0"
         }
     )
+
 
     with urllib.request.urlopen(
         request,
@@ -81,14 +100,18 @@ def normalize(text):
 
     result = []
 
+
     for line in text.splitlines():
 
         line = line.strip()
 
+
         if not line:
             continue
 
+
         result.append(line)
+
 
 
     return "\n".join(result)
@@ -115,6 +138,7 @@ def main():
 
     sources = get_sources()
 
+
     log(
         f"Sources count: {len(sources)}"
     )
@@ -122,33 +146,57 @@ def main():
 
     collected = []
 
-    success = 0
+
+    success_count = 0
+    failed_count = 0
+
 
 
     for source in sources:
 
+
         name = source["name"]
         url = source["url"]
 
+
+
         try:
+
 
             log(
                 f"Downloading {name}"
             )
 
 
+
             data = download(url)
 
-            data = normalize(data)
+
+
+            data = normalize(
+                data
+            )
+
 
 
             if data:
+
 
                 collected.append(
                     f"# SOURCE: {name}\n{data}"
                 )
 
-                success += 1
+
+
+                success_count += 1
+
+
+
+                update_source(
+                    name,
+                    True
+                )
+
 
 
                 log(
@@ -158,14 +206,38 @@ def main():
                 )
 
 
+
             else:
 
-                log(
-                    f"SKIP {name}: empty data"
+
+                failed_count += 1
+
+
+                update_source(
+                    name,
+                    False
                 )
 
 
+                log(
+                    f"EMPTY {name}"
+                )
+
+
+
         except Exception as e:
+
+
+
+            failed_count += 1
+
+
+
+            update_source(
+                name,
+                False
+            )
+
 
             log(
                 f"ERROR {name}: {e}"
@@ -173,9 +245,11 @@ def main():
 
 
 
+
     output = "\n\n".join(
         collected
     )
+
 
 
     with open(
@@ -189,11 +263,13 @@ def main():
 
 
     log(
-        f"Collection finished "
+        "Collection finished "
         f"sources={len(sources)} "
-        f"success={success} "
+        f"success={success_count} "
+        f"failed={failed_count} "
         f"chars={len(output)}"
     )
+
 
 
 
