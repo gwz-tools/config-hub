@@ -3,6 +3,12 @@ GWZ Publisher
 
 Publishes stable TOP pool
 as public fast list.
+
+Creates:
+- data/fast.txt
+- fast.txt (GitHub Pages public file)
+
+Protects old version with backup.
 """
 
 import os
@@ -13,6 +19,8 @@ from datetime import datetime
 TOP_POOL = "data/top_pool.txt"
 
 FAST_FILE = "data/fast.txt"
+
+PUBLIC_FAST = "fast.txt"
 
 BACKUP = "data/fast_backup.txt"
 
@@ -41,6 +49,23 @@ def count_lines(path):
 
 
 
+def copy_file(src, dst):
+
+    folder = os.path.dirname(dst)
+
+    if folder:
+        os.makedirs(
+            folder,
+            exist_ok=True
+        )
+
+    shutil.copy(
+        src,
+        dst
+    )
+
+
+
 def publish():
 
     count = count_lines(
@@ -63,25 +88,47 @@ def publish():
         return
 
 
+    #
+    # backup previous public list
+    #
+
     if os.path.exists(
         FAST_FILE
     ):
 
-        shutil.copy(
+        copy_file(
             FAST_FILE,
             BACKUP
         )
 
 
-    shutil.copy(
+    #
+    # create internal fast file
+    #
+
+    copy_file(
         TOP_POOL,
         FAST_FILE
     )
 
 
+    #
+    # create GitHub Pages public file
+    #
+
+    copy_file(
+        TOP_POOL,
+        PUBLIC_FAST
+    )
+
+
     print(
-        "fast.txt updated",
-        datetime.utcnow()
+        "fast.txt updated"
+    )
+
+    print(
+        "Published:",
+        datetime.utcnow().isoformat()
     )
 
 
