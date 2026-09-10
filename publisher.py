@@ -16,7 +16,6 @@ FAST_FILE = "fast.txt"
 
 BACKUP = "data/fast_backup.txt"
 
-
 MIN_CONFIGS = 5
 
 
@@ -41,46 +40,100 @@ def count_lines(path):
 
 
 
+def copy_file(src, dst):
+
+    shutil.copy(
+        src,
+        dst
+    )
+
+
+
 def publish():
 
-    count = count_lines(
+    top_count = count_lines(
         TOP_POOL
     )
 
 
     print(
         "TOP pool size:",
-        count
+        top_count
     )
 
 
-    if count < MIN_CONFIGS:
+    #
+    # Есть хороший TOP pool
+    #
+    if top_count >= MIN_CONFIGS:
+
+        if os.path.exists(
+            FAST_FILE
+        ):
+
+            copy_file(
+                FAST_FILE,
+                BACKUP
+            )
+
+
+        copy_file(
+            TOP_POOL,
+            FAST_FILE
+        )
+
 
         print(
-            "TOP pool too small. Keep old fast.txt"
-        )
-
-        return
-
-
-    if os.path.exists(
-        FAST_FILE
-    ):
-
-        shutil.copy(
-            FAST_FILE,
-            BACKUP
+            "fast.txt updated"
         )
 
 
-    shutil.copy(
-        TOP_POOL,
-        FAST_FILE
-    )
+    #
+    # TOP маленький
+    #
+    else:
+
+        print(
+            "TOP pool too small"
+        )
+
+
+        #
+        # Старый fast.txt сохраняем
+        #
+        if os.path.exists(
+            FAST_FILE
+        ):
+
+            print(
+                "Keeping existing fast.txt"
+            )
+
+
+        #
+        # Если файла нет вообще
+        # создаём безопасный
+        #
+        else:
+
+            with open(
+                FAST_FILE,
+                "w",
+                encoding="utf-8"
+            ) as f:
+
+                f.write(
+                    "# GWZ fast pool\n"
+                )
+
+
+            print(
+                "Created initial fast.txt"
+            )
 
 
     print(
-        "fast.txt updated",
+        "Publisher finished:",
         datetime.utcnow()
     )
 
