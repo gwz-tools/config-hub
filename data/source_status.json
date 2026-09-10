@@ -1,37 +1,37 @@
 {
   "igareck_black_mobile_gitlab": {
     "status": "failed",
-    "fail_count": 4,
+    "fail_count": 5,
     "last_success": null
   },
   "igareck_white_mobile_gitlab": {
     "status": "failed",
-    "fail_count": 4,
+    "fail_count": 5,
     "last_success": null
   },
   "igareck_black_full_gitlab": {
     "status": "failed",
-    "fail_count": 4,
+    "fail_count": 5,
     "last_success": null
   },
   "igareck_white_full_gitlab": {
     "status": "failed",
-    "fail_count": 4,
+    "fail_count": 5,
     "last_success": null
   },
   "igareck_black_mobile_codeberg": {
     "status": "failed",
-    "fail_count": 4,
+    "fail_count": 5,
     "last_success": null
   },
   "igareck_white_full_gitlab_mirror": {
     "status": "failed",
-    "fail_count": 4,
+    "fail_count": 5,
     "last_success": null
   },
   "igareck_black_mobile_gitlab_jsdelivr": {
     "status": "failed",
-    "fail_count": 4,
+    "fail_count": 5,
     "last_success": null
   }
 }
