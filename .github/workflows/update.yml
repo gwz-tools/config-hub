@@ -59,6 +59,13 @@ jobs:
 
 
 
+      - name: Save last good snapshot
+        run: |
+
+          python last_good.py
+
+
+
       - name: Generate statistics
         run: |
 
