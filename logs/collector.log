@@ -8,3 +8,13 @@
 2026-09-10 11:29:11 SKIP hidashimora_collection: empty url
 2026-09-10 11:29:14 Collection finished
 2026-09-10 11:29:14 Collected chars: 85049
+2026-09-10 11:32:39 Sources count: 7
+2026-09-10 11:32:39 Downloading igareck_black_mobile_gitlab
+2026-09-10 11:32:42 Downloading igareck_white_mobile_gitlab
+2026-09-10 11:32:45 Downloading igareck_black_mobile_codeberg
+2026-09-10 11:32:48 Downloading igareck_black_full_gitlab
+2026-09-10 11:32:52 Downloading igareck_white_full_gitlab
+2026-09-10 11:32:55 Downloading igareck_black_mobile_jsdelivr
+2026-09-10 11:32:58 SKIP hidashimora_collection: empty url
+2026-09-10 11:33:01 Collection finished
+2026-09-10 11:33:01 Collected chars: 85049
