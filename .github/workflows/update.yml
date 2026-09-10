@@ -30,6 +30,11 @@ jobs:
           python-version: "3.x"
 
 
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+
       - name: Run collector
         run: |
           python collector.py
