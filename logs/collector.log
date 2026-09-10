@@ -66,3 +66,19 @@
 2026-09-10 12:09:39 Downloading igareck_black_mobile_gitlab_jsdelivr
 2026-09-10 12:09:41 ERROR igareck_black_mobile_gitlab_jsdelivr: HTTP Error 404: Not Found
 2026-09-10 12:09:41 Collection finished sources=7 success=0 failed=7 chars=0
+2026-09-10 12:16:37 Sources count: 7
+2026-09-10 12:16:37 Downloading igareck_black_mobile_gitlab
+2026-09-10 12:16:37 ERROR igareck_black_mobile_gitlab: HTTP Error 403: Forbidden
+2026-09-10 12:16:37 Downloading igareck_white_mobile_gitlab
+2026-09-10 12:16:37 ERROR igareck_white_mobile_gitlab: HTTP Error 403: Forbidden
+2026-09-10 12:16:37 Downloading igareck_black_full_gitlab
+2026-09-10 12:16:38 ERROR igareck_black_full_gitlab: HTTP Error 403: Forbidden
+2026-09-10 12:16:38 Downloading igareck_white_full_gitlab
+2026-09-10 12:16:38 ERROR igareck_white_full_gitlab: HTTP Error 403: Forbidden
+2026-09-10 12:16:38 Downloading igareck_black_mobile_codeberg
+2026-09-10 12:16:39 ERROR igareck_black_mobile_codeberg: HTTP Error 404: Not Found
+2026-09-10 12:16:39 Downloading igareck_white_full_gitlab_mirror
+2026-09-10 12:16:39 ERROR igareck_white_full_gitlab_mirror: HTTP Error 403: Forbidden
+2026-09-10 12:16:39 Downloading igareck_black_mobile_gitlab_jsdelivr
+2026-09-10 12:16:39 ERROR igareck_black_mobile_gitlab_jsdelivr: HTTP Error 404: Not Found
+2026-09-10 12:16:39 Collection finished sources=7 success=0 failed=7 chars=0
