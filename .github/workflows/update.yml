@@ -1,22 +1,20 @@
 name: Daily update
 
 on:
-
   workflow_dispatch:
-
   schedule:
     - cron: "0 */6 * * *"
 
 
 permissions:
-
   contents: write
+  pages: write
+  id-token: write
 
 
 jobs:
 
   update:
-
 
     runs-on: ubuntu-latest
 
@@ -25,134 +23,57 @@ jobs:
 
 
       - name: Checkout repository
-
         uses: actions/checkout@v4
 
 
-
       - name: Setup Python
-
         uses: actions/setup-python@v5
-
         with:
-
           python-version: "3.x"
 
 
-
       - name: Install dependencies
-
         run: |
-
           python -m pip install --upgrade pip
 
 
-
       - name: Run collector
-
         run: |
-
           python collector.py
 
 
-
       - name: Validate data
-
         run: |
-
           python validator.py
 
 
-
       - name: Update history
-
         run: |
-
           python history_manager.py
 
 
-
       - name: Calculate quality score
-
         run: |
-
           python quality_score.py
 
 
-
       - name: Build TOP pool
-
         run: |
-
           python top_pool.py
 
 
-
       - name: Publish fast list
-
         run: |
-
           python publisher.py
 
 
-
-      - name: Show generated files
-
-        run: |
-
-          echo "DATA"
-
-          ls -la data || true
-
-
-          echo "HISTORY"
-
-          ls -la history || true
-
-
-          echo "ROOT"
-
-          ls -la
-
-
-
       - name: Commit updated data
-
-
         run: |
-
-
           git config --global user.name "gwz-tools"
-
-
           git config --global user.email "actions@github.com"
 
+          git add .
 
+          git commit -m "Update GWZ data" || echo "No changes"
 
-          git add data/
-
-          git add history/
-
-          git add logs/
-
-
-
-          if [ -f fast.txt ]; then
-
-            git add fast.txt
-
-          fi
-
-
-
-          if git diff --cached --quiet; then
-
-            echo "No changes to commit"
-
-          else
-
-            git commit -m "Update GWZ data"
-
-            git push
-
-          fi
+          git push
