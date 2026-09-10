@@ -1,62 +1,79 @@
 """
 Config Hub
-Statistics module
-
-Creates technical statistics for collected data.
+Statistics generator
 """
 
-import os
 import json
+import os
 from datetime import datetime
 
 
-DATA_DIR = "data"
+INPUT = "data/validated.txt"
 
-RAW_FILE = os.path.join(DATA_DIR, "raw.txt")
-VALID_FILE = os.path.join(DATA_DIR, "validated.txt")
-STATS_FILE = os.path.join(DATA_DIR, "stats.json")
+OUTPUT = "data/stats.json"
 
 
-def count_lines(path):
-    if not os.path.exists(path):
+
+def count_records():
+
+    if not os.path.exists(INPUT):
         return 0
 
-    with open(path, "r", encoding="utf-8") as f:
+    with open(
+        INPUT,
+        "r",
+        encoding="utf-8"
+    ) as f:
+
         return len(
             [
-                x.strip()
+                x
                 for x in f.readlines()
                 if x.strip()
             ]
         )
 
 
-def main():
 
-    os.makedirs(DATA_DIR, exist_ok=True)
+def generate():
 
-    stats = {
-        "updated": datetime.utcnow().isoformat(),
-        "raw_records": count_lines(RAW_FILE),
-        "valid_records": count_lines(VALID_FILE),
-        "status": "ok"
+    data = {
+
+        "updated":
+            datetime.utcnow().isoformat(),
+
+        "valid_records":
+            count_records(),
+
+        "status":
+            "ok"
     }
 
 
+    os.makedirs(
+        "data",
+        exist_ok=True
+    )
+
+
     with open(
-        STATS_FILE,
+        OUTPUT,
         "w",
         encoding="utf-8"
     ) as f:
+
         json.dump(
-            stats,
+            data,
             f,
-            indent=2
+            indent=2,
+            ensure_ascii=False
         )
 
 
-    print(json.dumps(stats, indent=2))
+    print(data)
+
 
 
 if __name__ == "__main__":
-    main()
+
+    generate()
