@@ -3,115 +3,88 @@ Config Hub
 Sources registry
 
 Central list of external configuration sources.
-Each source contains metadata for collector,
-validation and future monitoring.
 """
 
 from datetime import datetime
 
 
-# ============================================================
-# SOURCE REGISTRY
-# ============================================================
-
 SOURCES = [
 
+    # ========================================================
+    # PRIMARY GWZ SOURCES
+    # ========================================================
+
     {
-        "name": "igareck_black_mobile_gitlab",
+        "name": "gwz_fast",
+        "url": "https://raw.githubusercontent.com/alexandrovu96-stack/vpn-gwz/main/fast.txt",
+        "type": "github",
+        "priority": 100,
+        "enabled": True,
+        "tags": [
+            "gwz",
+            "primary"
+        ]
+    },
+
+
+    {
+        "name": "gwz_stable",
+        "url": "https://raw.githubusercontent.com/alexandrovu96-stack/vpn-gwz/main/stable.txt",
+        "type": "github",
+        "priority": 90,
+        "enabled": True,
+        "tags": [
+            "gwz",
+            "stable"
+        ]
+    },
+
+
+    # ========================================================
+    # MIRRORS
+    # ========================================================
+
+    {
+        "name": "gwz_gitlab_backup",
+        "url": "https://gitlab.com/gwz-tools/vpn-gwz/-/raw/main/fast.txt",
+        "type": "gitlab",
+        "priority": 70,
+        "enabled": True,
+        "tags": [
+            "mirror"
+        ]
+    },
+
+
+    {
+        "name": "gwz_codeberg_backup",
+        "url": "https://codeberg.org/gwz-tools/vpn-gwz/raw/branch/main/fast.txt",
+        "type": "codeberg",
+        "priority": 60,
+        "enabled": True,
+        "tags": [
+            "mirror"
+        ]
+    },
+
+
+    # ========================================================
+    # COMMUNITY SOURCES
+    # ========================================================
+
+    {
+        "name": "igareck_black",
         "url": "https://gitlab.com/igareck/black_mobile/-/raw/main/config.txt",
         "type": "gitlab",
-        "priority": 10,
+        "priority": 30,
         "enabled": True,
         "tags": [
-            "mobile",
-            "black"
-        ]
-    },
-
-
-    {
-        "name": "igareck_white_mobile_gitlab",
-        "url": "https://gitlab.com/igareck/white_mobile/-/raw/main/config.txt",
-        "type": "gitlab",
-        "priority": 9,
-        "enabled": True,
-        "tags": [
-            "mobile",
-            "white"
-        ]
-    },
-
-
-    {
-        "name": "igareck_black_full_gitlab",
-        "url": "https://gitlab.com/igareck/black_full/-/raw/main/config.txt",
-        "type": "gitlab",
-        "priority": 8,
-        "enabled": True,
-        "tags": [
-            "full",
-            "black"
-        ]
-    },
-
-
-    {
-        "name": "igareck_white_full_gitlab",
-        "url": "https://gitlab.com/igareck/white_full/-/raw/main/config.txt",
-        "type": "gitlab",
-        "priority": 7,
-        "enabled": True,
-        "tags": [
-            "full",
-            "white"
-        ]
-    },
-
-
-    {
-        "name": "igareck_black_mobile_codeberg",
-        "url": "https://codeberg.org/igareck/black_mobile/raw/branch/main/config.txt",
-        "type": "codeberg",
-        "priority": 6,
-        "enabled": True,
-        "tags": [
-            "mobile",
-            "mirror"
-        ]
-    },
-
-
-    {
-        "name": "igareck_white_full_gitlab_mirror",
-        "url": "https://gitlab.com/igareck/white_full/-/raw/main/config.txt",
-        "type": "gitlab",
-        "priority": 5,
-        "enabled": True,
-        "tags": [
-            "mirror"
-        ]
-    },
-
-
-    {
-        "name": "igareck_black_mobile_gitlab_jsdelivr",
-        "url": "https://cdn.jsdelivr.net/gh/igareck/black_mobile/config.txt",
-        "type": "jsdelivr",
-        "priority": 4,
-        "enabled": True,
-        "tags": [
-            "cdn",
-            "mirror"
+            "community"
         ]
     },
 
 
 ]
-
-
-# ============================================================
-# HELPERS
-# ============================================================
 
 
 def get_sources():
@@ -132,9 +105,6 @@ def get_sources():
 
 
 def get_source_names():
-    """
-    Return source names list.
-    """
 
     return [
         source["name"]
@@ -144,9 +114,6 @@ def get_source_names():
 
 
 def get_metadata():
-    """
-    Return registry metadata.
-    """
 
     return {
         "updated": datetime.utcnow().isoformat(),
