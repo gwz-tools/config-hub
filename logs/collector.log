@@ -258,3 +258,15 @@
 2026-09-10 20:59:29 Downloading igareck_black_mobile_gitlab_jsdelivr
 2026-09-10 20:59:29 ERROR igareck_black_mobile_gitlab_jsdelivr: HTTP Error 404: Not Found
 2026-09-10 20:59:29 Collection finished sources=7 success=0 failed=7 chars=0
+2026-09-10 21:06:18 Sources count: 5
+2026-09-10 21:06:18 Downloading gwz_fast
+2026-09-10 21:06:18 ERROR gwz_fast: HTTP Error 404: Not Found
+2026-09-10 21:06:18 Downloading gwz_stable
+2026-09-10 21:06:18 ERROR gwz_stable: HTTP Error 404: Not Found
+2026-09-10 21:06:18 Downloading gwz_gitlab_backup
+2026-09-10 21:06:18 ERROR gwz_gitlab_backup: HTTP Error 403: Forbidden
+2026-09-10 21:06:18 Downloading gwz_codeberg_backup
+2026-09-10 21:06:19 ERROR gwz_codeberg_backup: HTTP Error 404: Not Found
+2026-09-10 21:06:19 Downloading igareck_black
+2026-09-10 21:06:19 ERROR igareck_black: HTTP Error 403: Forbidden
+2026-09-10 21:06:19 Collection finished sources=5 success=0 failed=5 chars=0

@@ -33,5 +33,30 @@
     "status": "failed",
     "fail_count": 14,
     "last_success": null
+  },
+  "gwz_fast": {
+    "status": "unknown",
+    "fail_count": 1,
+    "last_success": null
+  },
+  "gwz_stable": {
+    "status": "unknown",
+    "fail_count": 1,
+    "last_success": null
+  },
+  "gwz_gitlab_backup": {
+    "status": "unknown",
+    "fail_count": 1,
+    "last_success": null
+  },
+  "gwz_codeberg_backup": {
+    "status": "unknown",
+    "fail_count": 1,
+    "last_success": null
+  },
+  "igareck_black": {
+    "status": "unknown",
+    "fail_count": 1,
+    "last_success": null
   }
 }
