@@ -1,9 +1,9 @@
 """
 Config Hub
-History manager
+History manager v2
 
-Keeps previous validated datasets and protects
-against unexpected source failures.
+Tracks dataset history and
+individual source stability.
 """
 
 import os
@@ -12,6 +12,11 @@ from datetime import datetime
 
 
 HISTORY_DIR = "history"
+
+QUALITY_DIR = os.path.join(
+    HISTORY_DIR,
+    "quality"
+)
 
 CURRENT_FILE = "data/validated.txt"
 
@@ -41,6 +46,11 @@ def ensure_history():
         exist_ok=True
     )
 
+    os.makedirs(
+        QUALITY_DIR,
+        exist_ok=True
+    )
+
 
 def read_lines(path):
 
@@ -52,6 +62,7 @@ def read_lines(path):
         "r",
         encoding="utf-8"
     ) as f:
+
         return [
             x.strip()
             for x in f.readlines()
@@ -73,6 +84,124 @@ def save_lines(path, data):
             )
 
 
+def load_quality_history():
+
+    path = os.path.join(
+        QUALITY_DIR,
+        "sources.json"
+    )
+
+    if not os.path.exists(path):
+        return {}
+
+    with open(
+        path,
+        "r",
+        encoding="utf-8"
+    ) as f:
+
+        return json.load(f)
+
+
+def save_quality_history(data):
+
+    path = os.path.join(
+        QUALITY_DIR,
+        "sources.json"
+    )
+
+    with open(
+        path,
+        "w",
+        encoding="utf-8"
+    ) as f:
+
+        json.dump(
+            data,
+            f,
+            indent=2,
+            ensure_ascii=False
+        )
+
+
+def update_quality(validated):
+
+    history = load_quality_history()
+
+    today = datetime.utcnow().strftime(
+        "%Y-%m-%d"
+    )
+
+
+    for source in validated:
+
+
+        if source not in history:
+
+            history[source] = {
+
+                "score": 100,
+
+                "success": 1,
+
+                "fails": 0,
+
+                "first_seen": today,
+
+                "last_seen": today
+            }
+
+
+        else:
+
+            history[source]["success"] += 1
+
+            history[source]["fails"] = 0
+
+            history[source]["last_seen"] = today
+
+
+    # отсутствующие источники
+
+    for source in list(history.keys()):
+
+        if source not in validated:
+
+            history[source]["fails"] += 1
+
+            history[source]["score"] -= 10
+
+
+            if history[source]["score"] < 0:
+
+                history[source]["score"] = 0
+
+
+    save_quality_history(
+        history
+    )
+
+
+    snapshot = os.path.join(
+        QUALITY_DIR,
+        today + ".json"
+    )
+
+
+    with open(
+        snapshot,
+        "w",
+        encoding="utf-8"
+    ) as f:
+
+        json.dump(
+            history,
+            f,
+            indent=2,
+            ensure_ascii=False
+        )
+
+
 def update_history():
 
     ensure_history()
@@ -89,6 +218,7 @@ def update_history():
 
 
     status = {
+
         "time":
             datetime.utcnow().isoformat(),
 
@@ -103,14 +233,19 @@ def update_history():
     }
 
 
-    # Первый запуск
+    update_quality(
+        current
+    )
+
 
     if not previous:
+
 
         save_lines(
             LAST_GOOD,
             current
         )
+
 
         save_lines(
             PREVIOUS,
@@ -125,10 +260,9 @@ def update_history():
 
     else:
 
+
         if len(current) < len(previous) * DROP_LIMIT:
 
-
-            # слишком большое падение
 
             save_lines(
                 PREVIOUS,
@@ -166,6 +300,7 @@ def update_history():
         "w",
         encoding="utf-8"
     ) as f:
+
 
         json.dump(
             status,
