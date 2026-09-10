@@ -1,15 +1,20 @@
 """
-Config Hub
-Collector
+GWZ Config Hub
 
-Downloads configuration data from registered sources.
-Tracks source availability.
+Collector v1.6.7
+
+Downloads sources,
+extracts VLESS configs,
+removes duplicates,
+creates raw pool.
 """
 
 
 import os
+import re
 import hashlib
 import urllib.request
+
 
 from datetime import datetime
 
@@ -20,17 +25,21 @@ from source_status import update_source
 
 
 # ============================================================
-# SETTINGS
+# PATHS
 # ============================================================
 
+
 RAW_FILE = "data/raw.txt"
+
 LOG_FILE = "logs/collector.log"
+
 
 
 os.makedirs(
     "data",
     exist_ok=True
 )
+
 
 os.makedirs(
     "logs",
@@ -43,13 +52,17 @@ os.makedirs(
 # LOG
 # ============================================================
 
+
 def log(message):
 
     timestamp = datetime.utcnow().strftime(
         "%Y-%m-%d %H:%M:%S"
     )
 
-    line = f"{timestamp} {message}"
+
+    line = (
+        f"{timestamp} {message}"
+    )
 
 
     print(line)
@@ -61,7 +74,9 @@ def log(message):
         encoding="utf-8"
     ) as f:
 
-        f.write(line + "\n")
+        f.write(
+            line + "\n"
+        )
 
 
 
@@ -69,26 +84,57 @@ def log(message):
 # DOWNLOAD
 # ============================================================
 
+
 def download(url):
 
     request = urllib.request.Request(
+
         url,
+
         headers={
             "User-Agent":
-            "Config-Hub-Collector/1.0"
+            "GWZ-Collector/1.6.7"
         }
+
     )
 
 
     with urllib.request.urlopen(
         request,
-        timeout=15
+        timeout=20
     ) as response:
 
+
         return response.read().decode(
+
             "utf-8",
+
             errors="ignore"
+
         )
+
+
+
+# ============================================================
+# EXTRACT VLESS
+# ============================================================
+
+
+def extract_vless(text):
+
+
+    pattern = r"vless://[^\s<>\"']+"
+
+
+    return re.findall(
+
+        pattern,
+
+        text,
+
+        flags=re.MULTILINE
+
+    )
 
 
 
@@ -96,25 +142,60 @@ def download(url):
 # NORMALIZE
 # ============================================================
 
-def normalize(text):
+
+def normalize_link(link):
+
+    return (
+
+        link
+
+        .strip()
+
+        .replace(
+            "\r",
+            ""
+        )
+
+    )
+
+
+
+# ============================================================
+# DEDUPLICATION
+# ============================================================
+
+
+def remove_duplicates(items):
+
 
     result = []
 
-
-    for line in text.splitlines():
-
-        line = line.strip()
+    seen = set()
 
 
-        if not line:
-            continue
+    for item in items:
 
 
-        result.append(line)
+        key = hashlib.sha256(
+
+            item.encode(
+                "utf-8"
+            )
+
+        ).hexdigest()
 
 
 
-    return "\n".join(result)
+        if key not in seen:
+
+
+            seen.add(key)
+
+            result.append(item)
+
+
+
+    return result
 
 
 
@@ -122,10 +203,15 @@ def normalize(text):
 # HASH
 # ============================================================
 
+
 def checksum(text):
 
     return hashlib.sha256(
-        text.encode("utf-8")
+
+        text.encode(
+            "utf-8"
+        )
+
     ).hexdigest()
 
 
@@ -134,7 +220,9 @@ def checksum(text):
 # MAIN
 # ============================================================
 
+
 def main():
+
 
     sources = get_sources()
 
@@ -144,11 +232,14 @@ def main():
     )
 
 
-    collected = []
+
+    all_links = []
 
 
-    success_count = 0
-    failed_count = 0
+
+    success = 0
+
+    failed = 0
 
 
 
@@ -156,6 +247,7 @@ def main():
 
 
         name = source["name"]
+
         url = source["url"]
 
 
@@ -173,22 +265,37 @@ def main():
 
 
 
-            data = normalize(
+            log(
+                f"Downloaded {name} chars={len(data)}"
+            )
+
+
+
+            links = extract_vless(
                 data
             )
 
 
 
-            if data:
+            links = [
+
+                normalize_link(x)
+
+                for x in links
+
+            ]
 
 
-                collected.append(
-                    f"# SOURCE: {name}\n{data}"
+
+            if links:
+
+
+                all_links.extend(
+                    links
                 )
 
 
-
-                success_count += 1
+                success += 1
 
 
 
@@ -200,9 +307,10 @@ def main():
 
 
                 log(
+
                     f"OK {name} "
-                    f"chars={len(data)} "
-                    f"sha256={checksum(data)[:12]}"
+                    f"links={len(links)}"
+
                 )
 
 
@@ -210,7 +318,7 @@ def main():
             else:
 
 
-                failed_count += 1
+                failed += 1
 
 
                 update_source(
@@ -228,9 +336,7 @@ def main():
         except Exception as e:
 
 
-
-            failed_count += 1
-
+            failed += 1
 
 
             update_source(
@@ -245,29 +351,67 @@ def main():
 
 
 
+    # ========================================================
+    # REMOVE DUPLICATES
+    # ========================================================
 
-    output = "\n\n".join(
-        collected
+
+    before = len(all_links)
+
+
+    all_links = remove_duplicates(
+        all_links
+    )
+
+
+    after = len(all_links)
+
+
+
+    # ========================================================
+    # SAVE
+    # ========================================================
+
+
+    output = "\n".join(
+        all_links
     )
 
 
 
     with open(
+
         RAW_FILE,
+
         "w",
+
         encoding="utf-8"
+
     ) as f:
 
-        f.write(output)
+
+        f.write(
+            output
+        )
 
 
 
     log(
+
         "Collection finished "
+
         f"sources={len(sources)} "
-        f"success={success_count} "
-        f"failed={failed_count} "
-        f"chars={len(output)}"
+
+        f"success={success} "
+
+        f"failed={failed} "
+
+        f"before={before} "
+
+        f"after={after} "
+
+        f"sha256={checksum(output)[:12]}"
+
     )
 
 
