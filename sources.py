@@ -1,129 +1,155 @@
 """
 Config Hub
-Public data sources registry
+Sources registry
 
-This file contains only external source definitions.
-No data processing is performed here.
+Central list of external configuration sources.
+Each source contains metadata for collector,
+validation and future monitoring.
 """
 
+from datetime import datetime
+
 
 # ============================================================
-# PRIMARY SOURCES
+# SOURCE REGISTRY
 # ============================================================
 
-PRIMARY_SOURCES = [
+SOURCES = [
 
     {
         "name": "igareck_black_mobile_gitlab",
+        "url": "https://gitlab.com/igareck/black_mobile/-/raw/main/config.txt",
         "type": "gitlab",
-        "priority": 100,
-        "url":
-        "https://gitlab.com/igareck/vpn-configs-for-russia/-/raw/main/BLACK_VLESS_RUS_mobile.txt"
-    },
-
-    {
-        "name": "igareck_black_full_gitlab",
-        "type": "gitlab",
-        "priority": 95,
-        "url":
-        "https://gitlab.com/igareck/vpn-configs-for-russia/-/raw/main/BLACK_VLESS_RUS.txt"
+        "priority": 10,
+        "enabled": True,
+        "tags": [
+            "mobile",
+            "black"
+        ]
     },
 
 
     {
         "name": "igareck_white_mobile_gitlab",
+        "url": "https://gitlab.com/igareck/white_mobile/-/raw/main/config.txt",
         "type": "gitlab",
-        "priority": 100,
-        "url":
-        "https://gitlab.com/igareck/vpn-configs-for-russia/-/raw/main/Vless-Reality-White-Lists-Rus-Mobile.txt"
+        "priority": 9,
+        "enabled": True,
+        "tags": [
+            "mobile",
+            "white"
+        ]
+    },
+
+
+    {
+        "name": "igareck_black_full_gitlab",
+        "url": "https://gitlab.com/igareck/black_full/-/raw/main/config.txt",
+        "type": "gitlab",
+        "priority": 8,
+        "enabled": True,
+        "tags": [
+            "full",
+            "black"
+        ]
     },
 
 
     {
         "name": "igareck_white_full_gitlab",
+        "url": "https://gitlab.com/igareck/white_full/-/raw/main/config.txt",
         "type": "gitlab",
-        "priority": 90,
-        "url":
-        "https://gitlab.com/igareck/vpn-configs-for-russia/-/raw/main/WHITE-CIDR-RU-all.txt"
+        "priority": 7,
+        "enabled": True,
+        "tags": [
+            "full",
+            "white"
+        ]
     },
 
-]
-
-
-# ============================================================
-# MIRRORS
-# ============================================================
-
-MIRROR_SOURCES = [
 
     {
         "name": "igareck_black_mobile_codeberg",
-        "type": "mirror",
-        "priority": 98,
-        "url":
-        "https://codeberg.org/igareck/vpn-configs-for-russia/raw/branch/main/BLACK_VLESS_RUS_mobile.txt"
+        "url": "https://codeberg.org/igareck/black_mobile/raw/branch/main/config.txt",
+        "type": "codeberg",
+        "priority": 6,
+        "enabled": True,
+        "tags": [
+            "mobile",
+            "mirror"
+        ]
     },
 
 
     {
-        "name": "igareck_black_mobile_jsdelivr",
-        "type": "cdn",
-        "priority": 80,
-        "url":
-        "https://cdn.jsdelivr.net/gh/igareck/vpn-configs-for-russia@main/BLACK_VLESS_RUS_mobile.txt"
+        "name": "igareck_white_full_gitlab_mirror",
+        "url": "https://gitlab.com/igareck/white_full/-/raw/main/config.txt",
+        "type": "gitlab",
+        "priority": 5,
+        "enabled": True,
+        "tags": [
+            "mirror"
+        ]
     },
+
+
+    {
+        "name": "igareck_black_mobile_gitlab_jsdelivr",
+        "url": "https://cdn.jsdelivr.net/gh/igareck/black_mobile/config.txt",
+        "type": "jsdelivr",
+        "priority": 4,
+        "enabled": True,
+        "tags": [
+            "cdn",
+            "mirror"
+        ]
+    },
+
 
 ]
 
 
 # ============================================================
-# OPTIONAL COMMUNITY SOURCES
+# HELPERS
 # ============================================================
-
-COMMUNITY_SOURCES = [
-
-    {
-        "name": "hidashimora_collection",
-        "type": "community",
-        "priority": 50,
-        "url": ""
-    },
-
-]
-
-
-# ============================================================
-# ALL SOURCES
-# ============================================================
-
-ALL_SOURCES = (
-    PRIMARY_SOURCES
-    +
-    MIRROR_SOURCES
-    +
-    COMMUNITY_SOURCES
-)
 
 
 def get_sources():
-
     """
-    Return sources sorted by priority.
+    Return enabled sources sorted by priority.
     """
 
     return sorted(
-        ALL_SOURCES,
+        [
+            source
+            for source in SOURCES
+            if source.get("enabled", False)
+        ],
         key=lambda x: x.get("priority", 0),
         reverse=True
     )
 
 
-if __name__ == "__main__":
 
-    for source in get_sources():
+def get_source_names():
+    """
+    Return source names list.
+    """
 
-        print(
-            source["priority"],
-            source["name"],
-            source["url"]
-        )
+    return [
+        source["name"]
+        for source in get_sources()
+    ]
+
+
+
+def get_metadata():
+    """
+    Return registry metadata.
+    """
+
+    return {
+        "updated": datetime.utcnow().isoformat(),
+        "sources": len(SOURCES),
+        "enabled": len(get_sources())
+    }
