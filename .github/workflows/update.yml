@@ -1,12 +1,15 @@
 name: Daily update
 
 on:
+
   workflow_dispatch:
+
   schedule:
-    - cron: "0 6 * * *"
+    - cron: "0 */6 * * *"
 
 
 permissions:
+
   contents: write
 
 
@@ -14,17 +17,16 @@ jobs:
 
   update:
 
+
     runs-on: ubuntu-latest
 
 
     steps:
 
+
       - name: Checkout repository
 
         uses: actions/checkout@v4
-
-        with:
-          persist-credentials: true
 
 
 
@@ -33,6 +35,7 @@ jobs:
         uses: actions/setup-python@v5
 
         with:
+
           python-version: "3.x"
 
 
@@ -93,13 +96,37 @@ jobs:
 
 
 
-      - name: Commit updated data
+      - name: Show generated files
 
         run: |
 
+          echo "DATA"
+
+          ls -la data || true
+
+
+          echo "HISTORY"
+
+          ls -la history || true
+
+
+          echo "ROOT"
+
+          ls -la
+
+
+
+      - name: Commit updated data
+
+
+        run: |
+
+
           git config --global user.name "gwz-tools"
 
+
           git config --global user.email "actions@github.com"
+
 
 
           git add data/
@@ -108,10 +135,24 @@ jobs:
 
           git add logs/
 
-          git add fast.txt
 
 
-          git commit -m "Update GWZ data and fast list" || echo "No changes"
+          if [ -f fast.txt ]; then
+
+            git add fast.txt
+
+          fi
 
 
-          git push
+
+          if git diff --cached --quiet; then
+
+            echo "No changes to commit"
+
+          else
+
+            git commit -m "Update GWZ data"
+
+            git push
+
+          fi
