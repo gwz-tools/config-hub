@@ -3,7 +3,11 @@ name: Daily update
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 6 * * *"
+
+
+permissions:
+  contents: write
 
 
 jobs:
@@ -13,82 +17,101 @@ jobs:
     runs-on: ubuntu-latest
 
 
-    permissions:
-      contents: write
-
-
     steps:
 
+      - name: Checkout repository
 
-      - name: Checkout
         uses: actions/checkout@v4
+
+        with:
+          persist-credentials: true
 
 
 
       - name: Setup Python
+
         uses: actions/setup-python@v5
+
         with:
           python-version: "3.x"
 
 
 
       - name: Install dependencies
+
         run: |
+
           python -m pip install --upgrade pip
 
 
 
       - name: Run collector
+
         run: |
+
           python collector.py
 
 
 
       - name: Validate data
+
         run: |
+
           python validator.py
 
 
 
-      - name: Check fallback
+      - name: Update history
+
         run: |
-          python fallback.py
 
-
-
-      - name: Generate statistics
-        run: |
-          python stats.py
-
-
-
-      - name: Save history
-        run: |
           python history_manager.py
 
 
 
-      - name: Build TOP pool
+      - name: Calculate quality score
+
         run: |
+
+          python quality_score.py
+
+
+
+      - name: Build TOP pool
+
+        run: |
+
           python top_pool.py
 
 
 
-      - name: Publish fast pool
+      - name: Publish fast list
+
         run: |
+
           python publisher.py
 
 
 
-      - name: Save results
+      - name: Commit updated data
+
         run: |
 
-          git config user.name "config-hub-bot"
+          git config --global user.name "gwz-tools"
 
-          git config user.email "actions@github.com"
+          git config --global user.email "actions@github.com"
 
-          git add .
 
-          git commit -m "Update data snapshot" || exit 0
+          git add data/
+
+          git add history/
+
+          git add logs/
+
+          git add fast.txt
+
+
+          git commit -m "Update GWZ data and fast list" || echo "No changes"
+
 
           git push
