@@ -282,3 +282,11 @@
 2026-09-10 21:13:06 Downloading github_backup
 2026-09-10 21:13:06 ERROR github_backup: HTTP Error 404: Not Found
 2026-09-10 21:13:06 Collection finished sources=5 success=0 failed=5 chars=0
+2026-09-10 21:46:28 Sources count: 2
+2026-09-10 21:46:28 Downloading igareck_mobile
+2026-09-10 21:46:28 Downloaded igareck_mobile chars=42776
+2026-09-10 21:46:29 OK igareck_mobile links=49
+2026-09-10 21:46:29 Downloading igareck_full
+2026-09-10 21:46:29 Downloaded igareck_full chars=44664
+2026-09-10 21:46:29 OK igareck_full links=115
+2026-09-10 21:46:29 Collection finished sources=2 success=2 failed=0 before=164 after=148 sha256=d0b95f9506bc

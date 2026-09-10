@@ -63,5 +63,15 @@
     "status": "unknown",
     "fail_count": 1,
     "last_success": null
+  },
+  "igareck_mobile": {
+    "status": "ok",
+    "fail_count": 0,
+    "last_success": "2026-09-10T21:46:29.000490"
+  },
+  "igareck_full": {
+    "status": "ok",
+    "fail_count": 0,
+    "last_success": "2026-09-10T21:46:29.034793"
   }
 }
