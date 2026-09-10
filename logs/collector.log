@@ -270,3 +270,15 @@
 2026-09-10 21:06:19 Downloading igareck_black
 2026-09-10 21:06:19 ERROR igareck_black: HTTP Error 403: Forbidden
 2026-09-10 21:06:19 Collection finished sources=5 success=0 failed=5 chars=0
+2026-09-10 21:13:05 Sources count: 5
+2026-09-10 21:13:05 Downloading igareck_black_mobile_gitlab
+2026-09-10 21:13:05 ERROR igareck_black_mobile_gitlab: HTTP Error 403: Forbidden
+2026-09-10 21:13:05 Downloading igareck_white_mobile_gitlab
+2026-09-10 21:13:06 ERROR igareck_white_mobile_gitlab: HTTP Error 403: Forbidden
+2026-09-10 21:13:06 Downloading igareck_black_full_gitlab
+2026-09-10 21:13:06 ERROR igareck_black_full_gitlab: HTTP Error 403: Forbidden
+2026-09-10 21:13:06 Downloading igareck_white_full_gitlab
+2026-09-10 21:13:06 ERROR igareck_white_full_gitlab: HTTP Error 403: Forbidden
+2026-09-10 21:13:06 Downloading github_backup
+2026-09-10 21:13:06 ERROR github_backup: HTTP Error 404: Not Found
+2026-09-10 21:13:06 Collection finished sources=5 success=0 failed=5 chars=0
