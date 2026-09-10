@@ -1,14 +1,20 @@
 name: Daily update
 
+
 on:
+
   schedule:
-    - cron: "0 0 * * *"
+
+    # каждый день в 03:00 UTC
+    - cron: "0 3 * * *"
 
   workflow_dispatch:
 
 
 permissions:
+
   contents: write
+
 
 
 jobs:
@@ -20,44 +26,76 @@ jobs:
 
     steps:
 
+
       - name: Checkout
+
         uses: actions/checkout@v4
 
 
+
       - name: Setup Python
+
         uses: actions/setup-python@v5
+
         with:
+
           python-version: "3.x"
 
 
+
       - name: Install dependencies
+
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install requests
+
+          pip install requests
+
 
 
       - name: Run collector
+
         run: |
+
           python collector.py
 
 
+
       - name: Validate data
+
         run: |
+
           python validator.py
 
 
-      - name: Generate statistics
+
+      - name: Protect history
+
         run: |
+
+          python history_manager.py
+
+
+
+      - name: Generate statistics
+
+        run: |
+
           python stats.py
 
 
+
       - name: Save results
+
         run: |
+
           git config user.name "config-hub-bot"
+
           git config user.email "actions@github.com"
+
 
           git add .
 
-          git diff --cached --quiet || git commit -m "Automatic data update"
+
+          git commit -m "Automatic data update" || echo "No changes"
+
 
           git push
