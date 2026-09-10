@@ -18,3 +18,19 @@
 2026-09-10 11:32:58 SKIP hidashimora_collection: empty url
 2026-09-10 11:33:01 Collection finished
 2026-09-10 11:33:01 Collected chars: 85049
+2026-09-10 11:57:37 Sources count: 7
+2026-09-10 11:57:37 Downloading igareck_black_mobile_gitlab
+2026-09-10 11:57:38 ERROR igareck_black_mobile_gitlab: HTTP Error 403: Forbidden
+2026-09-10 11:57:38 Downloading igareck_white_mobile_gitlab
+2026-09-10 11:57:38 ERROR igareck_white_mobile_gitlab: HTTP Error 403: Forbidden
+2026-09-10 11:57:38 Downloading igareck_black_full_gitlab
+2026-09-10 11:57:38 ERROR igareck_black_full_gitlab: HTTP Error 403: Forbidden
+2026-09-10 11:57:38 Downloading igareck_white_full_gitlab
+2026-09-10 11:57:39 ERROR igareck_white_full_gitlab: HTTP Error 403: Forbidden
+2026-09-10 11:57:39 Downloading igareck_black_mobile_codeberg
+2026-09-10 11:57:40 ERROR igareck_black_mobile_codeberg: HTTP Error 404: Not Found
+2026-09-10 11:57:40 Downloading igareck_white_full_gitlab_mirror
+2026-09-10 11:57:40 ERROR igareck_white_full_gitlab_mirror: HTTP Error 403: Forbidden
+2026-09-10 11:57:40 Downloading igareck_black_mobile_gitlab_jsdelivr
+2026-09-10 11:57:44 ERROR igareck_black_mobile_gitlab_jsdelivr: HTTP Error 404: Not Found
+2026-09-10 11:57:44 Collection finished sources=7 success=0 chars=0
