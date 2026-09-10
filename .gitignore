@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+
+# Temporary files
+*.tmp
+*.log
+
+# Runtime cache
+.cache/
+
+# Local environment
+.env
+
+# GitHub temporary files
+*.swp
+
+# Collector logs
+logs/*.log
+
+# Python cache
+__pycache__/
