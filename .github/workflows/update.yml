@@ -1,16 +1,12 @@
 name: Daily update
 
+
 on:
 
   workflow_dispatch:
 
   schedule:
-    - cron: "0 3 * * *"
-
-
-permissions:
-
-  contents: write
+    - cron: "0 6 * * *"
 
 
 
@@ -25,27 +21,31 @@ jobs:
 
 
       - name: Checkout
+
         uses: actions/checkout@v4
 
 
 
       - name: Setup Python
+
         uses: actions/setup-python@v5
 
         with:
+
           python-version: "3.x"
 
 
 
       - name: Install dependencies
+
         run: |
 
-          python -m pip install --upgrade pip
           pip install requests
 
 
 
       - name: Run collector
+
         run: |
 
           python collector.py
@@ -53,27 +53,31 @@ jobs:
 
 
       - name: Validate data
+
         run: |
 
           python validator.py
 
 
 
-      - name: Save last good snapshot
+      - name: Check fallback
+
         run: |
 
-          python last_good.py
+          python fallback.py
 
 
 
       - name: Generate statistics
+
         run: |
 
           python stats.py
 
 
 
-      - name: Update history
+      - name: Save history
+
         run: |
 
           python history_manager.py
@@ -81,9 +85,11 @@ jobs:
 
 
       - name: Save results
+
         run: |
 
-          git config user.name "actions-user"
+          git config user.name "config-hub-bot"
+
           git config user.email "actions@github.com"
 
 
@@ -92,8 +98,8 @@ jobs:
 
           git diff --cached --quiet || (
 
-            git commit -m "Update data snapshot"
+          git commit -m "Update data snapshot"
 
-            git push
+          git push
 
           )
