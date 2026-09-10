@@ -24,10 +24,12 @@ jobs:
         uses: actions/checkout@v4
 
 
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+
 
 
       - name: Install dependencies
@@ -35,9 +37,11 @@ jobs:
           python -m pip install --upgrade pip
 
 
+
       - name: Run collector
         run: |
           python collector.py
+
 
 
       - name: Validate data
@@ -45,9 +49,11 @@ jobs:
           python validator.py
 
 
+
       - name: Check fallback
         run: |
           python fallback.py
+
 
 
       - name: Generate statistics
@@ -55,14 +61,23 @@ jobs:
           python stats.py
 
 
+
       - name: Save history
         run: |
           python history_manager.py
 
 
+
       - name: Build TOP pool
         run: |
           python top_pool.py
+
+
+
+      - name: Publish fast pool
+        run: |
+          python publisher.py
+
 
 
       - name: Save results
