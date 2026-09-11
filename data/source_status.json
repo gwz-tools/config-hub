@@ -67,11 +67,11 @@
   "igareck_mobile": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-09-11T06:20:31.993959"
+    "last_success": "2026-09-11T12:21:48.808431"
   },
   "igareck_full": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-09-11T06:20:32.153587"
+    "last_success": "2026-09-11T12:21:48.991109"
   }
 }
