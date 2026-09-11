@@ -314,3 +314,11 @@
 2026-09-11 12:21:48 Downloaded igareck_full chars=1093
 2026-09-11 12:21:48 OK igareck_full links=1
 2026-09-11 12:21:48 Collection finished sources=2 success=2 failed=0 before=2 after=1 sha256=d35bde6bf818
+2026-09-11 18:18:53 Sources count: 2
+2026-09-11 18:18:53 Downloading igareck_mobile
+2026-09-11 18:18:53 Downloaded igareck_mobile chars=26583
+2026-09-11 18:18:53 OK igareck_mobile links=56
+2026-09-11 18:18:53 Downloading igareck_full
+2026-09-11 18:18:53 Downloaded igareck_full chars=12803
+2026-09-11 18:18:53 OK igareck_full links=40
+2026-09-11 18:18:53 Collection finished sources=2 success=2 failed=0 before=96 after=61 sha256=8aa44380fed5
