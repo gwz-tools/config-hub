@@ -12,8 +12,7 @@ Each source contains metadata for:
 """
 
 
-from datetime import datetime
-
+from datetime import datetime, timezone
 
 
 # ============================================================
@@ -25,12 +24,12 @@ SOURCES = [
 
     # ========================================================
     # IGARECK GITHUB
-    # Main trusted source
+    # Main trusted sources
     # ========================================================
-
 
     {
         "name": "igareck_mobile",
+
         "url":
         "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/main/BLACK_VLESS_RUS_mobile.txt",
 
@@ -39,6 +38,8 @@ SOURCES = [
         "priority": 100,
 
         "enabled": True,
+
+        "remark_mode": "keep",
 
         "tags": [
             "vless",
@@ -51,6 +52,7 @@ SOURCES = [
 
     {
         "name": "igareck_full",
+
         "url":
         "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/main/BLACK_VLESS_RUS.txt",
 
@@ -59,6 +61,8 @@ SOURCES = [
         "priority": 90,
 
         "enabled": True,
+
+        "remark_mode": "keep",
 
         "tags": [
             "vless",
@@ -70,12 +74,47 @@ SOURCES = [
 
 
     # ========================================================
-    # FUTURE MIRRORS
+    # OPENPROXYLIST
+    #
+    # Original attribution is preserved.
+    #
+    # Example:
+    #
+    # 🇩🇪 | GWZ | Germany [openproxylist.com] 12345678
+    #
+    # Only VLESS entries are collected.
     # ========================================================
 
+    {
+        "name": "openproxylist_v2ray",
+
+        "url":
+        "https://openproxylist.com/v2ray/rawlist/text",
+
+        "type": "openproxylist",
+
+        "priority": 80,
+
+        "enabled": True,
+
+        "remark_mode": "gwz_openproxylist",
+
+        "tags": [
+            "vless",
+            "external",
+            "attributed"
+        ]
+    },
+
+
+    # ========================================================
+    # FUTURE MIRRORS
+    # Disabled until verified
+    # ========================================================
 
     {
         "name": "igareck_mobile_gitlab",
+
         "url":
         "https://gitlab.com/igareck/black_mobile/-/raw/main/config.txt",
 
@@ -84,6 +123,8 @@ SOURCES = [
         "priority": 50,
 
         "enabled": False,
+
+        "remark_mode": "keep",
 
         "tags": [
             "mirror",
@@ -94,6 +135,7 @@ SOURCES = [
 
     {
         "name": "igareck_white_mobile_gitlab",
+
         "url":
         "https://gitlab.com/igareck/white_mobile/-/raw/main/config.txt",
 
@@ -103,15 +145,15 @@ SOURCES = [
 
         "enabled": False,
 
+        "remark_mode": "keep",
+
         "tags": [
             "white",
             "mirror"
         ]
     },
 
-
 ]
-
 
 
 # ============================================================
@@ -146,7 +188,6 @@ def get_sources():
     )
 
 
-
 def get_source_names():
     """
     Return enabled source names.
@@ -161,7 +202,6 @@ def get_source_names():
     ]
 
 
-
 def get_source_by_name(name):
     """
     Find source metadata by name.
@@ -173,9 +213,7 @@ def get_source_by_name(name):
 
             return source
 
-
     return None
-
 
 
 def get_metadata():
@@ -186,7 +224,9 @@ def get_metadata():
     return {
 
         "updated":
-        datetime.utcnow().isoformat(),
+        datetime.now(
+            timezone.utc
+        ).isoformat(),
 
         "sources":
         len(SOURCES),
