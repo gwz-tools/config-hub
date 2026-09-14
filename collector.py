@@ -1,14 +1,20 @@
 """
 GWZ Config Hub
 
-Collector v1.6.8
+Collector v1.6.9
 
-Downloads sources,
-extracts VLESS configs,
-normalizes source remarks,
-preserves source attribution,
+Downloads VLESS sources,
+normalizes remarks for ALL sources,
+preserves original source information,
+detects country and flag,
 removes duplicates,
 creates raw pool.
+
+Unified remark format:
+
+🇩🇪 | GWZ | Germany ...
+🇫🇮 | GWZ | Finland ...
+🌐 | GWZ | Unknown ...
 """
 
 
@@ -55,7 +61,7 @@ os.makedirs(
 
 
 # ============================================================
-# COUNTRY NAMES
+# COUNTRY DATABASE
 # ============================================================
 
 
@@ -176,6 +182,74 @@ COUNTRY_NAMES = {
 
 
 # ============================================================
+# COUNTRY ALIASES
+# ============================================================
+
+
+COUNTRY_ALIASES = {
+
+    "united states": "US",
+    "united states of america": "US",
+    "usa": "US",
+    "u.s.a": "US",
+    "america": "US",
+
+    "united kingdom": "GB",
+    "great britain": "GB",
+    "britain": "GB",
+    "england": "GB",
+    "uk": "GB",
+
+    "south korea": "KR",
+    "korea": "KR",
+
+    "czechia": "CZ",
+    "czech republic": "CZ",
+
+    "russian federation": "RU",
+    "russia": "RU",
+
+    "uae": "AE",
+    "united arab emirates": "AE",
+
+    "hong kong": "HK",
+
+    "taiwan": "TW",
+
+    "moldova": "MD",
+
+    "north macedonia": "MK",
+
+    "bosnia": "BA",
+    "bosnia and herzegovina": "BA"
+}
+
+
+# Add official country names automatically
+
+for _code, _name in COUNTRY_NAMES.items():
+
+    COUNTRY_ALIASES.setdefault(
+        _name.lower(),
+        _code
+    )
+
+
+# Longest names first
+
+COUNTRY_ALIAS_ITEMS = sorted(
+
+    COUNTRY_ALIASES.items(),
+
+    key=lambda item:
+    len(item[0]),
+
+    reverse=True
+
+)
+
+
+# ============================================================
 # LOG
 # ============================================================
 
@@ -222,14 +296,16 @@ def download(url):
         url,
 
         headers={
+
             "User-Agent":
-            "GWZ-Collector/1.6.8",
+            "GWZ-Collector/1.6.9",
 
             "Accept":
             "text/plain,*/*",
 
             "Cache-Control":
             "no-cache"
+
         }
 
     )
@@ -256,11 +332,6 @@ def download(url):
 
 def extract_vless(text):
 
-    # Some external lists may contain HTML escaped
-    # ampersands such as &amp;.
-    #
-    # Convert them back before extracting links.
-
     text = html.unescape(
         text
     )
@@ -281,7 +352,7 @@ def extract_vless(text):
 
 
 # ============================================================
-# FLAG
+# FLAG HELPERS
 # ============================================================
 
 
@@ -314,48 +385,394 @@ def country_flag(country_code):
     )
 
 
+def flag_to_country_code(text):
+
+    """
+    Detect first flag emoji.
+
+    Example:
+    🇩🇪 -> DE
+    🇫🇮 -> FI
+    """
+
+
+    match = re.search(
+
+        r"([\U0001F1E6-\U0001F1FF])"
+        r"([\U0001F1E6-\U0001F1FF])",
+
+        text
+
+    )
+
+
+    if not match:
+
+        return None
+
+
+    letters = []
+
+
+    for char in match.group(0):
+
+        letters.append(
+
+            chr(
+                ord(char)
+                - 127397
+            )
+
+        )
+
+
+    code = "".join(
+        letters
+    ).upper()
+
+
+    if code in COUNTRY_NAMES:
+
+        return code
+
+
+    return None
+
+
+# ============================================================
+# COUNTRY DETECTION
+# ============================================================
+
+
+def detect_country_code(remark):
+
+    """
+    Country detection priority:
+
+    1. flag emoji
+    2. OpenProxyList country code
+    3. country name
+    4. leading ISO country code
+    """
+
+
+    if not remark:
+
+        return None
+
+
+    decoded = unquote(
+        remark
+    ).strip()
+
+
+    # --------------------------------------------------------
+    # FLAG
+    # --------------------------------------------------------
+
+
+    code = flag_to_country_code(
+        decoded
+    )
+
+
+    if code:
+
+        return code
+
+
+    # --------------------------------------------------------
+    # OPENPROXYLIST FORMAT
+    #
+    # [openproxylist.com] DE 123456
+    # --------------------------------------------------------
+
+
+    match = re.search(
+
+        r"\[openproxylist\.com\]"
+        r"\s*"
+        r"([A-Za-z]{2})\b",
+
+        decoded,
+
+        re.IGNORECASE
+
+    )
+
+
+    if match:
+
+        code = (
+            match.group(1)
+            .upper()
+        )
+
+
+        if code in COUNTRY_NAMES:
+
+            return code
+
+
+    # --------------------------------------------------------
+    # COUNTRY NAME / ALIAS
+    # --------------------------------------------------------
+
+
+    lowered = decoded.lower()
+
+
+    for alias, alias_code in COUNTRY_ALIAS_ITEMS:
+
+        pattern = (
+
+            r"(?<![A-Za-z])"
+            + re.escape(alias)
+            + r"(?![A-Za-z])"
+
+        )
+
+
+        if re.search(
+            pattern,
+            lowered,
+            re.IGNORECASE
+        ):
+
+            return alias_code
+
+
+    # --------------------------------------------------------
+    # LEADING ISO CODE
+    #
+    # DE server
+    # FI Helsinki
+    # NL proxy
+    # --------------------------------------------------------
+
+
+    match = re.match(
+
+        r"^[\s\|\-_:]*"
+        r"([A-Za-z]{2})"
+        r"(?=[\s\|\-_:])",
+
+        decoded
+
+    )
+
+
+    if match:
+
+        code = (
+            match.group(1)
+            .upper()
+        )
+
+
+        if code in COUNTRY_NAMES:
+
+            return code
+
+
+    return None
+
+
+# ============================================================
+# CLEAN GENERIC REMARK
+# ============================================================
+
+
+def clean_generic_remark(
+    remark,
+    country_code
+):
+
+    """
+    Remove duplicated flag / country information
+    from the beginning of an original remark.
+
+    Original:
+    🇩🇪 Germany Frankfurt
+
+    Result:
+    Frankfurt
+    """
+
+
+    if not remark:
+
+        return ""
+
+
+    result = unquote(
+        remark
+    ).strip()
+
+
+    # --------------------------------------------------------
+    # REMOVE EXISTING GWZ PREFIX
+    #
+    # Prevent:
+    #
+    # 🇩🇪 | GWZ | Germany
+    # becoming
+    # 🇩🇪 | GWZ | Germany 🇩🇪 | GWZ | Germany
+    # --------------------------------------------------------
+
+
+    result = re.sub(
+
+        r"^[\U0001F1E6-\U0001F1FF]{2}"
+        r"\s*\|\s*GWZ\s*\|\s*"
+        r"[^|]+"
+        r"\s*",
+
+        "",
+
+        result,
+
+        flags=re.IGNORECASE
+
+    )
+
+
+    # --------------------------------------------------------
+    # REMOVE LEADING FLAG
+    # --------------------------------------------------------
+
+
+    result = re.sub(
+
+        r"^[\U0001F1E6-\U0001F1FF]{2}",
+
+        "",
+
+        result
+
+    )
+
+
+    result = result.strip(
+        " |-_:"
+    )
+
+
+    if not country_code:
+
+        return result
+
+
+    country_name = COUNTRY_NAMES.get(
+        country_code,
+        ""
+    )
+
+
+    # --------------------------------------------------------
+    # REMOVE COUNTRY NAME FROM BEGINNING
+    # --------------------------------------------------------
+
+
+    possible_names = [
+
+        country_name,
+
+        country_code
+
+    ]
+
+
+    for alias, alias_code in COUNTRY_ALIAS_ITEMS:
+
+        if alias_code == country_code:
+
+            possible_names.append(
+                alias
+            )
+
+
+    possible_names = sorted(
+
+        set(
+            possible_names
+        ),
+
+        key=len,
+
+        reverse=True
+
+    )
+
+
+    for value in possible_names:
+
+        if not value:
+
+            continue
+
+
+        pattern = (
+
+            r"^"
+            + re.escape(value)
+            + r"(?=$|[\s\|\-_:])"
+
+        )
+
+
+        new_result = re.sub(
+
+            pattern,
+
+            "",
+
+            result,
+
+            count=1,
+
+            flags=re.IGNORECASE
+
+        )
+
+
+        if new_result != result:
+
+            result = new_result.strip(
+                " |-_:"
+            )
+
+            break
+
+
+    return result
+
+
 # ============================================================
 # OPENPROXYLIST REMARK
 # ============================================================
 
 
-def format_openproxylist_remark(link):
+def format_openproxylist_remark(
+    decoded,
+    country_code
+):
 
     """
-    Preserve OpenProxyList attribution
-    and prepend GWZ branding.
+    Input:
 
-    Input example:
+    [openproxylist.com] DE 16519301
 
-    vless://...#%5Bopenproxylist.com%5D%20DE%201234567
+    Output:
 
-    Output remark:
-
-    🇩🇪 | GWZ | Germany [openproxylist.com] 1234567
+    🇩🇪 | GWZ | Germany [openproxylist.com] 16519301
     """
 
 
-    if "#" not in link:
-
-        return link
+    suffix = ""
 
 
-    base, fragment = link.split(
-        "#",
-        1
-    )
-
-
-    decoded = unquote(
-        fragment
-    ).strip()
-
-
-    # Expected:
-    #
-    # [openproxylist.com] DE 1234567
-
-    pattern = re.compile(
+    match = re.match(
 
         r"^\[openproxylist\.com\]"
         r"\s*"
@@ -363,50 +780,19 @@ def format_openproxylist_remark(link):
         r"\s*"
         r"(.*)$",
 
+        decoded,
+
         re.IGNORECASE
 
     )
 
 
-    match = pattern.match(
-        decoded
-    )
+    if match:
 
-
-    if not match:
-
-        # We do not delete an unknown original remark.
-        # GWZ is simply added before it.
-
-        new_remark = (
-            "🌐 | GWZ | "
-            + decoded
-        )
-
-
-        encoded = quote(
-            new_remark,
-            safe=""
-        )
-
-
-        return (
-            base
-            + "#"
-            + encoded
-        )
-
-
-    country_code = (
-        match.group(1)
-        or ""
-    ).upper()
-
-
-    suffix = (
-        match.group(2)
-        or ""
-    ).strip()
+        suffix = (
+            match.group(2)
+            or ""
+        ).strip()
 
 
     flag = country_flag(
@@ -418,41 +804,199 @@ def format_openproxylist_remark(link):
 
         country_code,
 
-        country_code
+        "Unknown"
 
     )
 
 
-    attribution = (
-        "[openproxylist.com]"
+    result = (
+
+        f"{flag} | GWZ | "
+        f"{country_name} "
+        f"[openproxylist.com]"
+
     )
-
-
-    if country_name:
-
-        new_remark = (
-
-            f"{flag} | GWZ | "
-            f"{country_name} "
-            f"{attribution}"
-
-        )
-
-    else:
-
-        new_remark = (
-
-            f"{flag} | GWZ | "
-            f"{attribution}"
-
-        )
 
 
     if suffix:
 
-        new_remark += (
+        result += (
             f" {suffix}"
         )
+
+
+    return result
+
+
+# ============================================================
+# STANDARD GWZ REMARK
+# ============================================================
+
+
+def standardize_remark(
+    link,
+    source
+):
+
+    """
+    Apply the same GWZ naming structure
+    to EVERY published VLESS configuration.
+
+    Format:
+
+    FLAG | GWZ | COUNTRY original-details
+    """
+
+
+    if "#" in link:
+
+        base, fragment = link.split(
+            "#",
+            1
+        )
+
+        decoded = unquote(
+            fragment
+        ).strip()
+
+    else:
+
+        base = link
+
+        decoded = ""
+
+
+    country_code = detect_country_code(
+        decoded
+    )
+
+
+    # --------------------------------------------------------
+    # SPECIAL CASE:
+    # OPENPROXYLIST
+    # --------------------------------------------------------
+
+
+    if (
+        source.get("type")
+        == "openproxylist"
+        or "[openproxylist.com]"
+        in decoded.lower()
+    ):
+
+        if not country_code:
+
+            country_code = "XX"
+
+
+        if country_code in COUNTRY_NAMES:
+
+            new_remark = format_openproxylist_remark(
+
+                decoded,
+
+                country_code
+
+            )
+
+        else:
+
+            suffix = re.sub(
+
+                r"^\[openproxylist\.com\]\s*",
+
+                "",
+
+                decoded,
+
+                flags=re.IGNORECASE
+
+            ).strip()
+
+
+            new_remark = (
+
+                "🌐 | GWZ | Unknown "
+                "[openproxylist.com]"
+
+            )
+
+
+            if suffix:
+
+                new_remark += (
+                    f" {suffix}"
+                )
+
+
+    # --------------------------------------------------------
+    # ALL OTHER SOURCES
+    # --------------------------------------------------------
+
+
+    else:
+
+        if country_code:
+
+            flag = country_flag(
+                country_code
+            )
+
+
+            country_name = COUNTRY_NAMES.get(
+
+                country_code,
+
+                country_code
+
+            )
+
+
+            suffix = clean_generic_remark(
+
+                decoded,
+
+                country_code
+
+            )
+
+
+            new_remark = (
+
+                f"{flag} | GWZ | "
+                f"{country_name}"
+
+            )
+
+
+            if suffix:
+
+                new_remark += (
+                    f" {suffix}"
+                )
+
+
+        else:
+
+            suffix = clean_generic_remark(
+
+                decoded,
+
+                None
+
+            )
+
+
+            new_remark = (
+                "🌐 | GWZ | Unknown"
+            )
+
+
+            if suffix:
+
+                new_remark += (
+                    f" {suffix}"
+                )
 
 
     encoded = quote(
@@ -493,49 +1037,43 @@ def normalize_link(
     )
 
 
-    remark_mode = source.get(
+    if not link.startswith(
+        "vless://"
+    ):
 
-        "remark_mode",
+        return ""
 
-        "keep"
+
+    return standardize_remark(
+
+        link,
+
+        source
 
     )
 
 
-    if (
-        remark_mode
-        == "gwz_openproxylist"
-    ):
-
-        link = format_openproxylist_remark(
-            link
-        )
-
-
-    return link
-
-
 # ============================================================
-# DEDUPLICATION
+# CONNECTION IDENTITY
 # ============================================================
 
 
 def connection_identity(link):
 
     """
-    Deduplicate by connection itself,
-    ignoring the human-readable remark
-    after #.
-
-    This prevents the same server from
-    surviving only because it has a
-    different display name.
+    Ignore display name after # while comparing
+    duplicate VLESS configurations.
     """
 
     return link.split(
         "#",
         1
     )[0]
+
+
+# ============================================================
+# DEDUPLICATION
+# ============================================================
 
 
 def remove_duplicates(items):
@@ -650,29 +1188,28 @@ def main():
             )
 
 
-            links = [
+            normalized_links = []
 
-                normalize_link(
+
+            for item in links:
+
+                normalized = normalize_link(
+
                     item,
+
                     source
+
                 )
 
-                for item in links
 
-            ]
+                if normalized:
+
+                    normalized_links.append(
+                        normalized
+                    )
 
 
-            links = [
-
-                item
-
-                for item in links
-
-                if item.startswith(
-                    "vless://"
-                )
-
-            ]
+            links = normalized_links
 
 
             if links:
@@ -738,6 +1275,7 @@ def main():
     # REMOVE DUPLICATES
     # ========================================================
 
+
     before = len(
         all_links
     )
@@ -754,8 +1292,9 @@ def main():
 
 
     # ========================================================
-    # SAVE
+    # SAVE RAW POOL
     # ========================================================
+
 
     output = "\n".join(
         all_links
@@ -782,6 +1321,11 @@ def main():
             f.write(
                 "\n"
             )
+
+
+    # ========================================================
+    # SUMMARY
+    # ========================================================
 
 
     log(
