@@ -3,7 +3,7 @@
   "channels": [
     {
       "id": "yt-news-lwYzwdBiaho",
-      "name": "Новости YouTube 1",
+      "name": "Euronews",
       "group": "Новостные",
       "type": "youtube",
       "video_id": "lwYzwdBiaho",
@@ -12,7 +12,7 @@
     },
     {
       "id": "yt-news-WrWwc6gqfCQ",
-      "name": "Новости YouTube 2",
+      "name": "БЕЛСАТ NEWS",
       "group": "Новостные",
       "type": "youtube",
       "video_id": "WrWwc6gqfCQ",
@@ -30,7 +30,7 @@
     },
     {
       "id": "yt-news-_1RM28GoU3E",
-      "name": "Новости YouTube 3",
+      "name": "Радио Свобода", 
       "group": "Новостные",
       "type": "youtube",
       "video_id": "_1RM28GoU3E",
@@ -57,7 +57,7 @@
     },
     {
       "id": "yt-camera-VhGdKCs5KIA",
-      "name": "Камера YouTube VhGdKCs5KIA",
+      "name": "Камера Russia Saint Petersburg",
       "group": "Камеры",
       "type": "youtube",
       "video_id": "VhGdKCs5KIA",
@@ -66,7 +66,7 @@
     },
     {
       "id": "yt-radio-I4FclAh5dsg",
-      "name": "Радио YouTube I4FclAh5dsg",
+      "name": "Dance Hits Live Radio",
       "group": "Радио",
       "type": "youtube",
       "video_id": "I4FclAh5dsg",
