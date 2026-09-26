@@ -934,3 +934,14 @@
 2026-09-26 00:21:19 Downloaded openproxylist_v2ray chars=39913
 2026-09-26 00:21:19 OK openproxylist_v2ray links=81
 2026-09-26 00:21:19 Collection finished sources=3 success=3 failed=0 before=362 after=265 sha256=e759ecb06200
+2026-09-26 06:20:07 Sources count: 3
+2026-09-26 06:20:07 Downloading igareck_mobile
+2026-09-26 06:20:07 Downloaded igareck_mobile chars=49061
+2026-09-26 06:20:07 OK igareck_mobile links=138
+2026-09-26 06:20:07 Downloading igareck_full
+2026-09-26 06:20:08 Downloaded igareck_full chars=44141
+2026-09-26 06:20:08 OK igareck_full links=136
+2026-09-26 06:20:08 Downloading openproxylist_v2ray
+2026-09-26 06:20:08 Downloaded openproxylist_v2ray chars=31412
+2026-09-26 06:20:08 OK openproxylist_v2ray links=58
+2026-09-26 06:20:08 Collection finished sources=3 success=3 failed=0 before=332 after=249 sha256=d14f3e6bc64b
