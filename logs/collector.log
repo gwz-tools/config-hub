@@ -1000,3 +1000,13 @@
 2026-09-27 12:19:42 Downloaded openproxylist_v2ray chars=35676
 2026-09-27 12:19:42 OK openproxylist_v2ray links=104
 2026-09-27 12:19:42 Collection finished sources=3 success=3 failed=0 before=343 after=251 sha256=8dfca1780ce7
+2026-09-27 18:18:00 Sources count: 3
+2026-09-27 18:18:00 Downloading igareck_mobile
+2026-09-27 18:18:00 Downloaded igareck_mobile chars=45969
+2026-09-27 18:18:00 OK igareck_mobile links=131
+2026-09-27 18:18:00 Downloading igareck_full
+2026-09-27 18:18:00 Downloaded igareck_full chars=36439
+2026-09-27 18:18:00 OK igareck_full links=118
+2026-09-27 18:18:00 Downloading openproxylist_v2ray
+2026-09-27 18:18:20 ERROR openproxylist_v2ray: The read operation timed out
+2026-09-27 18:18:20 Collection finished sources=3 success=2 failed=1 before=249 after=178 sha256=7f3800b28c9d
