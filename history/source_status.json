@@ -1,6 +1,6 @@
 {
-  "time": "2026-09-28T06:24:03.666955",
-  "current_count": 292,
-  "previous_count": 209,
-  "decision": "dataset_updated"
+  "time": "2026-09-28T12:22:32.521960",
+  "current_count": 113,
+  "previous_count": 292,
+  "decision": "large_drop_detected_keep_previous"
 }
