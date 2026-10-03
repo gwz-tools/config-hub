@@ -67,16 +67,16 @@
   "igareck_mobile": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-10-03T06:24:26.545740"
+    "last_success": "2026-10-03T15:01:10.469099"
   },
   "igareck_full": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-10-03T06:24:26.672997"
+    "last_success": "2026-10-03T15:01:10.543585"
   },
   "openproxylist_v2ray": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-10-03T06:24:27.062725"
+    "last_success": "2026-10-03T15:01:11.028002"
   }
 }
