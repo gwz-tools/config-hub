@@ -39,6 +39,11 @@ jobs:
           python collector.py
 
 
+      - name: Build GWZHUB candidate feed
+        run: |
+          python gwzhub_candidates.py
+
+
       - name: Validate data
         run: |
           python validator.py
