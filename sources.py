@@ -23,6 +23,34 @@ from datetime import datetime, timezone
 SOURCES = [
 
     # ========================================================
+    # 0XRADIKAL TOP 100
+    # Upstream pre-ranked pool; collector extracts VLESS only.
+    # Highest discovery priority for GWZHUB candidates.
+    # ========================================================
+
+    {
+        "name": "0xradikal_top100",
+
+        "url":
+        "https://raw.githubusercontent.com/0xRadikal/Free-v2ray-Configs/main/top100.txt",
+
+        "type": "github",
+
+        "priority": 110,
+
+        "enabled": True,
+
+        "remark_mode": "keep",
+
+        "tags": [
+            "vless",
+            "top100",
+            "pretested",
+            "priority"
+        ]
+    },
+
+    # ========================================================
     # IGARECK GITHUB
     # Main trusted sources
     # ========================================================
