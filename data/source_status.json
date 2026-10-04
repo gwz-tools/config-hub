@@ -67,16 +67,21 @@
   "igareck_mobile": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-10-04T11:25:56.015975"
+    "last_success": "2026-10-04T16:58:33.930227"
   },
   "igareck_full": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-10-04T11:25:56.074872"
+    "last_success": "2026-10-04T16:58:34.026813"
   },
   "openproxylist_v2ray": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-10-04T11:25:56.388751"
+    "last_success": "2026-10-04T16:58:34.395785"
+  },
+  "0xradikal_top100": {
+    "status": "ok",
+    "fail_count": 0,
+    "last_success": "2026-10-04T16:58:33.816975"
   }
 }
