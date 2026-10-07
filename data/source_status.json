@@ -67,21 +67,57 @@
   "igareck_mobile": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-10-07T12:23:43.030362"
+    "last_success": "2026-10-07T18:21:14.809529+00:00",
+    "last_check": "2026-10-07T18:21:14.809529+00:00",
+    "history": [
+      {
+        "time": "2026-10-07T18:21:14.809529+00:00",
+        "ok": true,
+        "records": null
+      }
+    ],
+    "records": 0
   },
   "igareck_full": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-10-07T12:23:43.189097"
+    "last_success": "2026-10-07T18:21:14.853138+00:00",
+    "last_check": "2026-10-07T18:21:14.853138+00:00",
+    "history": [
+      {
+        "time": "2026-10-07T18:21:14.853138+00:00",
+        "ok": true,
+        "records": null
+      }
+    ],
+    "records": 0
   },
   "openproxylist_v2ray": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-10-07T12:23:43.621431"
+    "last_success": "2026-10-07T18:21:15.394151+00:00",
+    "last_check": "2026-10-07T18:21:15.394151+00:00",
+    "history": [
+      {
+        "time": "2026-10-07T18:21:15.394151+00:00",
+        "ok": true,
+        "records": null
+      }
+    ],
+    "records": 0
   },
   "0xradikal_top100": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-10-07T12:23:42.890187"
+    "last_success": "2026-10-07T18:21:14.692563+00:00",
+    "last_check": "2026-10-07T18:21:14.692563+00:00",
+    "history": [
+      {
+        "time": "2026-10-07T18:21:14.692563+00:00",
+        "ok": true,
+        "records": null
+      }
+    ],
+    "records": 0
   }
 }
