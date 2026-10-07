@@ -1,115 +1,51 @@
+"""Generate source-level quality information from source_status.json."""
 import json
 from pathlib import Path
 from datetime import datetime, timezone
 
-
 STATUS_FILE = Path("data/source_status.json")
 OUTPUT_FILE = Path("data/source_quality.json")
 
-
 def calculate_score(item):
-
     score = 0
-
-    status = item.get("status")
-
-    records = item.get("records", 0)
-
-    history = item.get("history", [])
-
-
-    # загрузка прошла
-    if status == "ok":
-        score += 40
-
-
-    # есть данные
-    if records > 0:
-        score += 30
-
-
-    # стабильность
-    if len(history) >= 3:
+    if item.get("status") == "ok":
+        score += 50
+    if int(item.get("records", 0) or 0) > 0:
         score += 20
-
-
-    # небольшой бонус
-    if records >= 50:
-        score += 10
-
-
-    if score >= 80:
-        grade = "GOOD"
-
-    elif score >= 50:
-        grade = "WARNING"
-
-    else:
-        grade = "DEAD"
-
-
+    history = item.get("history", []) or []
+    recent = history[-6:]
+    if recent:
+        ratio = sum(1 for x in recent if x.get("ok")) / len(recent)
+        score += round(30 * ratio)
+    elif item.get("last_success"):
+        score += 20
+    score = min(100, score)
+    grade = "GOOD" if score >= 70 else ("WARNING" if score >= 40 else "DEAD")
     return score, grade
 
-
-
 def main():
-
     if not STATUS_FILE.exists():
-        print("source_status.json not found")
-        return
+        raise SystemExit("source_status.json not found")
+    data = json.loads(STATUS_FILE.read_text(encoding="utf-8"))
+    if isinstance(data, dict) and isinstance(data.get("sources"), list):
+        items = [(x.get("name", "unknown"), x) for x in data["sources"]]
+    elif isinstance(data, dict):
+        items = list(data.items())
+    else:
+        items = []
 
+    result = {"updated": datetime.now(timezone.utc).isoformat(), "sources": []}
+    for name, item in items:
+        row = dict(item)
+        score, grade = calculate_score(row)
+        row["name"] = name
+        row["quality_score"] = score
+        row["grade"] = grade
+        result["sources"].append(row)
 
-    with open(
-        STATUS_FILE,
-        "r",
-        encoding="utf-8"
-    ) as f:
-        data = json.load(f)
-
-
-    result = {
-        "updated": datetime.now(
-            timezone.utc
-        ).isoformat(),
-        "sources": []
-    }
-
-
-    for item in data.get("sources", []):
-
-        score, grade = calculate_score(item)
-
-        item["quality_score"] = score
-        item["grade"] = grade
-
-        result["sources"].append(item)
-
-
-    OUTPUT_FILE.parent.mkdir(
-        exist_ok=True
-    )
-
-
-    with open(
-        OUTPUT_FILE,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        json.dump(
-            result,
-            f,
-            indent=2,
-            ensure_ascii=False
-        )
-
-
-    print(
-        "Quality score generated:",
-        len(result["sources"])
-    )
-
-
+    OUTPUT_FILE.parent.mkdir(exist_ok=True)
+    OUTPUT_FILE.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print("Quality score generated:", len(result["sources"]))
 
 if __name__ == "__main__":
     main()
