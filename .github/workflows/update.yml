@@ -5,96 +5,78 @@ on:
   schedule:
     - cron: "0 */6 * * *"
 
-
 permissions:
   contents: write
 
+concurrency:
+  group: gwz-data-update
+  cancel-in-progress: false
 
 jobs:
-
   update:
-
     runs-on: ubuntu-latest
-
+    timeout-minutes: 10
 
     steps:
-
       - name: Checkout repository
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.x"
-
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-
+          python-version: "3.13"
 
       - name: Run collector
+        run: python collector.py
+
+      - name: Build geo-balanced GWZHUB candidate feed
+        run: python gwzhub_candidates.py
+
+      - name: Validate candidate feed
         run: |
-          python collector.py
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.parse import unquote
+          p = Path("data/gwzhub_candidates.txt")
+          rows = [x for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+          assert len(rows) >= 80, f"candidate pool too small: {len(rows)}"
+          text = "\n".join(unquote(x) for x in rows)
+          for country in ("Netherlands", "Lithuania"):
+              if country not in text:
+                  print(f"WARNING: {country} absent from this upstream snapshot")
+          print(f"Candidate pool OK: {len(rows)}")
+          PY
 
-
-      - name: Build GWZHUB candidate feed
-        run: |
-          python gwzhub_candidates.py
-
-
-      - name: Validate data
-        run: |
-          python validator.py
-
+      - name: Validate collected data
+        run: python validator.py
 
       - name: Update history
-        run: |
-          python history_manager.py
+        run: python history_manager.py
 
-
-      - name: Calculate quality score
-        run: |
-          python quality_score.py
-
+      - name: Calculate source quality
+        run: python quality_score.py
 
       - name: Build TOP pool
-        run: |
-          python top_pool.py
-
+        run: python top_pool.py
 
       - name: Publish fast list
+        run: python publisher.py
+
+      - name: Generate statistics
+        run: python stats.py
+
+      - name: Show GWZHUB candidate diagnostics
         run: |
-          python publisher.py
-
-
-      - name: Check generated files
-        run: |
-          echo "Repository files:"
-          ls -la
-          echo ""
-          echo "Data directory:"
-          ls -la data || true
-
+          cat data/gwzhub_candidates.meta
+          echo "candidate_lines=$(grep -c '^vless://' data/gwzhub_candidates.txt || true)"
+          echo "validated_lines=$(grep -c '^vless://' data/validated.txt || true)"
 
       - name: Commit updated data
         run: |
-
-          git config --global user.name "gwz-tools"
-          git config --global user.email "actions@github.com"
-
-
-          git add \
-            data \
-            history \
-            logs \
-            fast.txt
-
-
+          git config user.name "gwz-tools"
+          git config user.email "actions@github.com"
+          git add data history fast.txt
           git diff --cached --quiet || git commit -m "Update GWZ data"
 
-
       - name: Push changes
-        run: |
-          git push
+        run: git push
