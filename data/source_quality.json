@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-14T11:35:54.419246+00:00",
+  "updated": "2026-10-14T16:58:33.052261+00:00",
   "sources": [
     {
       "status": "failed",
@@ -108,14 +108,9 @@
     {
       "status": "ok",
       "fail_count": 0,
-      "last_success": "2026-10-14T11:35:52.900156+00:00",
-      "last_check": "2026-10-14T11:35:52.900156+00:00",
+      "last_success": "2026-10-14T16:58:19.564362+00:00",
+      "last_check": "2026-10-14T16:58:19.564362+00:00",
       "history": [
-        {
-          "time": "2026-10-10T12:20:02.660083+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-10T21:27:37.656789+00:00",
           "ok": true,
@@ -170,6 +165,11 @@
           "time": "2026-10-14T11:35:52.900156+00:00",
           "ok": true,
           "records": null
+        },
+        {
+          "time": "2026-10-14T16:58:19.564362+00:00",
+          "ok": true,
+          "records": null
         }
       ],
       "records": 0,
@@ -180,14 +180,9 @@
     {
       "status": "ok",
       "fail_count": 0,
-      "last_success": "2026-10-14T11:35:52.930298+00:00",
-      "last_check": "2026-10-14T11:35:52.930298+00:00",
+      "last_success": "2026-10-14T16:58:19.579430+00:00",
+      "last_check": "2026-10-14T16:58:19.579430+00:00",
       "history": [
-        {
-          "time": "2026-10-10T12:20:02.792672+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-10T21:27:37.680504+00:00",
           "ok": true,
@@ -242,6 +237,11 @@
           "time": "2026-10-14T11:35:52.930298+00:00",
           "ok": true,
           "records": null
+        },
+        {
+          "time": "2026-10-14T16:58:19.579430+00:00",
+          "ok": true,
+          "records": null
         }
       ],
       "records": 0,
@@ -252,14 +252,9 @@
     {
       "status": "ok",
       "fail_count": 0,
-      "last_success": "2026-10-14T11:35:53.219031+00:00",
-      "last_check": "2026-10-14T11:35:53.219031+00:00",
+      "last_success": "2026-10-14T16:58:20.939333+00:00",
+      "last_check": "2026-10-14T16:58:20.939333+00:00",
       "history": [
-        {
-          "time": "2026-10-10T12:20:03.255340+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-10T21:27:37.945054+00:00",
           "ok": true,
@@ -314,6 +309,11 @@
           "time": "2026-10-14T11:35:53.219031+00:00",
           "ok": true,
           "records": null
+        },
+        {
+          "time": "2026-10-14T16:58:20.939333+00:00",
+          "ok": true,
+          "records": null
         }
       ],
       "records": 0,
@@ -324,14 +324,9 @@
     {
       "status": "ok",
       "fail_count": 0,
-      "last_success": "2026-10-14T11:35:52.870072+00:00",
-      "last_check": "2026-10-14T11:35:52.870072+00:00",
+      "last_success": "2026-10-14T16:58:19.544302+00:00",
+      "last_check": "2026-10-14T16:58:19.544302+00:00",
       "history": [
-        {
-          "time": "2026-10-10T12:20:02.527372+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-10T21:27:37.594966+00:00",
           "ok": true,
@@ -386,10 +381,151 @@
           "time": "2026-10-14T11:35:52.870072+00:00",
           "ok": true,
           "records": null
+        },
+        {
+          "time": "2026-10-14T16:58:19.544302+00:00",
+          "ok": true,
+          "records": null
         }
       ],
       "records": 0,
       "name": "0xradikal_top100",
+      "quality_score": 80,
+      "grade": "GOOD"
+    },
+    {
+      "status": "unknown",
+      "fail_count": 1,
+      "last_success": null,
+      "last_check": "2026-10-14T16:58:19.843879+00:00",
+      "records": 0,
+      "history": [
+        {
+          "time": "2026-10-14T16:58:19.843879+00:00",
+          "ok": false,
+          "records": null
+        }
+      ],
+      "name": "epodonios_vless",
+      "quality_score": 0,
+      "grade": "DEAD"
+    },
+    {
+      "status": "unknown",
+      "fail_count": 1,
+      "last_success": null,
+      "last_check": "2026-10-14T16:58:19.949070+00:00",
+      "records": 0,
+      "history": [
+        {
+          "time": "2026-10-14T16:58:19.949070+00:00",
+          "ok": false,
+          "records": null
+        }
+      ],
+      "name": "matinghanbari_vless",
+      "quality_score": 0,
+      "grade": "DEAD"
+    },
+    {
+      "status": "ok",
+      "fail_count": 0,
+      "last_success": "2026-10-14T16:58:20.219539+00:00",
+      "last_check": "2026-10-14T16:58:20.219539+00:00",
+      "records": 0,
+      "history": [
+        {
+          "time": "2026-10-14T16:58:20.219539+00:00",
+          "ok": true,
+          "records": null
+        }
+      ],
+      "name": "0xradikal_verified",
+      "quality_score": 80,
+      "grade": "GOOD"
+    },
+    {
+      "status": "ok",
+      "fail_count": 0,
+      "last_success": "2026-10-14T16:58:20.315644+00:00",
+      "last_check": "2026-10-14T16:58:20.315644+00:00",
+      "records": 0,
+      "history": [
+        {
+          "time": "2026-10-14T16:58:20.315644+00:00",
+          "ok": true,
+          "records": null
+        }
+      ],
+      "name": "aviamasters_verified",
+      "quality_score": 80,
+      "grade": "GOOD"
+    },
+    {
+      "status": "ok",
+      "fail_count": 0,
+      "last_success": "2026-10-14T16:58:21.350013+00:00",
+      "last_check": "2026-10-14T16:58:21.350013+00:00",
+      "records": 0,
+      "history": [
+        {
+          "time": "2026-10-14T16:58:21.350013+00:00",
+          "ok": true,
+          "records": null
+        }
+      ],
+      "name": "morpheus_best",
+      "quality_score": 80,
+      "grade": "GOOD"
+    },
+    {
+      "status": "ok",
+      "fail_count": 0,
+      "last_success": "2026-10-14T16:58:23.127765+00:00",
+      "last_check": "2026-10-14T16:58:23.127765+00:00",
+      "records": 0,
+      "history": [
+        {
+          "time": "2026-10-14T16:58:23.127765+00:00",
+          "ok": true,
+          "records": null
+        }
+      ],
+      "name": "morpheus_reality",
+      "quality_score": 80,
+      "grade": "GOOD"
+    },
+    {
+      "status": "unknown",
+      "fail_count": 1,
+      "last_success": null,
+      "last_check": "2026-10-14T16:58:23.212323+00:00",
+      "records": 0,
+      "history": [
+        {
+          "time": "2026-10-14T16:58:23.212323+00:00",
+          "ok": false,
+          "records": null
+        }
+      ],
+      "name": "au1rxx",
+      "quality_score": 0,
+      "grade": "DEAD"
+    },
+    {
+      "status": "ok",
+      "fail_count": 0,
+      "last_success": "2026-10-14T16:58:23.505353+00:00",
+      "last_check": "2026-10-14T16:58:23.505353+00:00",
+      "records": 0,
+      "history": [
+        {
+          "time": "2026-10-14T16:58:23.505353+00:00",
+          "ok": true,
+          "records": null
+        }
+      ],
+      "name": "alirewa_main",
       "quality_score": 80,
       "grade": "GOOD"
     }
