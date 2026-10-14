@@ -136,6 +136,90 @@ SOURCES = [
 
 
     # ========================================================
+    # ADDITIONAL GWZHUB DISCOVERY SOURCES
+    # ========================================================
+
+    {
+        "name": "epodonios_vless",
+        "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/refs/heads/main/Splitted-By-Protocol/vless.txt",
+        "type": "github",
+        "priority": 85,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless", "additional", "discovery"]
+    },
+
+    {
+        "name": "matinghanbari_vless",
+        "url": "https://raw.githubusercontent.com/MatinGhanbari/v2ray-configs/main/subscriptions/filtered/subs/vless.txt",
+        "type": "github",
+        "priority": 84,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless", "additional", "discovery"]
+    },
+
+    {
+        "name": "0xradikal_verified",
+        "url": "https://raw.githubusercontent.com/0xRadikal/Free-v2ray-Configs/main/verified/configs.txt",
+        "type": "github",
+        "priority": 83,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless", "additional", "discovery"]
+    },
+
+    {
+        "name": "aviamasters_verified",
+        "url": "https://raw.githubusercontent.com/aviamastersgh/vpn-free-russia/main/verified_configs.txt",
+        "type": "github",
+        "priority": 82,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless", "additional", "discovery"]
+    },
+
+    {
+        "name": "morpheus_best",
+        "url": "https://raw.githubusercontent.com/morpheusadam/v2ray-config/main/subs/bundles/best.txt",
+        "type": "github",
+        "priority": 79,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless", "additional", "discovery"]
+    },
+
+    {
+        "name": "morpheus_reality",
+        "url": "https://raw.githubusercontent.com/morpheusadam/v2ray-config/main/subs/bundles/reality.txt",
+        "type": "github",
+        "priority": 78,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless", "additional", "discovery"]
+    },
+
+    {
+        "name": "au1rxx",
+        "url": "https://raw.githubusercontent.com/Au1rxx/free-vpn-subscriptions/main/output/v2ray-base64.txt",
+        "type": "github",
+        "priority": 77,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless", "additional", "discovery"]
+    },
+
+    {
+        "name": "alirewa_main",
+        "url": "https://raw.githubusercontent.com/Alirewa/V2ray-Configs/main/config.txt",
+        "type": "github",
+        "priority": 76,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless", "additional", "discovery"]
+    },
+
+    # ========================================================
     # FUTURE MIRRORS
     # Disabled until verified
     # ========================================================
