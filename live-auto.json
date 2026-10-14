@@ -13,8 +13,7 @@
         "GWZ-04",
         "GWZ-05",
         "GWZ-06",
-        "GWZ-07",
-        "GWZ-08"
+        "GWZ-07"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -69,29 +68,6 @@
     {
       "type": "vless",
       "tag": "GWZ-03",
-      "server": "188.164.248.216",
-      "server_port": 443,
-      "uuid": "d342d11e-d224-4463-b982-532309285094",
-      "tls": {
-        "enabled": true,
-        "server_name": "ccc.010304.xyz",
-        "insecure": false,
-        "utls": {
-          "enabled": true,
-          "fingerprint": "safari"
-        }
-      },
-      "transport": {
-        "type": "ws",
-        "path": "/",
-        "headers": {
-          "Host": "ccc.010304.xyz"
-        }
-      }
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-04",
       "server": "170.114.52.22",
       "server_port": 443,
       "uuid": "a853e120-3570-462b-aec1-e8f3d4f92d24",
@@ -114,7 +90,7 @@
     },
     {
       "type": "vless",
-      "tag": "GWZ-05",
+      "tag": "GWZ-04",
       "server": "170.114.52.22",
       "server_port": 443,
       "uuid": "a853e120-3570-462b-aec1-e8f3d4f92d24",
@@ -137,7 +113,7 @@
     },
     {
       "type": "vless",
-      "tag": "GWZ-06",
+      "tag": "GWZ-05",
       "server": "170.114.52.22",
       "server_port": 443,
       "uuid": "a853e120-3570-462b-aec1-e8f3d4f92d24",
@@ -160,7 +136,7 @@
     },
     {
       "type": "vless",
-      "tag": "GWZ-07",
+      "tag": "GWZ-06",
       "server": "170.114.52.22",
       "server_port": 443,
       "uuid": "a853e120-3570-462b-aec1-e8f3d4f92d24",
@@ -183,7 +159,7 @@
     },
     {
       "type": "vless",
-      "tag": "GWZ-08",
+      "tag": "GWZ-07",
       "server": "170.114.52.22",
       "server_port": 443,
       "uuid": "a853e120-3570-462b-aec1-e8f3d4f92d24",
