@@ -11,7 +11,8 @@
         "GWZ-02",
         "GWZ-03",
         "GWZ-04",
-        "GWZ-05"
+        "GWZ-05",
+        "GWZ-06"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -123,6 +124,27 @@
           "Host": "vod3.rucdncomp.pro"
         }
       }
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-06",
+      "server": "31.57.106.241",
+      "server_port": 443,
+      "uuid": "a4801105-c0c7-4cab-87c6-f257ff2afc09",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.lmt.lv",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "4SJB--DChFNhmOUz0-BZK2dS3GhZ1yZwMVIhmpobB0o",
+          "short_id": "44f7c5615039ae1b"
+        }
+      },
+      "flow": "xtls-rprx-vision"
     },
     {
       "type": "direct",
