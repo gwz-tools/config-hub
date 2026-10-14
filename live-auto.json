@@ -11,7 +11,8 @@
         "GWZ-02",
         "GWZ-03",
         "GWZ-04",
-        "GWZ-05"
+        "GWZ-05",
+        "GWZ-06"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -105,6 +106,27 @@
     {
       "type": "vless",
       "tag": "GWZ-05",
+      "server": "pl.golangwikito.cfd",
+      "server_port": 443,
+      "uuid": "f8d52ece-fad4-478d-875d-df6eed3befa7",
+      "tls": {
+        "enabled": true,
+        "server_name": "pl.golangwikito.cfd",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "ios"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "DsTVLCehsKvfFGtNZU5leKOLTlEp28qeifHYtRKOFwg",
+          "short_id": "acccaaaa9f72147d"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-06",
       "server": "31.57.106.241",
       "server_port": 443,
       "uuid": "a4801105-c0c7-4cab-87c6-f257ff2afc09",
