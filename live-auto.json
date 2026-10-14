@@ -11,8 +11,7 @@
         "GWZ-02",
         "GWZ-03",
         "GWZ-04",
-        "GWZ-05",
-        "GWZ-06"
+        "GWZ-05"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -106,28 +105,6 @@
     {
       "type": "vless",
       "tag": "GWZ-05",
-      "server": "46.243.232.167",
-      "server_port": 20010,
-      "uuid": "a443d7bf-f506-46ce-b64d-cf8891c0a9f7",
-      "tls": {
-        "enabled": true,
-        "server_name": "vod3.rucdncomp.pro",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        }
-      },
-      "transport": {
-        "type": "ws",
-        "path": "/service/events/e296aaa797ab/",
-        "headers": {
-          "Host": "vod3.rucdncomp.pro"
-        }
-      }
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-06",
       "server": "31.57.106.241",
       "server_port": 443,
       "uuid": "a4801105-c0c7-4cab-87c6-f257ff2afc09",
