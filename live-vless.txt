@@ -1,12 +1,12 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-10-14 / 13:28 (Moscow)
+# Date/Time: 2026-10-14 / 15:19 (Moscow)
 # Количество: 7
 
-vless://d342d11e-d224-4463-b982-532309285094@188.164.248.216:443?encryption=none&type=ws&path=%2F&host=ccc.010304.xyz&security=tls&sni=ccc.010304.xyz&fp=firefox#%F0%9F%87%B3%F0%9F%87%B1 GWZ | Netherlands 01 %F0%9F%94%A5
-vless://d342d11e-d224-4463-b982-532309285094@188.164.248.216:443?encryption=none&type=ws&path=%2F&host=ccc.010304.xyz&security=tls&sni=ccc.010304.xyz&fp=ios#%F0%9F%87%B3%F0%9F%87%B1 GWZ | Netherlands 02 %F0%9F%94%A5
-vless://a853e120-3570-462b-aec1-e8f3d4f92d24@170.114.52.22:443?type=ws&security=tls&sni=asia.csmaster.site&host=asia.csmaster.site&fp=qq#%F0%9F%87%BA%F0%9F%87%B8 GWZ | USA 01 %F0%9F%94%A5
-vless://a853e120-3570-462b-aec1-e8f3d4f92d24@170.114.52.22:443?type=ws&security=tls&fp=chrome&sni=asia.csmaster.site&host=asia.csmaster.site#%F0%9F%87%BA%F0%9F%87%B8 GWZ | USA 02 %F0%9F%94%A5
-vless://a853e120-3570-462b-aec1-e8f3d4f92d24@170.114.52.22:443?type=ws&security=tls&sni=asia.csmaster.site&host=asia.csmaster.site&fp=android#%F0%9F%87%BA%F0%9F%87%B8 GWZ | USA 03 %F0%9F%94%A5
-vless://a853e120-3570-462b-aec1-e8f3d4f92d24@170.114.52.22:443?type=ws&security=tls&sni=asia.csmaster.site&host=asia.csmaster.site&fp=safari#%F0%9F%87%BA%F0%9F%87%B8 GWZ | USA 04 %F0%9F%94%A5
-vless://a853e120-3570-462b-aec1-e8f3d4f92d24@170.114.52.22:443?type=ws&security=tls&sni=asia.csmaster.site&host=asia.csmaster.site&fp=edge#%F0%9F%87%BA%F0%9F%87%B8 GWZ | USA 05 %F0%9F%94%A5
+vless://e6df2095-a73c-4043-8693-8d5a03686870@104.18.43.174:443?security=tls&sni=lucasjow.us.ci&type=ws&host=lucasjow.us.ci&fp=qq&allowInsecure=0#%F0%9F%8C%90%20%7C%20GWZ%20%7C%20Unknown%20CA
+vless://c3db7657-88ce-42a6-b998-1e0364b277ac@193.233.202.250:9443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=usa.edgeses.org&pbk=ELJzJkc4SiCeCn6OF-8V9oeoJqXcD1y9WUntP3It53g&sid=649ab61e575fdbc9&fp=chrome#%F0%9F%8C%90%20%7C%20GWZ%20%7C%20Unknown%20US
+vless://c3db7657-88ce-42a6-b998-1e0364b277ac@95.181.173.68:9443?security=reality&encryption=none&pbk=ELJzJkc4SiCeCn6OF-8V9oeoJqXcD1y9WUntP3It53g&headerType=&type=tcp&flow=xtls-rprx-vision&sni=usa.edgeses.org&sid=649ab61e575fdbc9#%F0%9F%8C%90%20%7C%20GWZ%20%7C%20Unknown%20US
+vless://c3db7657-88ce-42a6-b998-1e0364b277ac@213.165.50.45:9443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=usa.edgeses.org&pbk=ELJzJkc4SiCeCn6OF-8V9oeoJqXcD1y9WUntP3It53g&sid=649ab61e575fdbc9&fp=chrome#%F0%9F%8C%90%20%7C%20GWZ%20%7C%20Unknown%20US
+vless://a443d7bf-f506-46ce-b64d-cf8891c0a9f7@46.243.232.167:20010?encryption=none&host=vod3.rucdncomp.pro&path=%2Fservice%2Fevents%2Fe296aaa797ab%2F&security=tls&sni=vod3.rucdncomp.pro&type=ws&fp=chrome#%F0%9F%87%A9%F0%9F%87%AA%20Germany%20%7C%20%5B%2ACIDR%5D%20CDN
+vless://f8d52ece-fad4-478d-875d-df6eed3befa7@pl.golangwikito.cfd:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=pl.golangwikito.cfd&pbk=DsTVLCehsKvfFGtNZU5leKOLTlEp28qeifHYtRKOFwg&sid=acccaaaa9f72147d&type=tcp&fp=ios#%F0%9F%87%B5%F0%9F%87%B1%20%7C%20GWZ%20%7C%20Poland%20Poland%2C%20Warsaw%20%7C%20%5BBL%5D
+vless://a4801105-c0c7-4cab-87c6-f257ff2afc09@31.57.106.241:443?security=reality&encryption=none&pbk=4SJB--DChFNhmOUz0-BZK2dS3GhZ1yZwMVIhmpobB0o&headerType=none&fp=chrome&type=tcp&flow=xtls-rprx-vision&sni=www.lmt.lv&sid=44f7c5615039ae1b#%F0%9F%87%B1%F0%9F%87%BB%20%7C%20GWZ%20%7C%20Latvia%20%5Bopenproxylist.com%5D%2015940658
