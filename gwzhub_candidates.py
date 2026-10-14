@@ -6,7 +6,7 @@ real tunnel/liveness checks from the target network.
 
 from collections import defaultdict, deque
 from pathlib import Path
-from urllib.parse import unquote
+from urllib.parse import unquote, urlsplit
 import re
 
 from sources import get_sources
@@ -14,7 +14,7 @@ from collector import download, extract_vless, normalize_link, connection_identi
 
 OUTPUT_FILE = Path("data/gwzhub_candidates.txt")
 META_FILE = Path("data/gwzhub_candidates.meta")
-LIMIT = 250
+LIMIT = 400
 MIN_SAFE_POOL = 80
 
 # Preferred for the target geography. This is ordering, not a hard exclusion.
@@ -53,6 +53,17 @@ def country_from_link(link):
         return "".join(chr(ord(ch) - 127397) for ch in m.group(0))
 
     return "OTHER"
+
+
+def endpoint_identity(link):
+    """Deduplicate by entry host and port, not just by VLESS URI."""
+    try:
+        parsed = urlsplit(connection_identity(link))
+        if parsed.scheme.lower() != "vless" or not parsed.hostname or not parsed.port:
+            return None
+        return (parsed.hostname.lower(), parsed.port)
+    except ValueError:
+        return None
 
 
 def round_robin_source(buckets, limit):
@@ -105,6 +116,7 @@ def build_candidates():
 
     selected = []
     selected_ids = set()
+    selected_endpoints = set()
     selected_country = defaultdict(int)
 
     def add(items, cap):
@@ -112,10 +124,12 @@ def build_candidates():
             if len(selected) >= LIMIT or cap <= 0:
                 break
             ident = connection_identity(cfg)
-            if ident in selected_ids:
+            endpoint = endpoint_identity(cfg)
+            if ident in selected_ids or endpoint is None or endpoint in selected_endpoints:
                 continue
             selected.append(cfg)
             selected_ids.add(ident)
+            selected_endpoints.add(endpoint)
             selected_country[country_from_link(cfg)] += 1
             cap -= 1
 
@@ -124,7 +138,7 @@ def build_candidates():
     preferred_caps = {
         "NL": 30, "LT": 20, "DE": 30, "FI": 25,
         "LV": 20, "PL": 25, "EE": 15, "SE": 15,
-        "US": 25, "CA": 15, "GB": 10,
+        "US": 10, "CA": 10, "GB": 10,
     }
 
     for cc in COUNTRY_ORDER:
@@ -154,7 +168,8 @@ def build_candidates():
 
     meta = [
         f"total={len(selected)}",
-        "policy=geo-balanced-full-source-scan",
+        f"unique_endpoints={len(selected_endpoints)}",
+        "policy=geo-balanced-unique-entry-endpoints",
         "preferred=" + ",".join(COUNTRY_ORDER[:-1]),
     ]
     meta += [f"source.{k}={v}" for k, v in source_stats.items()]
