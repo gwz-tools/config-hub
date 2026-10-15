@@ -1,6 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-10-15 / 10:31 (Moscow)
+# Date/Time: 2026-10-15 / 10:41 (Moscow)
 # Количество: 6
 
 vless://e6df2095-a73c-4043-8693-8d5a03686870@104.18.43.174:443?security=tls&sni=lucasjow.us.ci&type=ws&host=lucasjow.us.ci&fp=qq&allowInsecure=0#%F0%9F%8C%90 | GWZ | Cloudflare
