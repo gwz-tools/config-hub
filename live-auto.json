@@ -10,9 +10,7 @@
         "GWZ-01",
         "GWZ-02",
         "GWZ-03",
-        "GWZ-04",
-        "GWZ-05",
-        "GWZ-06"
+        "GWZ-04"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -21,28 +19,6 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "104.18.43.174",
-      "server_port": 443,
-      "uuid": "e6df2095-a73c-4043-8693-8d5a03686870",
-      "tls": {
-        "enabled": true,
-        "server_name": "lucasjow.us.ci",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "qq"
-        }
-      },
-      "transport": {
-        "type": "ws",
-        "path": "/",
-        "headers": {
-          "Host": "lucasjow.us.ci"
-        }
-      }
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-02",
       "server": "193.233.202.250",
       "server_port": 9443,
       "uuid": "c3db7657-88ce-42a6-b998-1e0364b277ac",
@@ -63,7 +39,7 @@
     },
     {
       "type": "vless",
-      "tag": "GWZ-03",
+      "tag": "GWZ-02",
       "server": "95.181.173.68",
       "server_port": 9443,
       "uuid": "c3db7657-88ce-42a6-b998-1e0364b277ac",
@@ -84,7 +60,7 @@
     },
     {
       "type": "vless",
-      "tag": "GWZ-04",
+      "tag": "GWZ-03",
       "server": "213.165.50.45",
       "server_port": 9443,
       "uuid": "c3db7657-88ce-42a6-b998-1e0364b277ac",
@@ -105,28 +81,7 @@
     },
     {
       "type": "vless",
-      "tag": "GWZ-05",
-      "server": "pl.golangwikito.cfd",
-      "server_port": 443,
-      "uuid": "f8d52ece-fad4-478d-875d-df6eed3befa7",
-      "tls": {
-        "enabled": true,
-        "server_name": "pl.golangwikito.cfd",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "ios"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "DsTVLCehsKvfFGtNZU5leKOLTlEp28qeifHYtRKOFwg",
-          "short_id": "acccaaaa9f72147d"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-06",
+      "tag": "GWZ-04",
       "server": "31.57.106.241",
       "server_port": 443,
       "uuid": "a4801105-c0c7-4cab-87c6-f257ff2afc09",
