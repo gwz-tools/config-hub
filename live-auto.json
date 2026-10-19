@@ -7,7 +7,8 @@
       "type": "urltest",
       "tag": "GWZHUB-AUTO",
       "outbounds": [
-        "GWZ-01"
+        "GWZ-01",
+        "GWZ-02"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -30,6 +31,27 @@
           "enabled": true,
           "public_key": "DsTVLCehsKvfFGtNZU5leKOLTlEp28qeifHYtRKOFwg",
           "short_id": "acccaaaa9f72147d"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-02",
+      "server": "31.57.106.241",
+      "server_port": 443,
+      "uuid": "a4801105-c0c7-4cab-87c6-f257ff2afc09",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.lmt.lv",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "4SJB--DChFNhmOUz0-BZK2dS3GhZ1yZwMVIhmpobB0o",
+          "short_id": "44f7c5615039ae1b"
         }
       },
       "flow": "xtls-rprx-vision"
