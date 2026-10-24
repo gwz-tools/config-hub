@@ -1,6 +1,7 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-10-24 / 16:08 (Moscow)
-# Количество: 1
+# Date/Time: 2026-10-24 / 18:16 (Moscow)
+# Количество: 2
 
-vless://605dea9b-b485-45c9-af9b-cc2b0195023c@ee1.mycloud1.org:443?security=reality&type=tcp&sni=ee1.mycloud1.org&fp=firefox&flow=xtls-rprx-vision&sid=afee962d&pbk=Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands
+vless://605dea9b-b485-45c9-af9b-cc2b0195023c@194.26.141.223:443?flow=xtls-rprx-vision&fp=firefox&pbk=Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E&security=reality&sid=afee962d&sni=ee1.mycloud1.org&type=tcp#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands
+vless://605dea9b-b485-45c9-af9b-cc2b0195023c@ee1.mycloud1.org:443?security=reality&type=tcp&sni=ee1.mycloud1.org&fp=firefox&flow=xtls-rprx-vision&sid=afee962d&pbk=Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands 02
