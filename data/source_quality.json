@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-25T04:16:02.160700+00:00",
+  "updated": "2026-10-25T11:08:33.074056+00:00",
   "sources": [
     {
       "status": "failed",
@@ -108,14 +108,9 @@
     {
       "status": "ok",
       "fail_count": 0,
-      "last_success": "2026-10-25T04:15:38.656459+00:00",
-      "last_check": "2026-10-25T04:15:38.656459+00:00",
+      "last_success": "2026-10-25T11:08:06.895501+00:00",
+      "last_check": "2026-10-25T11:08:06.895501+00:00",
       "history": [
-        {
-          "time": "2026-10-22T11:34:24.820938+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-22T16:59:51.861892+00:00",
           "ok": true,
@@ -170,6 +165,11 @@
           "time": "2026-10-25T04:15:38.656459+00:00",
           "ok": true,
           "records": null
+        },
+        {
+          "time": "2026-10-25T11:08:06.895501+00:00",
+          "ok": true,
+          "records": null
         }
       ],
       "records": 0,
@@ -180,14 +180,9 @@
     {
       "status": "ok",
       "fail_count": 0,
-      "last_success": "2026-10-25T04:15:38.741448+00:00",
-      "last_check": "2026-10-25T04:15:38.741448+00:00",
+      "last_success": "2026-10-25T11:08:06.965649+00:00",
+      "last_check": "2026-10-25T11:08:06.965649+00:00",
       "history": [
-        {
-          "time": "2026-10-22T11:34:24.884472+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-22T16:59:51.946289+00:00",
           "ok": true,
@@ -242,6 +237,11 @@
           "time": "2026-10-25T04:15:38.741448+00:00",
           "ok": true,
           "records": null
+        },
+        {
+          "time": "2026-10-25T11:08:06.965649+00:00",
+          "ok": true,
+          "records": null
         }
       ],
       "records": 0,
@@ -252,14 +252,9 @@
     {
       "status": "ok",
       "fail_count": 0,
-      "last_success": "2026-10-25T04:15:39.709970+00:00",
-      "last_check": "2026-10-25T04:15:39.709970+00:00",
+      "last_success": "2026-10-25T11:08:08.690340+00:00",
+      "last_check": "2026-10-25T11:08:08.690340+00:00",
       "history": [
-        {
-          "time": "2026-10-22T11:34:25.770715+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-22T16:59:53.513438+00:00",
           "ok": true,
@@ -314,6 +309,11 @@
           "time": "2026-10-25T04:15:39.709970+00:00",
           "ok": true,
           "records": null
+        },
+        {
+          "time": "2026-10-25T11:08:08.690340+00:00",
+          "ok": true,
+          "records": null
         }
       ],
       "records": 0,
@@ -324,14 +324,9 @@
     {
       "status": "ok",
       "fail_count": 0,
-      "last_success": "2026-10-25T04:15:38.589864+00:00",
-      "last_check": "2026-10-25T04:15:38.589864+00:00",
+      "last_success": "2026-10-25T11:08:06.808914+00:00",
+      "last_check": "2026-10-25T11:08:06.808914+00:00",
       "history": [
-        {
-          "time": "2026-10-22T11:34:24.797017+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-22T16:59:51.778634+00:00",
           "ok": true,
@@ -386,6 +381,11 @@
           "time": "2026-10-25T04:15:38.589864+00:00",
           "ok": true,
           "records": null
+        },
+        {
+          "time": "2026-10-25T11:08:06.808914+00:00",
+          "ok": true,
+          "records": null
         }
       ],
       "records": 0,
@@ -395,16 +395,11 @@
     },
     {
       "status": "failed",
-      "fail_count": 43,
+      "fail_count": 44,
       "last_success": null,
-      "last_check": "2026-10-25T04:15:38.864271+00:00",
+      "last_check": "2026-10-25T11:08:07.504393+00:00",
       "records": 0,
       "history": [
-        {
-          "time": "2026-10-22T11:34:25.003033+00:00",
-          "ok": false,
-          "records": null
-        },
         {
           "time": "2026-10-22T16:59:52.093406+00:00",
           "ok": false,
@@ -459,6 +454,11 @@
           "time": "2026-10-25T04:15:38.864271+00:00",
           "ok": false,
           "records": null
+        },
+        {
+          "time": "2026-10-25T11:08:07.504393+00:00",
+          "ok": false,
+          "records": null
         }
       ],
       "name": "epodonios_vless",
@@ -467,16 +467,11 @@
     },
     {
       "status": "failed",
-      "fail_count": 43,
+      "fail_count": 44,
       "last_success": null,
-      "last_check": "2026-10-25T04:15:38.934776+00:00",
+      "last_check": "2026-10-25T11:08:07.585474+00:00",
       "records": 0,
       "history": [
-        {
-          "time": "2026-10-22T11:34:25.080201+00:00",
-          "ok": false,
-          "records": null
-        },
         {
           "time": "2026-10-22T16:59:52.530746+00:00",
           "ok": false,
@@ -531,6 +526,11 @@
           "time": "2026-10-25T04:15:38.934776+00:00",
           "ok": false,
           "records": null
+        },
+        {
+          "time": "2026-10-25T11:08:07.585474+00:00",
+          "ok": false,
+          "records": null
         }
       ],
       "name": "matinghanbari_vless",
@@ -540,15 +540,10 @@
     {
       "status": "ok",
       "fail_count": 0,
-      "last_success": "2026-10-25T04:15:39.255796+00:00",
-      "last_check": "2026-10-25T04:15:39.255796+00:00",
+      "last_success": "2026-10-25T11:08:08.019645+00:00",
+      "last_check": "2026-10-25T11:08:08.019645+00:00",
       "records": 0,
       "history": [
-        {
-          "time": "2026-10-22T11:34:25.319051+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-22T16:59:52.885341+00:00",
           "ok": true,
@@ -603,6 +598,11 @@
           "time": "2026-10-25T04:15:39.255796+00:00",
           "ok": true,
           "records": null
+        },
+        {
+          "time": "2026-10-25T11:08:08.019645+00:00",
+          "ok": true,
+          "records": null
         }
       ],
       "name": "0xradikal_verified",
@@ -612,15 +612,10 @@
     {
       "status": "ok",
       "fail_count": 0,
-      "last_success": "2026-10-25T04:15:39.403730+00:00",
-      "last_check": "2026-10-25T04:15:39.403730+00:00",
+      "last_success": "2026-10-25T11:08:08.309541+00:00",
+      "last_check": "2026-10-25T11:08:08.309541+00:00",
       "records": 0,
       "history": [
-        {
-          "time": "2026-10-22T11:34:25.471840+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-22T16:59:53.075882+00:00",
           "ok": true,
@@ -675,6 +670,11 @@
           "time": "2026-10-25T04:15:39.403730+00:00",
           "ok": true,
           "records": null
+        },
+        {
+          "time": "2026-10-25T11:08:08.309541+00:00",
+          "ok": true,
+          "records": null
         }
       ],
       "name": "aviamasters_verified",
@@ -682,17 +682,12 @@
       "grade": "GOOD"
     },
     {
-      "status": "ok",
-      "fail_count": 2,
+      "status": "failed",
+      "fail_count": 3,
       "last_success": "2026-10-24T15:44:54.385746+00:00",
-      "last_check": "2026-10-25T04:15:39.777972+00:00",
+      "last_check": "2026-10-25T11:08:08.967241+00:00",
       "records": 0,
       "history": [
-        {
-          "time": "2026-10-22T11:34:25.893273+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-22T16:59:53.728269+00:00",
           "ok": true,
@@ -747,24 +742,24 @@
           "time": "2026-10-25T04:15:39.777972+00:00",
           "ok": false,
           "records": null
+        },
+        {
+          "time": "2026-10-25T11:08:08.967241+00:00",
+          "ok": false,
+          "records": null
         }
       ],
       "name": "morpheus_best",
-      "quality_score": 70,
-      "grade": "GOOD"
+      "quality_score": 15,
+      "grade": "DEAD"
     },
     {
       "status": "ok",
       "fail_count": 0,
-      "last_success": "2026-10-25T04:15:41.632853+00:00",
-      "last_check": "2026-10-25T04:15:41.632853+00:00",
+      "last_success": "2026-10-25T11:08:11.033968+00:00",
+      "last_check": "2026-10-25T11:08:11.033968+00:00",
       "records": 0,
       "history": [
-        {
-          "time": "2026-10-22T11:34:27.587793+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-22T16:59:55.371837+00:00",
           "ok": true,
@@ -819,6 +814,11 @@
           "time": "2026-10-25T04:15:41.632853+00:00",
           "ok": true,
           "records": null
+        },
+        {
+          "time": "2026-10-25T11:08:11.033968+00:00",
+          "ok": true,
+          "records": null
         }
       ],
       "name": "morpheus_reality",
@@ -827,16 +827,11 @@
     },
     {
       "status": "failed",
-      "fail_count": 43,
+      "fail_count": 44,
       "last_success": null,
-      "last_check": "2026-10-25T04:15:41.681182+00:00",
+      "last_check": "2026-10-25T11:08:11.233125+00:00",
       "records": 0,
       "history": [
-        {
-          "time": "2026-10-22T11:34:27.605856+00:00",
-          "ok": false,
-          "records": null
-        },
         {
           "time": "2026-10-22T16:59:55.454658+00:00",
           "ok": false,
@@ -891,6 +886,11 @@
           "time": "2026-10-25T04:15:41.681182+00:00",
           "ok": false,
           "records": null
+        },
+        {
+          "time": "2026-10-25T11:08:11.233125+00:00",
+          "ok": false,
+          "records": null
         }
       ],
       "name": "au1rxx",
@@ -900,15 +900,10 @@
     {
       "status": "ok",
       "fail_count": 0,
-      "last_success": "2026-10-25T04:15:41.921771+00:00",
-      "last_check": "2026-10-25T04:15:41.921771+00:00",
+      "last_success": "2026-10-25T11:08:11.787292+00:00",
+      "last_check": "2026-10-25T11:08:11.787292+00:00",
       "records": 0,
       "history": [
-        {
-          "time": "2026-10-22T11:34:27.807580+00:00",
-          "ok": true,
-          "records": null
-        },
         {
           "time": "2026-10-22T16:59:55.713029+00:00",
           "ok": true,
@@ -961,6 +956,11 @@
         },
         {
           "time": "2026-10-25T04:15:41.921771+00:00",
+          "ok": true,
+          "records": null
+        },
+        {
+          "time": "2026-10-25T11:08:11.787292+00:00",
           "ok": true,
           "records": null
         }
