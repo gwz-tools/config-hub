@@ -11,8 +11,7 @@
         "GWZ-02",
         "GWZ-03",
         "GWZ-04",
-        "GWZ-05",
-        "GWZ-06"
+        "GWZ-05"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -21,26 +20,6 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "92.53.119.212",
-      "server_port": 40849,
-      "uuid": "1ef7d97f-3aa5-0001-8521-84cf4794bf7a",
-      "tls": {
-        "enabled": true,
-        "server_name": "ru-hub10.lovely.my",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "jkVcZ_b3iWs2FcSjC8Mb1NoRuwPgCH9HpeOOYAXBSU0"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-02",
       "server": "194.26.141.223",
       "server_port": 443,
       "uuid": "605dea9b-b485-45c9-af9b-cc2b0195023c",
@@ -55,6 +34,26 @@
           "enabled": true,
           "public_key": "Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E",
           "short_id": "afee962d"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-02",
+      "server": "92.53.119.212",
+      "server_port": 40849,
+      "uuid": "1ef7d97f-3aa5-0001-8521-84cf4794bf7a",
+      "tls": {
+        "enabled": true,
+        "server_name": "ru-hub10.lovely.my",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "jkVcZ_b3iWs2FcSjC8Mb1NoRuwPgCH9HpeOOYAXBSU0"
         }
       },
       "flow": "xtls-rprx-vision"
@@ -104,27 +103,6 @@
     {
       "type": "vless",
       "tag": "GWZ-05",
-      "server": "ee1.mycloud1.org",
-      "server_port": 443,
-      "uuid": "605dea9b-b485-45c9-af9b-cc2b0195023c",
-      "tls": {
-        "enabled": true,
-        "server_name": "ee1.mycloud1.org",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "firefox"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E",
-          "short_id": "afee962d"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-06",
       "server": "ee1.mycloud1.org",
       "server_port": 443,
       "uuid": "605dea9b-b485-45c9-af9b-cc2b0195023c",
