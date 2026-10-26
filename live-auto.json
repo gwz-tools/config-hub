@@ -8,9 +8,7 @@
       "tag": "GWZHUB-AUTO",
       "outbounds": [
         "GWZ-01",
-        "GWZ-02",
-        "GWZ-03",
-        "GWZ-04"
+        "GWZ-02"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -19,9 +17,9 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "213.152.165.200",
+      "server": "213.152.165.197",
       "server_port": 2094,
-      "uuid": "c439a2b1-cef0-4560-b337-eff829991f74",
+      "uuid": "570775a8-9305-4768-ba9b-b78d73cf15f9",
       "tls": {
         "enabled": true,
         "server_name": "www.apple.com",
@@ -40,9 +38,9 @@
     {
       "type": "vless",
       "tag": "GWZ-02",
-      "server": "213.152.165.200",
+      "server": "213.152.165.197",
       "server_port": 2092,
-      "uuid": "901cb432-3807-404a-9bb8-987814b000ca",
+      "uuid": "1c640e86-51fe-45f0-9afb-efa55c4d1997",
       "tls": {
         "enabled": true,
         "server_name": "www.apple.com",
@@ -54,48 +52,6 @@
           "enabled": true,
           "public_key": "zeyIqmHylDrPbbtdG9BleBt0-fqKCHpZ0OZ9OY2_WUI",
           "short_id": "716b7eba38125f3a"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-03",
-      "server": "213.152.165.204",
-      "server_port": 2092,
-      "uuid": "41e9280c-818c-4939-b5d6-332bf4d872e6",
-      "tls": {
-        "enabled": true,
-        "server_name": "www.apple.com",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "zeyIqmHylDrPbbtdG9BleBt0-fqKCHpZ0OZ9OY2_WUI",
-          "short_id": "716b7eba38125f3a"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-04",
-      "server": "213.152.165.205",
-      "server_port": 2095,
-      "uuid": "f3ac0d2c-4b86-4f53-8070-89f69daba8f5",
-      "tls": {
-        "enabled": true,
-        "server_name": "www.apple.com",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "OKksVHWL5JepTv7if7Ta_L_7vn8OxW0INwV71HJM1jI",
-          "short_id": "3869d49a9a79e06a"
         }
       },
       "flow": "xtls-rprx-vision"
