@@ -10,9 +10,7 @@
         "GWZ-01",
         "GWZ-02",
         "GWZ-03",
-        "GWZ-04",
-        "GWZ-05",
-        "GWZ-06"
+        "GWZ-04"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -21,20 +19,20 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "194.26.141.223",
-      "server_port": 443,
-      "uuid": "605dea9b-b485-45c9-af9b-cc2b0195023c",
+      "server": "213.152.165.200",
+      "server_port": 2094,
+      "uuid": "c439a2b1-cef0-4560-b337-eff829991f74",
       "tls": {
         "enabled": true,
-        "server_name": "ee1.mycloud1.org",
+        "server_name": "www.apple.com",
         "utls": {
           "enabled": true,
-          "fingerprint": "firefox"
+          "fingerprint": "chrome"
         },
         "reality": {
           "enabled": true,
-          "public_key": "Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E",
-          "short_id": "afee962d"
+          "public_key": "jHtC6ayzhkd_GVNF5TIGPu9iVpqUltBAQj1dpGJHwxs",
+          "short_id": "55986a94e2228791"
         }
       },
       "flow": "xtls-rprx-vision"
@@ -42,20 +40,20 @@
     {
       "type": "vless",
       "tag": "GWZ-02",
-      "server": "ee1.mycloud1.org",
-      "server_port": 443,
-      "uuid": "605dea9b-b485-45c9-af9b-cc2b0195023c",
+      "server": "213.152.165.200",
+      "server_port": 2092,
+      "uuid": "901cb432-3807-404a-9bb8-987814b000ca",
       "tls": {
         "enabled": true,
-        "server_name": "ee1.mycloud1.org",
+        "server_name": "www.apple.com",
         "utls": {
           "enabled": true,
           "fingerprint": "chrome"
         },
         "reality": {
           "enabled": true,
-          "public_key": "Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E",
-          "short_id": "afee962d"
+          "public_key": "zeyIqmHylDrPbbtdG9BleBt0-fqKCHpZ0OZ9OY2_WUI",
+          "short_id": "716b7eba38125f3a"
         }
       },
       "flow": "xtls-rprx-vision"
@@ -63,20 +61,20 @@
     {
       "type": "vless",
       "tag": "GWZ-03",
-      "server": "194.26.141.223",
-      "server_port": 443,
-      "uuid": "605dea9b-b485-45c9-af9b-cc2b0195023c",
+      "server": "213.152.165.204",
+      "server_port": 2092,
+      "uuid": "41e9280c-818c-4939-b5d6-332bf4d872e6",
       "tls": {
         "enabled": true,
-        "server_name": "ee1.mycloud1.org",
+        "server_name": "www.apple.com",
         "utls": {
           "enabled": true,
-          "fingerprint": "firefox"
+          "fingerprint": "chrome"
         },
         "reality": {
           "enabled": true,
-          "public_key": "Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E",
-          "short_id": "afee962d"
+          "public_key": "zeyIqmHylDrPbbtdG9BleBt0-fqKCHpZ0OZ9OY2_WUI",
+          "short_id": "716b7eba38125f3a"
         }
       },
       "flow": "xtls-rprx-vision"
@@ -84,62 +82,20 @@
     {
       "type": "vless",
       "tag": "GWZ-04",
-      "server": "194.26.141.223",
-      "server_port": 443,
-      "uuid": "605dea9b-b485-45c9-af9b-cc2b0195023c",
+      "server": "213.152.165.205",
+      "server_port": 2095,
+      "uuid": "f3ac0d2c-4b86-4f53-8070-89f69daba8f5",
       "tls": {
         "enabled": true,
-        "server_name": "ee1.mycloud1.org",
+        "server_name": "www.apple.com",
         "utls": {
           "enabled": true,
-          "fingerprint": "firefox"
+          "fingerprint": "chrome"
         },
         "reality": {
           "enabled": true,
-          "public_key": "Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E",
-          "short_id": "afee962d"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-05",
-      "server": "ee1.mycloud1.org",
-      "server_port": 443,
-      "uuid": "605dea9b-b485-45c9-af9b-cc2b0195023c",
-      "tls": {
-        "enabled": true,
-        "server_name": "ee1.mycloud1.org",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "firefox"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E",
-          "short_id": "afee962d"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-06",
-      "server": "ee1.mycloud1.org",
-      "server_port": 443,
-      "uuid": "605dea9b-b485-45c9-af9b-cc2b0195023c",
-      "tls": {
-        "enabled": true,
-        "server_name": "ee1.mycloud1.org",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "firefox"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E",
-          "short_id": "afee962d"
+          "public_key": "OKksVHWL5JepTv7if7Ta_L_7vn8OxW0INwV71HJM1jI",
+          "short_id": "3869d49a9a79e06a"
         }
       },
       "flow": "xtls-rprx-vision"
