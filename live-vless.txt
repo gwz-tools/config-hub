@@ -1,6 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-10-27 / 08:36 (Moscow)
+# Date/Time: 2026-10-27 / 08:41 (Moscow)
 # Количество: 2
 
 vless://570775a8-9305-4768-ba9b-b78d73cf15f9@213.152.165.197:2094?flow=xtls-rprx-vision&pbk=jHtC6ayzhkd_GVNF5TIGPu9iVpqUltBAQj1dpGJHwxs&security=reality&sid=55986a94e2228791&sni=www.apple.com&type=tcp#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands
