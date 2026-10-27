@@ -1,6 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-10-27 / 23:19 (Moscow)
+# Date/Time: 2026-10-28 / 01:07 (Moscow)
 # Количество: 1
 
 vless://252b4a9c-520d-459c-9dbc-366995206089@31.184.253.134:53869?flow=xtls-rprx-vision&fp=chrome&pbk=rtc2Krk2fVhHCRG82EsUc4_mlw304HKHkl6MggQZEAU&security=reality&sid=0f2cc340a69ed7&sni=www.moddb.com&type=tcp#%F0%9F%8C%90 | GWZ | RU
