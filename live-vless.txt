@@ -1,7 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-10-27 / 08:41 (Moscow)
-# Количество: 2
+# Date/Time: 2026-10-27 / 23:19 (Moscow)
+# Количество: 1
 
-vless://570775a8-9305-4768-ba9b-b78d73cf15f9@213.152.165.197:2094?flow=xtls-rprx-vision&pbk=jHtC6ayzhkd_GVNF5TIGPu9iVpqUltBAQj1dpGJHwxs&security=reality&sid=55986a94e2228791&sni=www.apple.com&type=tcp#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands
-vless://570775a8-9305-4768-ba9b-b78d73cf15f9@213.152.165.197:2094?encryption=none&flow=xtls-rprx-vision&fp=&pbk=jHtC6ayzhkd_GVNF5TIGPu9iVpqUltBAQj1dpGJHwxs&security=reality&sid=55986a94e2228791&sni=www.apple.com&type=tcp#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands 02
+vless://252b4a9c-520d-459c-9dbc-366995206089@31.184.253.134:53869?flow=xtls-rprx-vision&fp=chrome&pbk=rtc2Krk2fVhHCRG82EsUc4_mlw304HKHkl6MggQZEAU&security=reality&sid=0f2cc340a69ed7&sni=www.moddb.com&type=tcp#%F0%9F%8C%90 | GWZ | RU

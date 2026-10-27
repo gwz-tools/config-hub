@@ -7,8 +7,7 @@
       "type": "urltest",
       "tag": "GWZHUB-AUTO",
       "outbounds": [
-        "GWZ-01",
-        "GWZ-02"
+        "GWZ-01"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -17,41 +16,20 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "213.152.165.197",
-      "server_port": 2094,
-      "uuid": "570775a8-9305-4768-ba9b-b78d73cf15f9",
+      "server": "31.184.253.134",
+      "server_port": 53869,
+      "uuid": "252b4a9c-520d-459c-9dbc-366995206089",
       "tls": {
         "enabled": true,
-        "server_name": "www.apple.com",
+        "server_name": "www.moddb.com",
         "utls": {
           "enabled": true,
           "fingerprint": "chrome"
         },
         "reality": {
           "enabled": true,
-          "public_key": "jHtC6ayzhkd_GVNF5TIGPu9iVpqUltBAQj1dpGJHwxs",
-          "short_id": "55986a94e2228791"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-02",
-      "server": "213.152.165.197",
-      "server_port": 2094,
-      "uuid": "570775a8-9305-4768-ba9b-b78d73cf15f9",
-      "tls": {
-        "enabled": true,
-        "server_name": "www.apple.com",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "jHtC6ayzhkd_GVNF5TIGPu9iVpqUltBAQj1dpGJHwxs",
-          "short_id": "55986a94e2228791"
+          "public_key": "rtc2Krk2fVhHCRG82EsUc4_mlw304HKHkl6MggQZEAU",
+          "short_id": "0f2cc340a69ed7"
         }
       },
       "flow": "xtls-rprx-vision"
