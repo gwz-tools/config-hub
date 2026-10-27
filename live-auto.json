@@ -39,8 +39,8 @@
       "type": "vless",
       "tag": "GWZ-02",
       "server": "213.152.165.197",
-      "server_port": 2092,
-      "uuid": "1c640e86-51fe-45f0-9afb-efa55c4d1997",
+      "server_port": 2094,
+      "uuid": "570775a8-9305-4768-ba9b-b78d73cf15f9",
       "tls": {
         "enabled": true,
         "server_name": "www.apple.com",
@@ -50,8 +50,8 @@
         },
         "reality": {
           "enabled": true,
-          "public_key": "zeyIqmHylDrPbbtdG9BleBt0-fqKCHpZ0OZ9OY2_WUI",
-          "short_id": "716b7eba38125f3a"
+          "public_key": "jHtC6ayzhkd_GVNF5TIGPu9iVpqUltBAQj1dpGJHwxs",
+          "short_id": "55986a94e2228791"
         }
       },
       "flow": "xtls-rprx-vision"
