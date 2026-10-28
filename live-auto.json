@@ -16,22 +16,22 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "195.63.136.25",
-      "server_port": 49444,
-      "uuid": "9fe71109-d46a-4c72-bc7e-b1d14e8642d1",
+      "server": "45.12.63.39",
+      "server_port": 443,
+      "uuid": "26f751bc-2edc-4338-9c3f-abeb32aba3b7",
       "tls": {
         "enabled": true,
-        "server_name": "www.amazon.com",
+        "server_name": "a6sh06nn94.edgecache.click",
         "utls": {
           "enabled": true,
-          "fingerprint": "chrome"
+          "fingerprint": "firefox"
         },
         "reality": {
           "enabled": true,
-          "public_key": "i01HzMxgA4arK3PW4CLn7b2QfpDsZPPu-vL-pLdzHyE",
-          "short_id": "cc6ba1"
+          "public_key": "fJnm6-PhJGSwHaAdJOzXkYOfCPPCWSlaZrtfm1XsqhA"
         }
-      }
+      },
+      "flow": "xtls-rprx-vision"
     },
     {
       "type": "direct",
