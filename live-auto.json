@@ -7,7 +7,10 @@
       "type": "urltest",
       "tag": "GWZHUB-AUTO",
       "outbounds": [
-        "GWZ-01"
+        "GWZ-01",
+        "GWZ-02",
+        "GWZ-03",
+        "GWZ-04"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -29,6 +32,69 @@
         "reality": {
           "enabled": true,
           "public_key": "fJnm6-PhJGSwHaAdJOzXkYOfCPPCWSlaZrtfm1XsqhA"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-02",
+      "server": "213.152.165.206",
+      "server_port": 2092,
+      "uuid": "4d8cc1c2-2605-43c4-8e17-dcafa86d9757",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.apple.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "zeyIqmHylDrPbbtdG9BleBt0-fqKCHpZ0OZ9OY2_WUI",
+          "short_id": "716b7eba38125f3a"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-03",
+      "server": "213.152.165.202",
+      "server_port": 2092,
+      "uuid": "4d8cc1c2-2605-43c4-8e17-dcafa86d9757",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.apple.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "zeyIqmHylDrPbbtdG9BleBt0-fqKCHpZ0OZ9OY2_WUI",
+          "short_id": "716b7eba38125f3a"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-04",
+      "server": "213.152.165.194",
+      "server_port": 2092,
+      "uuid": "13212914-5cc0-487b-9966-606b731bcd45",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.apple.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "zeyIqmHylDrPbbtdG9BleBt0-fqKCHpZ0OZ9OY2_WUI",
+          "short_id": "716b7eba38125f3a"
         }
       },
       "flow": "xtls-rprx-vision"
