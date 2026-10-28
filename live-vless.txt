@@ -1,6 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-10-28 / 01:07 (Moscow)
+# Date/Time: 2026-10-28 / 03:25 (Moscow)
 # Количество: 1
 
-vless://252b4a9c-520d-459c-9dbc-366995206089@31.184.253.134:53869?flow=xtls-rprx-vision&fp=chrome&pbk=rtc2Krk2fVhHCRG82EsUc4_mlw304HKHkl6MggQZEAU&security=reality&sid=0f2cc340a69ed7&sni=www.moddb.com&type=tcp#%F0%9F%8C%90 | GWZ | RU
+vless://9fe71109-d46a-4c72-bc7e-b1d14e8642d1@195.63.136.25:49444?fp=chrome&pbk=i01HzMxgA4arK3PW4CLn7b2QfpDsZPPu-vL-pLdzHyE&security=reality&sid=cc6ba1&sni=www.amazon.com&type=tcp#%F0%9F%87%A9%F0%9F%87%AA | GWZ | Germany

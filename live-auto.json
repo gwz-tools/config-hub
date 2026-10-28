@@ -16,23 +16,22 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "31.184.253.134",
-      "server_port": 53869,
-      "uuid": "252b4a9c-520d-459c-9dbc-366995206089",
+      "server": "195.63.136.25",
+      "server_port": 49444,
+      "uuid": "9fe71109-d46a-4c72-bc7e-b1d14e8642d1",
       "tls": {
         "enabled": true,
-        "server_name": "www.moddb.com",
+        "server_name": "www.amazon.com",
         "utls": {
           "enabled": true,
           "fingerprint": "chrome"
         },
         "reality": {
           "enabled": true,
-          "public_key": "rtc2Krk2fVhHCRG82EsUc4_mlw304HKHkl6MggQZEAU",
-          "short_id": "0f2cc340a69ed7"
+          "public_key": "i01HzMxgA4arK3PW4CLn7b2QfpDsZPPu-vL-pLdzHyE",
+          "short_id": "cc6ba1"
         }
-      },
-      "flow": "xtls-rprx-vision"
+      }
     },
     {
       "type": "direct",
