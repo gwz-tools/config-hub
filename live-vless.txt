@@ -1,5 +1,5 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-10-29 / 23:18 (Moscow)
+# Date/Time: 2026-10-30 / 01:21 (Moscow)
 # Количество: 0
 
