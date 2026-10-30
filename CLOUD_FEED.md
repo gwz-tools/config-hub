@@ -16,8 +16,7 @@ with that URL before verifying that it contains at least three `vless://` entrie
 - Tests public VLESS endpoints by starting a temporary sing-box HTTP proxy per candidate.
 - All HTTPS checks are sent **through that VLESS tunnel**: an initial Google 204 endpoint,
   then Gemini, Instagram, Facebook (Meta), and YouTube.
-- A candidate passes only if the control URL responds successfully and at least two of
-  four service URLs return HTTP 2xx/3xx. HTTP 401/403/429 is not counted as an
+- A candidate passes only if the control URL responds successfully and all four service URLs return HTTP 2xx/3xx. HTTP 401/403/429 is not counted as an
   accessible service. A success from a GitHub runner **does not guarantee access in
   Russia or on a particular ISP**.
 - Only publishes if at least three nodes pass. Otherwise retains an existing non-empty
