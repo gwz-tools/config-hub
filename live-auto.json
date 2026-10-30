@@ -4,16 +4,42 @@
   },
   "outbounds": [
     {
+      "type": "urltest",
+      "tag": "GWZHUB-AUTO",
+      "outbounds": [
+        "GWZ-01"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "3m",
+      "tolerance": 50
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-01",
+      "server": "153.75.86.200",
+      "server_port": 8443,
+      "uuid": "95fe46c3-6cfb-5116-beb7-459d4c7db0ad",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.apple.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "edge"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "JNp0hUDwHZQw9kbwd-D1WfIOdqCtdJeBv1WTNp37V0M",
+          "short_id": "7e7434c068cbef5a"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
       "type": "direct",
       "tag": "direct"
     }
   ],
   "route": {
-    "rules": [
-      {
-        "action": "reject"
-      }
-    ],
-    "final": "direct"
+    "final": "GWZHUB-AUTO"
   }
 }
