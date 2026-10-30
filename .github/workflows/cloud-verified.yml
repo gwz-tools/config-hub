@@ -1,6 +1,11 @@
 name: Cloud verified VLESS subscription
 
 on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/cloud-verified.yml"
+      - "cloud_verified.py"
   workflow_dispatch:
   schedule:
     # Stagger after the existing collector at 00/06/12/18 UTC.
