@@ -184,7 +184,7 @@ def test_candidate(link, sing_box):
                     code, _ = http_probe(port, url)
                     statuses[name] = code
                 functional = sum(200 <= code < 400 for code in statuses.values())
-                if functional < 2:
+                if functional < len(SERVICE_URLS):
                     return None
                 return {"line": link, "functional": functional, "latency": latency,
                         "statuses": statuses}
