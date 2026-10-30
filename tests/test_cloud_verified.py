@@ -8,10 +8,10 @@ from unittest.mock import patch
 import cloud_verified as cloud
 
 UUID = "123e4567-e89b-12d3-a456-426614174000"
-REALITY = (f"vless://{UUID}@203.0.113.12:443?"
+REALITY = (f"vless://{UUID}@1.1.1.1:443?"
            "encryption=none&security=reality&type=tcp&sni=example.com&"
            "pbk=samplepublickey&sid=12ab&fp=chrome#first")
-WS = (f"vless://{UUID}@203.0.113.13:443?"
+WS = (f"vless://{UUID}@1.0.0.1:443?"
       "encryption=none&security=tls&type=ws&sni=example.com&"
       "host=edge.example.com&path=%2Fws#second")
 
@@ -30,7 +30,7 @@ class CloudFeedTests(unittest.TestCase):
 
     def test_reject_private_ip(self):
         with self.assertRaises(ValueError):
-            cloud.parse_vless(REALITY.replace("203.0.113.12", "127.0.0.1"))
+            cloud.parse_vless(REALITY.replace("1.1.1.1", "127.0.0.1"))
 
     def test_duplicates_ignore_fragment(self):
         with tempfile.TemporaryDirectory() as td:
