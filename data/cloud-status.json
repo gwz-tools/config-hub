@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-10-30T18:04:20.757775+00:00",
+  "checked_at_utc": "2026-10-30T22:26:49.645629+00:00",
   "runner_note": "HTTP requests tested via VLESS from GitHub runner; not proof of access in Russia",
   "candidates_tested": 48,
   "passed": 10,
