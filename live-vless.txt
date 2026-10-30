@@ -1,6 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-10-31 / 00:40 (Moscow)
+# Date/Time: 2026-10-31 / 02:22 (Moscow)
 # Количество: 3
 
 vless://706bce83-91db-4260-b175-cba29145cd56@62.60.229.216:443?encryption=none&flow=xtls-rprx-vision&fp=&pbk=eh8WqxaSUlfNmlGzFLYFYrJzk1novnvfU6qmaLLOiX4&security=reality&sid=72d410ce5f2036c9&sni=aezaf1.uni-plan.com&type=tcp#%F0%9F%8C%90 | GWZ | IR
