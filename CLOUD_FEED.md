@@ -43,3 +43,22 @@ An additional guard must be installed **on GWZHUB itself** before it uploads to 
 `verified` branch. The on-hub publisher is not part of this repository. Reject empty
 or malformed output before the API upload, preserve a last-good VLESS snapshot, and
 do not advertise the feed as fresh when the last good version is stale.
+
+
+## Optional Dropbox replication from GitHub Actions
+
+The workflow includes a step that uploads the same validated file to
+`/GWZHUB/cloud-vless.txt` using `mirror_dropbox.py`. This step is **disabled**
+until all three repository Actions secrets are supplied:
+
+- `GWZ_DROPBOX_APP_KEY`
+- `GWZ_DROPBOX_APP_SECRET`
+- `GWZ_DROPBOX_REFRESH_TOKEN`
+
+Create a Dropbox API app with scoped `files.content.write` permission and an
+offline/refresh token. Add secrets under repository **Settings → Secrets and
+variables → Actions**. Never paste tokens into repository files or chat.
+
+The mirror is best-effort (`continue-on-error`): a Dropbox API outage cannot
+roll back the valid GitHub feed. A Dropbox download link must be created and
+checked separately; uploading alone does not create a public subscription URL.
