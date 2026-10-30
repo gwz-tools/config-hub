@@ -1,0 +1,68 @@
+name: Cloud verified VLESS subscription
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Stagger after the existing collector at 00/06/12/18 UTC.
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gwz-cloud-subscription
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Python unit tests
+        run: python -m unittest discover -s tests -p "test_cloud_verified.py" -v
+
+      - name: Download official sing-box 1.12.22
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://github.com/SagerNet/sing-box/releases/download/v1.12.22/sing-box-1.12.22-linux-amd64.tar.gz" \
+            --output /tmp/sing-box.tar.gz
+          tar -xzf /tmp/sing-box.tar.gz -C /tmp
+          sudo install -m 0755 "/tmp/sing-box-1.12.22-linux-amd64/sing-box" /usr/local/bin/sing-box
+          sing-box version
+
+      - name: Probe real HTTPS via each VLESS tunnel
+        run: |
+          python cloud_verified.py \
+            --source data/gwzhub_candidates.txt \
+            --output cloud-vless.txt \
+            --metadata data/cloud-status.json \
+            --max-candidates 48 \
+            --min-live 3 \
+            --workers 6
+
+      - name: Validate non-empty publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(grep -c '^vless://' cloud-vless.txt)" -ge 3
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d = json.loads(Path("data/cloud-status.json").read_text())
+          assert d["passed"] >= 0
+          print("Cloud verified status:", d)
+          PY
+
+      - name: Commit cloud-only artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cloud-vless.txt data/cloud-status.json
+          git diff --cached --quiet || git commit -m "Refresh verified cloud VLESS feed"
+          git push
