@@ -71,3 +71,11 @@ jobs:
           git add cloud-vless.txt data/cloud-status.json
           git diff --cached --quiet || git commit -m "Refresh verified cloud VLESS feed"
           git push
+
+      - name: Mirror cloud subscription to Dropbox (optional)
+        continue-on-error: true
+        env:
+          GWZ_DROPBOX_APP_KEY: ${{ secrets.GWZ_DROPBOX_APP_KEY }}
+          GWZ_DROPBOX_APP_SECRET: ${{ secrets.GWZ_DROPBOX_APP_SECRET }}
+          GWZ_DROPBOX_REFRESH_TOKEN: ${{ secrets.GWZ_DROPBOX_REFRESH_TOKEN }}
+        run: python mirror_dropbox.py cloud-vless.txt
