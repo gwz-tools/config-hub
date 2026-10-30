@@ -70,7 +70,18 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add cloud-vless.txt data/cloud-status.json
           git diff --cached --quiet || git commit -m "Refresh verified cloud VLESS feed"
-          git push
+          # Another trusted workflow may update main while tunnel checks are running.
+          # Never force-push; rebase and retry instead.
+          for attempt in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+            echo "Concurrent update detected, rebasing (attempt $attempt)"
+            git fetch origin main
+            git rebase origin/main
+          done
+          echo "Failed to push cloud subscription after 3 retries" >&2
+          exit 1
 
       - name: Mirror cloud subscription to Dropbox (optional)
         continue-on-error: true
