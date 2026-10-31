@@ -10,7 +10,8 @@
         "GWZ-01",
         "GWZ-02",
         "GWZ-03",
-        "GWZ-04"
+        "GWZ-04",
+        "GWZ-05"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -19,20 +20,20 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "153.75.86.200",
-      "server_port": 8443,
-      "uuid": "95fe46c3-6cfb-5116-beb7-459d4c7db0ad",
+      "server": "130.49.177.193",
+      "server_port": 443,
+      "uuid": "727a9178-d7f0-4142-8205-b0d19959ded0",
       "tls": {
         "enabled": true,
-        "server_name": "www.apple.com",
+        "server_name": "de-2.ffpn.pro",
         "utls": {
           "enabled": true,
-          "fingerprint": "edge"
+          "fingerprint": "firefox"
         },
         "reality": {
           "enabled": true,
-          "public_key": "JNp0hUDwHZQw9kbwd-D1WfIOdqCtdJeBv1WTNp37V0M",
-          "short_id": "7e7434c068cbef5a"
+          "public_key": "DCpi9-1rSXxBnEIAQ9U3mTqHivk7vHJRV_T2pWw5vCc",
+          "short_id": "681fc2dd643bc2f3"
         }
       },
       "flow": "xtls-rprx-vision"
@@ -61,20 +62,20 @@
     {
       "type": "vless",
       "tag": "GWZ-03",
-      "server": "130.49.177.193",
-      "server_port": 443,
-      "uuid": "727a9178-d7f0-4142-8205-b0d19959ded0",
+      "server": "153.75.86.200",
+      "server_port": 8443,
+      "uuid": "95fe46c3-6cfb-5116-beb7-459d4c7db0ad",
       "tls": {
         "enabled": true,
-        "server_name": "de-2.ffpn.pro",
+        "server_name": "www.apple.com",
         "utls": {
           "enabled": true,
-          "fingerprint": "firefox"
+          "fingerprint": "edge"
         },
         "reality": {
           "enabled": true,
-          "public_key": "DCpi9-1rSXxBnEIAQ9U3mTqHivk7vHJRV_T2pWw5vCc",
-          "short_id": "681fc2dd643bc2f3"
+          "public_key": "JNp0hUDwHZQw9kbwd-D1WfIOdqCtdJeBv1WTNp37V0M",
+          "short_id": "7e7434c068cbef5a"
         }
       },
       "flow": "xtls-rprx-vision"
@@ -82,6 +83,27 @@
     {
       "type": "vless",
       "tag": "GWZ-04",
+      "server": "62.60.229.216",
+      "server_port": 443,
+      "uuid": "706bce83-91db-4260-b175-cba29145cd56",
+      "tls": {
+        "enabled": true,
+        "server_name": "aezaf1.uni-plan.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "eh8WqxaSUlfNmlGzFLYFYrJzk1novnvfU6qmaLLOiX4",
+          "short_id": "72d410ce5f2036c9"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-05",
       "server": "62.60.229.216",
       "server_port": 443,
       "uuid": "706bce83-91db-4260-b175-cba29145cd56",
