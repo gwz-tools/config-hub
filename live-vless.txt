@@ -1,8 +1,7 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-10-31 / 22:39 (Moscow)
-# Количество: 3
+# Date/Time: 2026-10-31 / 23:33 (Moscow)
+# Количество: 2
 
-vless://727a9178-d7f0-4142-8205-b0d19959ded0@130.49.177.193:443?flow=xtls-rprx-vision&fp=firefox&pbk=DCpi9-1rSXxBnEIAQ9U3mTqHivk7vHJRV_T2pWw5vCc&security=reality&sid=681fc2dd643bc2f3&sni=de-2.ffpn.pro&type=tcp#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA
-vless://727a9178-d7f0-4142-8205-b0d19959ded0@130.49.177.193:443/?type=tcp&encryption=none&flow=xtls-rprx-vision&sni=de-2.ffpn.pro&fp=firefox&security=reality&pbk=DCpi9-1rSXxBnEIAQ9U3mTqHivk7vHJRV_T2pWw5vCc&sid=681fc2dd643bc2f3#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA 02
 vless://a52fd54b-ba4d-4d11-8e00-301e2646cd66@94.228.168.219:8443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=1H1DiBCBB7fpALV71pH1q66ePybBFlVOcxftdlQimQ8&security=reality&sid=385cb18df0892069&sni=fin2.vpngold.ru&type=tcp#%F0%9F%8C%90 | GWZ | RU
+vless://727a9178-d7f0-4142-8205-b0d19959ded0@130.49.177.193:443/?type=tcp&encryption=none&flow=xtls-rprx-vision&sni=de-2.ffpn.pro&fp=firefox&security=reality&pbk=DCpi9-1rSXxBnEIAQ9U3mTqHivk7vHJRV_T2pWw5vCc&sid=681fc2dd643bc2f3#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA
