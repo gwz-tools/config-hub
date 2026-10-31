@@ -1,14 +1,14 @@
 {
-  "checked_at_utc": "2026-10-31T12:40:58.039270+00:00",
+  "checked_at_utc": "2026-10-31T21:41:38.970804+00:00",
   "runner_note": "HTTP requests tested via VLESS from GitHub runner; not proof of access in Russia",
   "candidates_tested": 48,
-  "passed": 8,
+  "passed": 11,
   "published": true,
   "services_with_http_2xx_3xx": {
-    "gemini": 8,
-    "instagram": 8,
-    "meta": 8,
-    "youtube": 8
+    "gemini": 11,
+    "instagram": 11,
+    "meta": 11,
+    "youtube": 11
   },
-  "published_count": 8
+  "published_count": 11
 }
