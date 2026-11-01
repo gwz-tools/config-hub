@@ -1,6 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-01 / 10:07 (Moscow)
+# Date/Time: 2026-11-01 / 11:01 (Moscow)
 # Количество: 3
 
 vless://b18d5990-96eb-4587-a386-7f8ef7591e6a@31.77.13.22:2063?encryption=none&flow=xtls-rprx-vision&security=reality&sni=rusbid.de&fp=chrome&pbk=MMpt_jWc4J3oySBdf5sPDVRkiWlZmOObth6A1scM9BM&type=tcp&headerType=none#%F0%9F%8C%90 | GWZ | GB
