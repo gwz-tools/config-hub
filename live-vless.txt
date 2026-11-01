@@ -1,8 +1,9 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-01 / 20:29 (Moscow)
-# Количество: 3
+# Date/Time: 2026-11-01 / 22:36 (Moscow)
+# Количество: 4
 
+vless://0de1d303-d7de-0001-8679-c4cb67e2e2cc@94.249.180.86:443?encryption=none&flow=xtls-rprx-vision&fp=&pbk=WWeAHWUVD-phmnjNJ823cer0c4CMIbEs08AhsuEZmDc&security=reality&sid=a696de84963656de&sni=amd.com&type=tcp#%F0%9F%87%A9%F0%9F%87%AA | GWZ | Germany
 vless://727a9178-d7f0-4142-8205-b0d19959ded0@130.49.177.193:443/?type=tcp&encryption=none&flow=xtls-rprx-vision&sni=de-2.ffpn.pro&fp=firefox&security=reality&pbk=DCpi9-1rSXxBnEIAQ9U3mTqHivk7vHJRV_T2pWw5vCc&sid=681fc2dd643bc2f3#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA
 vless://727a9178-d7f0-4142-8205-b0d19959ded0@130.49.177.193:443?flow=xtls-rprx-vision&fp=firefox&pbk=DCpi9-1rSXxBnEIAQ9U3mTqHivk7vHJRV_T2pWw5vCc&security=reality&sid=681fc2dd643bc2f3&sni=de-2.ffpn.pro&type=tcp#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA 02
 vless://727a9178-d7f0-4142-8205-b0d19959ded0@130.49.177.193:443?security=reality&encryption=none&pbk=DCpi9-1rSXxBnEIAQ9U3mTqHivk7vHJRV_T2pWw5vCc&headerType=none&fp=firefox&type=tcp&flow=xtls-rprx-vision&sni=de-2.ffpn.pro&sid=681fc2dd643bc2f3#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA 03
