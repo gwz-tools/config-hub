@@ -19,6 +19,27 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
+      "server": "130.49.177.193",
+      "server_port": 443,
+      "uuid": "727a9178-d7f0-4142-8205-b0d19959ded0",
+      "tls": {
+        "enabled": true,
+        "server_name": "de-2.ffpn.pro",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "firefox"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "DCpi9-1rSXxBnEIAQ9U3mTqHivk7vHJRV_T2pWw5vCc",
+          "short_id": "681fc2dd643bc2f3"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-02",
       "server": "94.249.180.86",
       "server_port": 443,
       "uuid": "0de1d303-d7de-0001-8679-c4cb67e2e2cc",
@@ -39,42 +60,20 @@
     },
     {
       "type": "vless",
-      "tag": "GWZ-02",
-      "server": "130.49.177.193",
-      "server_port": 443,
-      "uuid": "727a9178-d7f0-4142-8205-b0d19959ded0",
-      "tls": {
-        "enabled": true,
-        "server_name": "de-2.ffpn.pro",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "firefox"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "DCpi9-1rSXxBnEIAQ9U3mTqHivk7vHJRV_T2pWw5vCc",
-          "short_id": "681fc2dd643bc2f3"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
       "tag": "GWZ-03",
-      "server": "130.49.177.193",
+      "server": "13.143.180.141",
       "server_port": 443,
-      "uuid": "727a9178-d7f0-4142-8205-b0d19959ded0",
+      "uuid": "2614a96d-e39f-02f0-a9c7-467a178c2c0a",
       "tls": {
         "enabled": true,
-        "server_name": "de-2.ffpn.pro",
+        "server_name": "sw.lenvex.cc",
         "utls": {
           "enabled": true,
           "fingerprint": "firefox"
         },
         "reality": {
           "enabled": true,
-          "public_key": "DCpi9-1rSXxBnEIAQ9U3mTqHivk7vHJRV_T2pWw5vCc",
-          "short_id": "681fc2dd643bc2f3"
+          "public_key": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ"
         }
       },
       "flow": "xtls-rprx-vision"
@@ -82,20 +81,19 @@
     {
       "type": "vless",
       "tag": "GWZ-04",
-      "server": "130.49.177.193",
+      "server": "13.143.182.103",
       "server_port": 443,
-      "uuid": "727a9178-d7f0-4142-8205-b0d19959ded0",
+      "uuid": "2614a96d-e39f-4cca-a9c7-467a178c2c0a",
       "tls": {
         "enabled": true,
-        "server_name": "de-2.ffpn.pro",
+        "server_name": "ee.lenvex.cc",
         "utls": {
           "enabled": true,
           "fingerprint": "firefox"
         },
         "reality": {
           "enabled": true,
-          "public_key": "DCpi9-1rSXxBnEIAQ9U3mTqHivk7vHJRV_T2pWw5vCc",
-          "short_id": "681fc2dd643bc2f3"
+          "public_key": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ"
         }
       },
       "flow": "xtls-rprx-vision"
