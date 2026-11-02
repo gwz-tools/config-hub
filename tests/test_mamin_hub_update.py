@@ -62,6 +62,18 @@ class MaminHubTests(unittest.TestCase):
             self.assertEqual(json.loads((root / hub.SEQUENCE_FILE).read_text())["sequence"], 9)
             self.assertEqual(os.stat(root / hub.PRIVATE_FEED).st_mode & 0o777, 0o600)
 
+    def test_large_deterioration_keeps_previous_healthy_eight(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            baseline = "\n".join(hit(f"1.0.0.{i}")["line"] for i in range(1, 9)) + "\n"
+            hub.atomic_write(root / hub.PRIVATE_FEED, baseline.encode())
+            state = root / "state.json"
+            state.write_text('{"sequence": 10}')
+            with self.assertRaisesRegex(ValueError, "required"):
+                hub.promote(root, state, [hit("1.1.1.1"), hit("8.8.8.8"),
+                                         hit("9.9.9.9")], min_live=3, max_live=20)
+            self.assertEqual((root / hub.PRIVATE_FEED).read_text(), baseline)
+
     def test_missing_signed_sequence_blocks_publication(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
