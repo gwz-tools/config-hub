@@ -30,14 +30,14 @@ jobs:
         run: python3 -m unittest discover -s tests -p "test_mamin_verify_import.py" -v
 
       - name: Verify fresh upstream RS256 catalogue
-        if: github.event_name != 'push'
+        if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-mamin-audit]')
         shell: bash
         run: |
           set -euo pipefail
           python3 mamin_verify_import.py --output-dir "$RUNNER_TEMP/mamin"
 
       - name: Check accepted VLESS against existing cloud parser
-        if: github.event_name != 'push'
+        if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-mamin-audit]')
         shell: bash
         run: |
           set -euo pipefail
@@ -54,7 +54,7 @@ jobs:
           PY
 
       - name: Install sing-box for real tunnel checks
-        if: github.event_name != 'push'
+        if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-mamin-audit]')
         shell: bash
         run: |
           set -euo pipefail
@@ -65,7 +65,7 @@ jobs:
           sudo install -m 0755 "$RUNNER_TEMP/sing-box-1.12.22-linux-amd64/sing-box" /usr/local/bin/sing-box
 
       - name: Probe real HTTPS through verified Mamin candidates
-        if: github.event_name != 'push'
+        if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-mamin-audit]')
         shell: bash
         run: |
           set -euo pipefail
