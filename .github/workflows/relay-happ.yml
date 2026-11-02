@@ -1,0 +1,123 @@
+name: Relay | Happ verified subscription
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "edge_feed_build.py"
+      - ".github/workflows/relay-happ.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "47 0,6,12,18 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: relay-happ-publication
+  cancel-in-progress: false
+
+jobs:
+  verify-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 27
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v5
+
+      - name: Check builder syntax
+        run: python3 -m py_compile edge_feed_build.py
+
+      - name: Retrieve hash-pinned APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --retry 2 \
+            --connect-timeout 15 --max-time 180 \
+            https://www.tvbox.one/atv-release/Mamin-VPN-0.9.29.apk \
+            --output "$RUNNER_TEMP/source.apk"
+          printf '%s  %s\n' \
+            '70df40e973a4e0af4dbd2465bb398455794117da7be6c075b3afe78d698313fb' \
+            "$RUNNER_TEMP/source.apk" | sha256sum -c -
+
+      - name: Install isolated sing-box
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 2 \
+            https://github.com/SagerNet/sing-box/releases/download/v1.12.22/sing-box-1.12.22-linux-amd64.tar.gz \
+            --output "$RUNNER_TEMP/sing-box.tar.gz"
+          tar -xzf "$RUNNER_TEMP/sing-box.tar.gz" -C "$RUNNER_TEMP"
+          sudo install -m 0755 "$RUNNER_TEMP/sing-box-1.12.22-linux-amd64/sing-box" /usr/local/bin/sing-box
+
+      - name: Verify signature and full HTTPS through candidate tunnels
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 edge_feed_build.py \
+            --apk "$RUNNER_TEMP/source.apk" \
+            --output "$RUNNER_TEMP/verified-feed.txt" \
+            --sing-box /usr/local/bin/sing-box \
+            --candidates 20 --min-live 3 --max-live 20 --workers 4
+
+      - name: Publish only verified lines to unlisted URL
+        shell: bash
+        env:
+          GIT_TERMINAL_PROMPT: "0"
+        run: |
+          set -euo pipefail
+          # A public Git branch is not private storage. The 64-hex URL token
+          # reduces accidental discovery only; visitors can browse the branch.
+          # Existing feed path persists on every refresh. No raw links in logs.
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          for attempt in 1 2 3 4; do
+            git fetch -q origin \
+              +refs/heads/verified:refs/remotes/origin/verified
+            git switch -q -C relay-publication origin/verified
+
+            existing=()
+            if [[ -d relay/happ ]]; then
+              while IFS= read -r -d '' path; do
+                existing+=("$path")
+              done < <(find relay/happ -mindepth 2 -maxdepth 2 \
+                  -type f -name feed.txt -print0)
+            fi
+
+            if (( ${#existing[@]} > 1 )); then
+              echo "Multiple feed paths found; refusing ambiguous update" >&2
+              exit 1
+            fi
+
+            if (( ${#existing[@]} == 1 )); then
+              destination="${existing[0]}"
+            else
+              token="$(python3 -c 'import secrets; print(secrets.token_hex(32))')"
+              destination="relay/happ/$token/feed.txt"
+            fi
+            mkdir -p -- "$(dirname "$destination")"
+            install -m 0644 "$RUNNER_TEMP/verified-feed.txt" "$destination"
+            git add -- "$destination"
+
+            if git diff --cached --quiet; then
+              echo "Feed content unchanged; existing subscription retained"
+              exit 0
+            fi
+            git commit -q -m "Refresh neutral relay subscription"
+
+            if git push -q origin HEAD:verified; then
+              echo "Unlisted feed published to verified branch"
+              exit 0
+            fi
+            echo "Concurrent publication detected; retrying..." >&2
+          done
+          echo "No publication after retries; previous feed retained" >&2
+          exit 1
+
+      - name: Always remove temporary source data
+        if: always()
+        shell: bash
+        run: |
+          rm -f -- "$RUNNER_TEMP/source.apk" \
+            "$RUNNER_TEMP/verified-feed.txt" "$RUNNER_TEMP/sing-box.tar.gz"
