@@ -6,7 +6,10 @@ It does not change `cloud-vless.txt`, `verified/live-vless.txt`, current
 GWZHUB services, databases or Podkop settings.
 
 The importer was recovered from an earlier GWZHUB research file and uses
-a public RS256 verification key pinned from Mamin VPN Android 0.9.29.
+a pinned candidate RSA verification key whose provenance must still be
+confirmed against a trusted copy of Mamin VPN Android 0.9.29. A real upstream
+audit on 2026-11-02 **failed** signature verification, and this source is
+currently not trusted for publication.
 The authenticity of a signed payload is not proof that its endpoints work
 or that the service author permits public redistribution of credentials.
 
