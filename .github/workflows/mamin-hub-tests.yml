@@ -7,6 +7,7 @@ on:
       - "mamin_hub_update.py"
       - "mamin_hub_diagnose.py"
       - "mamin_control_ab.py"
+      - "gwzhub_ab_rootcause.py"
       - "mamin_verify_import.py"
       - "mamin_signing_key.py"
       - "install_mamin_hub.sh"
@@ -37,7 +38,7 @@ jobs:
       - name: Run credential-safe diagnostic tests
         run: python3 -m unittest discover -s tests -p 'test_mamin_hub_diagnose.py' -v
       - name: Check Python syntax
-        run: python3 -m py_compile mamin_hub_update.py mamin_verify_import.py mamin_signing_key.py mamin_probe.py mamin_hub_diagnose.py mamin_control_ab.py
+        run: python3 -m py_compile mamin_hub_update.py mamin_verify_import.py mamin_signing_key.py mamin_probe.py mamin_hub_diagnose.py mamin_control_ab.py gwzhub_ab_rootcause.py
       - name: Check installer and scheduler shell syntax
         run: sh -n install_mamin_hub.sh enable_mamin_cron.sh extract_singbox_114_local.sh
 
