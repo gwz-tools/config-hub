@@ -8,7 +8,9 @@
       "tag": "GWZHUB-AUTO",
       "outbounds": [
         "GWZ-01",
-        "GWZ-02"
+        "GWZ-02",
+        "GWZ-03",
+        "GWZ-04"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -52,6 +54,46 @@
           "enabled": true,
           "public_key": "WWeAHWUVD-phmnjNJ823cer0c4CMIbEs08AhsuEZmDc",
           "short_id": "a696de84963656de"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-03",
+      "server": "13.143.180.142",
+      "server_port": 443,
+      "uuid": "2614a96d-e39f-02f0-a9c7-467a178c2c0a",
+      "tls": {
+        "enabled": true,
+        "server_name": "sw.lenvex.cc",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "firefox"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-04",
+      "server": "13.143.182.104",
+      "server_port": 443,
+      "uuid": "2614a96d-e39f-4cca-a9c7-467a178c2c0a",
+      "tls": {
+        "enabled": true,
+        "server_name": "ee.lenvex.cc",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "firefox"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ"
         }
       },
       "flow": "xtls-rprx-vision"
