@@ -16,6 +16,7 @@ import shutil
 import subprocess
 import tempfile
 import time
+import sys
 import urllib.request
 from urllib.parse import urlsplit, parse_qs
 
@@ -105,6 +106,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--output-dir", default="/opt/gwzhub/data", help="Where to place verified candidate files")
     ap.add_argument("--catalog-file", help="Optional local JSON for offline validation")
+    ap.add_argument("--diagnose", action="store_true", help="Show safe signature metadata on failure")
     a = ap.parse_args()
     root = Path(a.output_dir)
     catalog = json.loads(Path(a.catalog_file).read_text()) if a.catalog_file else fetch_catalog()
@@ -112,7 +114,23 @@ def main():
         raise ValueError("Unexpected format/algorithm/key_id")
     payload = b64url(catalog.get("payload"))
     signature = b64url(catalog.get("signature"))
-    verify_rs256(payload, signature)
+    try:
+        verify_rs256(payload, signature)
+    except (ValueError, RuntimeError):
+        if a.diagnose:
+            # Never print VPN links, signed payload bytes or credentials.
+            pinned_key = base64.b64decode(PUBLIC_KEY_DER_B64)
+            print("RS256 audit: FAIL CLOSED", file=sys.stderr)
+            print("Pinned key_id:", KEY_ID, file=sys.stderr)
+            print("Pinned public key DER SHA256:", hashlib.sha256(pinned_key).hexdigest(), file=sys.stderr)
+            print("Payload SHA256:", hashlib.sha256(payload).hexdigest(), file=sys.stderr)
+            print("Signature bytes:", len(signature),
+                  "(pinned RSA key: 3072 bit; expected signature: 384 bytes)",
+                  file=sys.stderr)
+            print("Compare key against bootstrap signing key extracted from APK; "
+                  "never import an unauthenticated replacement key from catalogue.",
+                  file=sys.stderr)
+        raise
     data = json.loads(payload.decode("utf-8"))
     if data.get("kind") != "mamin-bootstrap-v2" or data.get("package") != "app.mamin.vpn" or data.get("schema") != 1:
         raise ValueError("Unexpected signed payload type")
