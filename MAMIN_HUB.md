@@ -62,6 +62,34 @@ healthy tunnels and **retains** any existing private last-good feed.
 Do not display or paste `mamin-private-live.txt` into logs or a public chat:
 it contains credentials. Safe status contains only aggregate counts.
 
+## If GWZHUB shows 0/12 but GitHub shows working tunnels
+
+The strict cloud checker requires successful HTTPS access to its control URL
+plus **all four services**. A 0/12 result does not establish whether the
+issue is DNS, outbound TCP reachability, sing-box startup, the proxy HTTPS
+control, or one of the four service endpoints.
+
+Run the *read-only* aggregate diagnostic on GWZHUB as root:
+
+```sh
+curl -fsSLo /tmp/mamin_hub_diagnose.py \
+  https://raw.githubusercontent.com/gwz-tools/config-hub/main/mamin_hub_diagnose.py
+sudo python3 /tmp/mamin_hub_diagnose.py \
+  --apk-file /opt/gwzhub/data/mamin/Mamin-VPN-0.9.29.apk \
+  --max-candidates 4
+```
+
+It validates the signed catalogue against the hash-pinned APK and prints
+**counts by stage only** (DNS resolution, IPv4/IPv6 TCP, checker first-IP TCP,
+sing-box config, local proxy readiness, control HTTPS, individual services).
+It does not print VLESS links, hostnames, UUIDs, secrets, or configuration,
+and it never writes the live or last-good feeds or changes the router.
+Four candidates are enough to classify many systemic failures; raise
+`--max-candidates` to 12 only if needed.
+
+Do not enable the cron until the first manual run reports `healthy` and
+`feed_updated: true`. The cron helper refuses to activate otherwise.
+
 ## Automation after a successful manual run
 
 For regular checks every six hours, run the packaged, duplicate-safe helper
