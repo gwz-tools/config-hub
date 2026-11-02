@@ -1,6 +1,9 @@
 import base64
 import json
 import io
+import hashlib
+import zipfile
+import mamin_signing_key as signing_key
 from contextlib import redirect_stderr
 import subprocess
 import sys
@@ -14,6 +17,31 @@ import mamin_verify_import as m
 
 
 class MaminImportTests(unittest.TestCase):
+    def test_exact_apk_sha256_and_bootstrap_public_key(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            private = root / "private.pem"
+            public = root / "public.der"
+            subprocess.run(["openssl", "genpkey", "-algorithm", "RSA",
+                            "-pkeyopt", "rsa_keygen_bits:2048", "-out", str(private)],
+                           check=True, capture_output=True)
+            subprocess.run(["openssl", "pkey", "-in", str(private), "-pubout",
+                            "-outform", "DER", "-out", str(public)],
+                           check=True, capture_output=True)
+            der = public.read_bytes()
+            apk = root / "synthetic.apk"
+            with zipfile.ZipFile(apk, "w") as z:
+                z.writestr("classes.dex", b"header\n" + base64.b64encode(der) + b"\n" + b"x" * 1024)
+            apk_hash = hashlib.sha256(apk.read_bytes()).hexdigest()
+            key_hash = hashlib.sha256(der).hexdigest()
+            with patch.object(signing_key, "APK_SHA256", apk_hash), \
+                 patch.object(signing_key, "BOOTSTRAP_KEY_SHA256", key_hash):
+                self.assertEqual(signing_key.pinned_bootstrap_key(apk), der)
+                with apk.open("ab") as f:
+                    f.write(b"tamper")
+                with self.assertRaisesRegex(ValueError, "SHA256 mismatch"):
+                    signing_key.pinned_bootstrap_key(apk)
+
     def test_dedup_and_skip_bad_urls(self):
         good = 'vless://123e4567-e89b-12d3-a456-426614174000@1.1.1.1:443?security=reality&type=tcp'
         got = m.vetted_nodes({'nodes': [good, good, 'ftp://bad', 'vless://no-host']})
