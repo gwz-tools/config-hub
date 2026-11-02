@@ -27,3 +27,9 @@ Config Hub does not guarantee availability, performance or reliability of extern
 Users independently decide whether and how to use collected information.
 
 The project authors do not own, operate or administer external resources referenced by collected data.
+
+## Experimental signed sources
+
+- [Mamin VPN signed bootstrap audit](MAMIN_SOURCE.md) validates RS256, checks
+  the cloud VLESS parser and tests HTTPS through sing-box. This source is
+  **audit-only** and never overwrites published subscriptions or router settings.
