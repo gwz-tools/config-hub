@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Verify Mamin VPN Android bootstrap RS256 with a pinned candidate public key.
+"""Verify Mamin VPN Android bootstrap RS256 with an exact hash-pinned APK key.
 
-WARNING: The pinned key's provenance has not yet been independently rechecked
-against the original APK 0.9.29. Reject all real catalogues until proven.
+The key is selected by the audited APK SHA256 and bootstrap public key SHA256;
+this is not independent proof of the APK publisher identity.
 
 Safe for GWZHUB: writes ONLY new .verified files and a sequence state;
 never edits github-candidates.txt, SQLite DB, Podkop or services.
@@ -35,12 +35,12 @@ def b64url(s):
     return base64.urlsafe_b64decode(s + "=" * (-len(s) % 4))
 
 
-def verify_rs256(payload, signature):
+def verify_rs256(payload, signature, public_key_der=None):
     if not shutil.which("openssl"):
         raise RuntimeError("openssl executable not found")
     with tempfile.TemporaryDirectory(prefix="mamin-signature-") as td:
         p = Path(td)
-        (p / "key.der").write_bytes(base64.b64decode(PUBLIC_KEY_DER_B64))
+        (p / "key.der").write_bytes(public_key_der if public_key_der is not None else base64.b64decode(PUBLIC_KEY_DER_B64))
         (p / "payload.bin").write_bytes(payload)
         (p / "signature.bin").write_bytes(signature)
         pub = subprocess.run([
@@ -109,6 +109,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--output-dir", default="/opt/gwzhub/data", help="Where to place verified candidate files")
     ap.add_argument("--catalog-file", help="Optional local JSON for offline validation")
+    ap.add_argument("--apk-file", help="Exact hash-pinned Mamin APK 0.9.29 supplying bootstrap RSA key")
     ap.add_argument("--diagnose", action="store_true", help="Show safe signature metadata on failure")
     a = ap.parse_args()
     root = Path(a.output_dir)
@@ -117,12 +118,16 @@ def main():
         raise ValueError("Unexpected format/algorithm/key_id")
     payload = b64url(catalog.get("payload"))
     signature = b64url(catalog.get("signature"))
+    public_key_der = None
+    if a.apk_file:
+        from mamin_signing_key import pinned_bootstrap_key
+        public_key_der = pinned_bootstrap_key(a.apk_file)
     try:
-        verify_rs256(payload, signature)
+        verify_rs256(payload, signature, public_key_der=public_key_der)
     except (ValueError, RuntimeError):
         if a.diagnose:
             # Never print VPN links, signed payload bytes or credentials.
-            pinned_key = base64.b64decode(PUBLIC_KEY_DER_B64)
+            pinned_key = public_key_der if public_key_der is not None else base64.b64decode(PUBLIC_KEY_DER_B64)
             print("RS256 audit: FAIL CLOSED", file=sys.stderr)
             print("Pinned key_id:", KEY_ID, file=sys.stderr)
             print("Pinned public key DER SHA256:", hashlib.sha256(pinned_key).hexdigest(), file=sys.stderr)
@@ -172,6 +177,7 @@ def main():
                                         ensure_ascii=False, indent=2).encode())
     from collections import Counter
     print("RS256: VERIFIED; format/expiry/sequence: OK")
+    print("RSA key source:", "exact audited APK SHA256" if a.apk_file else "legacy candidate (for unit testing)")
     print("All nodes:", len(nodes), dict(Counter(x.split("://", 1)[0] for x in nodes)))
     print("VLESS Reality candidates:", len(reality))
     print("Output:", root / "mamin-vless-reality.verified.txt")
