@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Verify Mamin VPN Android bootstrap RS256 using a pinned key from APK 0.9.29.
+"""Verify Mamin VPN Android bootstrap RS256 with a pinned candidate public key.
+
+WARNING: The pinned key's provenance has not yet been independently rechecked
+against the original APK 0.9.29. Reject all real catalogues until proven.
 
 Safe for GWZHUB: writes ONLY new .verified files and a sequence state;
 never edits github-candidates.txt, SQLite DB, Podkop or services.
