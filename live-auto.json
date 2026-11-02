@@ -8,8 +8,7 @@
       "tag": "GWZHUB-AUTO",
       "outbounds": [
         "GWZ-01",
-        "GWZ-02",
-        "GWZ-03"
+        "GWZ-02"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -39,26 +38,6 @@
     {
       "type": "vless",
       "tag": "GWZ-02",
-      "server": "13.143.180.141",
-      "server_port": 443,
-      "uuid": "2614a96d-e39f-02f0-a9c7-467a178c2c0a",
-      "tls": {
-        "enabled": true,
-        "server_name": "sw.lenvex.cc",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "firefox"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-03",
       "server": "94.249.180.86",
       "server_port": 443,
       "uuid": "0de1d303-d7de-0001-8679-c4cb67e2e2cc",
