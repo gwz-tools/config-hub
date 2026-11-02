@@ -33,3 +33,10 @@ The project authors do not own, operate or administer external resources referen
 - [Mamin VPN signed bootstrap audit](MAMIN_SOURCE.md) validates RS256, checks
   the cloud VLESS parser and tests HTTPS through sing-box. This source is
   **audit-only** and never overwrites published subscriptions or router settings.
+
+## Private GWZHUB source (Mamin VPN)
+
+- [Mamin local/private last-good updater](MAMIN_HUB.md): independently validates a
+  signed catalogue, probes HTTPS through sing-box and keeps a private 0600
+  last-good file on GWZHUB. It is **not** a public VPN feed or a change to
+  the live Podkop router configuration.
