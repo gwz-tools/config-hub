@@ -144,6 +144,8 @@ def run(args: argparse.Namespace) -> int:
                 if not candidates:
                     raise RuntimeError("No compatible VLESS Reality candidates")
                 status["candidates_tested"] = len(candidates)
+                if not shutil.which(args.sing_box):
+                    raise RuntimeError("Isolated sing-box binary is missing or not executable")
                 results = probe_candidates(candidates, args.sing_box, args.workers)
                 status["end_to_end_passed"] = len(results)
                 status["pass_rate_pct"] = round(100 * len(results) / len(candidates), 1)
@@ -171,7 +173,8 @@ def main() -> int:
                         help="The exact SHA256-pinned Mamin-VPN-0.9.29.apk")
     parser.add_argument("--catalog-file", type=Path, help="Offline signed test catalogue")
     parser.add_argument("--data-dir", type=Path, default=ROOT_DEFAULT)
-    parser.add_argument("--sing-box", default="sing-box")
+    parser.add_argument("--sing-box", default=str(Path(__file__).resolve().parent / "bin" / "sing-box"),
+                        help="Isolated sing-box installed beside the Mamin updater")
     parser.add_argument("--max-candidates", type=int, default=20)
     parser.add_argument("--max-live", type=int, default=20)
     parser.add_argument("--min-live", type=int, default=3)
