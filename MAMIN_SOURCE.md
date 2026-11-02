@@ -5,26 +5,20 @@ The Mamin source is integrated in a **separate, fail-closed audit pipeline**.
 It does not change `cloud-vless.txt`, `verified/live-vless.txt`, current
 GWZHUB services, databases or Podkop settings.
 
-The importer was recovered from an earlier GWZHUB research file and uses
-a pinned candidate RSA verification key whose provenance must still be
-confirmed against a trusted copy of Mamin VPN Android 0.9.29. A real upstream
-audit on 2026-11-02 **failed** signature verification, and this source is
-currently not trusted for publication.
+The importer was recovered from earlier GWZHUB research. A 2026-11-02 APK audit located **two RSA public keys** inside Mamin VPN Android 0.9.29. The earlier candidate key failed, while the second key successfully verified the actual signed catalogue.
+
+For live audits the importer extracts the key **only from an APK with the exact audited SHA256** (`70df40e973a4e0af4dbd2465bb398455794117da7be6c075b3afe78d698313fb`) and public key SHA256 (`7d530884a8457b8186ca0b5f41d5d412d52e052d9346c3e2ce181efa763c843c`). This proves consistency with those audited bytes, not the APK publisher's identity. End-to-end results require a fresh live run.
 The authenticity of a signed payload is not proof that its endpoints work
 or that the service author permits public redistribution of credentials.
 
 ## Live verification failure — 2 November 2026
 
-The first actual GitHub audit failed closed with:
+The first GitHub audit, using the wrong key, failed closed with:
 `ValueError: RS256 signature INVALID: catalogue rejected`.
 
-This means the catalogue's signature did not validate against the currently
-pinned RSA public key. The cause is **not yet established**: it may be an
-incorrectly extracted key, a signer/key rotation, or a signed-message format
-difference. Unit tests with a generated key do not prove that the live
-catalogue was signed by Mamin. No nodes were imported or published.
+The root cause was a **wrong pinned RSA key**. The APK audit identified a second public key that validates the live catalogue's signature. Unit tests with a generated key alone did not establish this. No nodes were imported or published in the failed run.
 
-The importer's `--diagnose` mode reports only the pinned key fingerprint,
+The importer's `--diagnose` mode reports only the selected key fingerprint,
 SHA256 of the encoded payload, signature byte count and key id. It never
 prints the contents of unverified nodes. Run the audit again and compare
 the pinned key with the **bootstrap signature verification key from the
@@ -60,10 +54,10 @@ A successful GitHub-runner probe is **not proof of access from Tele2/T2**.
 For trusted private GWZHUB local use (persistent sequence tracking):
 
 ```sh
-python3 mamin_verify_import.py --output-dir /opt/gwzhub/data
+python3 mamin_verify_import.py --output-dir /opt/gwzhub/data --apk-file /path/to/exact/Mamin-VPN-0.9.29.apk
 ```
 
-Requirements: Python 3 and `openssl` on PATH. This emits
+Requirements: Python 3 and `openssl` on PATH and the exact audited APK. This emits
 `mamin-vless-reality.verified.txt` for testing by the existing checker.
 Do not commit this output or store private subscription links in public GitHub.
 
