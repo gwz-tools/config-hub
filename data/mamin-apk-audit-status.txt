@@ -1,0 +1,14 @@
+APK SHA256: 70df40e973a4e0af4dbd2465bb398455794117da7be6c075b3afe78d698313fb
+APK size bytes: 40019310
+Scanned relevant archive members: 10
+Pinned key DER SHA256: 2877d66e788a843d62311a60417b7bd42cebc0d33d12c4a88325fcd6b94a06ea
+Pinned key literally present in APK: True
+Distinct extractable RSA public keys: 2
+Public key fingerprints (no key contents): ['2877d66e788a843d62311a60417b7bd42cebc0d33d12c4a88325fcd6b94a06ea', '7d530884a8457b8186ca0b5f41d5d412d52e052d9346c3e2ce181efa763c843c']
+Catalogue format/key_id: mamin-bootstrap-v2 bootstrap-7d530884a8457b81
+Catalogue payload SHA256: ad1889fac272078317367063166fdb8aec6c471bdcb829957593374c1f088eb1
+Catalogue signature bytes: 384
+Pinned RSA signature valid: False
+APK candidate RSA keys verifying catalogue: 1
+Matching public-key SHA256: ['7d530884a8457b8186ca0b5f41d5d412d52e052d9346c3e2ce181efa763c843c']
+WARNING: key presence or one valid signature does not prove APK provenance
