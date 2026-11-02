@@ -11,6 +11,7 @@ on:
       - "install_mamin_hub.sh"
       - "enable_mamin_cron.sh"
       - "tests/test_mamin_hub_update.py"
+      - "tests/test_mamin_hub_diagnose.py"
       - "mamin_hub_diagnose.py"
       - ".github/workflows/mamin-hub-tests.yml"
   pull_request:
@@ -31,6 +32,8 @@ jobs:
       - uses: actions/checkout@v5
       - name: Run private source fail-closed tests
         run: python3 -m unittest discover -s tests -p 'test_mamin_hub_update.py' -v
+      - name: Run credential-safe diagnostic tests
+        run: python3 -m unittest discover -s tests -p 'test_mamin_hub_diagnose.py' -v
       - name: Check Python syntax
         run: python3 -m py_compile mamin_hub_update.py mamin_verify_import.py mamin_signing_key.py mamin_probe.py mamin_hub_diagnose.py
       - name: Check installer and scheduler shell syntax
