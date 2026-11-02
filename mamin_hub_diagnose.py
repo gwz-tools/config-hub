@@ -79,7 +79,7 @@ def classify_run_errors(path):
         ("singbox_error_connection_reset", (b"connection reset",)),
         ("singbox_error_connection_refused", (b"connection refused",)),
         ("singbox_error_network_unreachable", (b"network is unreachable", b"no route to host")),
-        ("singbox_error_tls_or_reality", (b"tls", b"reality", b"handshake")),
+        ("singbox_error_tls_or_reality", (b"handshake failed", b"tls handshake", b"reality handshake", b"authentication failed", b"bad certificate", b"certificate verify failed")),
         ("singbox_error_eof", (b"unexpected eof",)),
         ("singbox_error_dns", (b"lookup", b"no such host")),
     )
@@ -116,7 +116,7 @@ def inspect_one(link, sing_box):
         sock.bind(("127.0.0.1", 0))
         port = sock.getsockname()[1]
     config = {
-        "log": {"level": "error"},
+        "log": {"level": "debug"},
         "inbounds": [{
             "type": "mixed", "tag": "local",
             "listen": "127.0.0.1", "listen_port": port,
@@ -150,8 +150,8 @@ def inspect_one(link, sing_box):
                 os.chmod(log_path, 0o600)
                 process = subprocess.Popen(
                     [sing_box, "run", "-c", str(cfg)],
-                    stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
-                    stderr=private_log, start_new_session=True)
+                    stdin=subprocess.DEVNULL,
+                    stdout=private_log, stderr=private_log, start_new_session=True)
         except OSError:
             counters["sing_box_start_error"] += 1
             return counters
@@ -205,6 +205,16 @@ def inspect_one(link, sing_box):
                 process.wait()
             for kind in classify_run_errors(log_path):
                 counters[kind] += 1
+            # Separately indicate if sing-box attempted outbound routing.
+            # Use only fixed booleans/counters; never print raw debug log.
+            try:
+                log_data = log_path.read_bytes().lower()
+                if b"outbound connection" in log_data or b"outbound/vless" in log_data:
+                    counters["singbox_debug_outbound_activity"] += 1
+                if b"failed" in log_data or b"error" in log_data:
+                    counters["singbox_debug_has_failure_text"] += 1
+            except OSError:
+                pass
     return counters
 
 
