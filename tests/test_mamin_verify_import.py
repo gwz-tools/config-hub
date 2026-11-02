@@ -1,5 +1,7 @@
 import base64
 import json
+import io
+from contextlib import redirect_stderr
 import subprocess
 import sys
 import tempfile
@@ -34,6 +36,29 @@ class MaminImportTests(unittest.TestCase):
                                '--output-dir', str(output)]):
                 with self.assertRaises((ValueError, RuntimeError)):
                     m.main()
+            self.assertFalse(output.exists())
+
+    def test_diagnostics_do_not_leak_credentials(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            secret = b'{"nodes":["vless://PRIVATE-CREDENTIAL@1.1.1.1:443"]}'
+            catalog = root / "catalog.json"
+            catalog.write_text(json.dumps({
+                "format": "mamin-bootstrap-v2", "algorithm": "RS256",
+                "key_id": m.KEY_ID,
+                "payload": base64.urlsafe_b64encode(secret).decode().rstrip("="),
+                "signature": "AA"
+            }), encoding="utf-8")
+            output = root / "verified"
+            err = io.StringIO()
+            with patch.object(sys, "argv", ["import", "--catalog-file", str(catalog),
+                                             "--output-dir", str(output), "--diagnose"]):
+                with redirect_stderr(err), self.assertRaises((ValueError, RuntimeError)):
+                    m.main()
+            log = err.getvalue()
+            self.assertIn("RS256 audit: FAIL CLOSED", log)
+            self.assertIn("Signature bytes:", log)
+            self.assertNotIn("PRIVATE-CREDENTIAL", log)
             self.assertFalse(output.exists())
 
     def test_signed_catalogue_and_rollback(self):
