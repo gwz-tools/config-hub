@@ -39,11 +39,14 @@ sed -n '1,180p' /tmp/install_mamin_hub.sh
 sh /tmp/install_mamin_hub.sh
 ```
 
-The installer refuses OpenWrt and low disk space, requires installed
-`python3`, `curl`, `openssl`, `sha256sum`, `sing-box`, downloads the four
-Python modules, checks Python syntax, then fetches and SHA256-checks the exact
-40 MB APK **once**. The APK is never run or installed on the host.
-No cron entries or main services are changed.
+The installer refuses OpenWrt and low disk space (requires 200 MiB free),
+requires `python3`, `curl`, `openssl`, `sha256sum`, `tar`; it installs an
+**isolated sing-box 1.12.22** at `/opt/gwzhub/mamin-source/bin/sing-box`.
+The release archive is checked against the SHA256 digest published in the
+official SagerNet GitHub release metadata. The installer downloads the four
+Python modules, checks Python syntax, then SHA256-checks the exact 40 MB
+APK **once**. The APK is never executed. No system sing-box installation,
+existing services, Podkop, public feeds or cron entries are changed.
 
 **Run the first private source update:**
 
