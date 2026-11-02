@@ -21,7 +21,8 @@ Mamin upstream HTTPS `bootstrap/android-v2.json`
 Facebook, YouTube)
 → if >= 3 pass, atomically update the **private** hub file
 `/opt/gwzhub/data/mamin/mamin-private-live.txt` (0600)
-→ otherwise retain last good file and report safe status.
+→ otherwise retain last good file and report safe status. A 50% drop guard
+also keeps a healthy eight-node list if only three remain reachable.
 
 This does **not** modify `verified/live-vless.txt`, `cloud-vless.txt`,
 `github-candidates.txt`, any GWZHUB service/database, Podkop, or Dunay.
@@ -60,8 +61,15 @@ it contains credentials. Safe status contains only aggregate counts.
 
 ## Automation after a successful manual run
 
-For regular checks every six hours, add to GWZHUB root crontab only
-**after the first healthy status** (verify with `crontab -l` first):
+For regular checks every six hours, run the packaged, duplicate-safe helper
+**after the first healthy status**:
+
+```sh
+sh /opt/gwzhub/mamin-source/enable_mamin_cron.sh
+```
+
+It refuses OpenWrt, requires a healthy locally checked Mamin feed and will not
+add duplicate cron entries. The equivalent cron schedule is:
 
 ```cron
 39 3,9,15,21 * * * /usr/bin/python3 /opt/gwzhub/mamin-source/mamin_hub_update.py --apk-file /opt/gwzhub/data/mamin/Mamin-VPN-0.9.29.apk --data-dir /opt/gwzhub/data/mamin >/dev/null 2>&1
