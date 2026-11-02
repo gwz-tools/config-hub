@@ -7,6 +7,7 @@ on:
       - "mamin_verify_import.py"
       - "tests/test_mamin_verify_import.py"
       - "mamin_probe.py"
+      - "mamin_signing_key.py"
       - ".github/workflows/mamin-audit.yml"
   workflow_dispatch:
   schedule:
@@ -22,19 +23,30 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 14
     steps:
       - uses: actions/checkout@v5
 
       - name: Offline tests for signature, invalid URLs and rollback
         run: python3 -m unittest discover -s tests -p "test_mamin_verify_import.py" -v
 
+      - name: Download exact SHA256-pinned Mamin APK for bootstrap public key
+        if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-mamin-audit]')
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --retry 2 \
+            --connect-timeout 15 --max-time 180 \
+            "https://www.tvbox.one/atv-release/Mamin-VPN-0.9.29.apk" \
+            --output "$RUNNER_TEMP/mamin.apk"
+          echo "70df40e973a4e0af4dbd2465bb398455794117da7be6c075b3afe78d698313fb  $RUNNER_TEMP/mamin.apk" | sha256sum -c -
+
       - name: Verify fresh upstream RS256 catalogue
         if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-mamin-audit]')
         shell: bash
         run: |
           set -euo pipefail
-          python3 mamin_verify_import.py --output-dir "$RUNNER_TEMP/mamin" --diagnose
+          python3 mamin_verify_import.py --output-dir "$RUNNER_TEMP/mamin" --diagnose --apk-file "$RUNNER_TEMP/mamin.apk"
 
       - name: Check accepted VLESS against existing cloud parser
         if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-mamin-audit]')
@@ -88,6 +100,7 @@ jobs:
         if: always()
         shell: bash
         run: |
+          rm -f -- "$RUNNER_TEMP/mamin.apk"
           if [ -d "$RUNNER_TEMP/mamin" ]; then
             rm -rf -- "$RUNNER_TEMP/mamin"
           fi
