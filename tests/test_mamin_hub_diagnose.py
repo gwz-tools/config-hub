@@ -30,6 +30,16 @@ class MaminStageDiagnosticsTests(unittest.TestCase):
             self.assertNotIn("private-host.example", str(categories))
             self.assertNotIn("SECRET", str(categories))
 
+    def test_route_classification_does_not_expose_candidate_address(self):
+        response = subprocess.CompletedProcess(
+            ["ip"], 0,
+            stdout="203.0.113.1 via 192.168.10.1 dev enp1s0 src 192.168.10.221\\n",
+            stderr="")
+        with patch.object(diag.subprocess, "run", return_value=response):
+            label = diag.route_classification(("203.0.113.1", 443))
+        self.assertEqual(label, "route_enp1s0")
+        self.assertNotIn("203.0.113.1", label)
+
     def test_absent_log_is_safe(self):
         self.assertEqual(diag.classify_run_errors(Path("/no/such/file/mamin.log")), [])
 
