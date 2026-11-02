@@ -34,7 +34,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 mamin_verify_import.py --output-dir "$RUNNER_TEMP/mamin"
+          python3 mamin_verify_import.py --output-dir "$RUNNER_TEMP/mamin" --diagnose
 
       - name: Check accepted VLESS against existing cloud parser
         if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-mamin-audit]')
