@@ -1,0 +1,61 @@
+name: Mamin VPN signed catalogue audit
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "mamin_verify_import.py"
+      - "tests/test_mamin_verify_import.py"
+      - ".github/workflows/mamin-audit.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "39 4 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gwz-mamin-audit
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Offline tests for signature, invalid URLs and rollback
+        run: python3 -m unittest discover -s tests -p "test_mamin_verify_import.py" -v
+
+      - name: Verify fresh upstream RS256 catalogue
+        if: github.event_name != 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 mamin_verify_import.py --output-dir "$RUNNER_TEMP/mamin"
+
+      - name: Check accepted VLESS against existing cloud parser
+        if: github.event_name != 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          from cloud_verified import unique_candidates
+          source = Path(os.environ["RUNNER_TEMP"]) / "mamin" / "mamin-vless-reality.verified.txt"
+          accepted = unique_candidates(source, 10000)
+          print("Parser-compatible VLESS candidates:", len(accepted))
+          if not accepted:
+              raise SystemExit("No candidate is compatible with cloud checker; publication blocked")
+          print("Signature checked; no endpoint was published or sent to Podkop")
+          PY
+
+      - name: Remove ephemeral catalogue files
+        if: always()
+        shell: bash
+        run: |
+          if [ -d "$RUNNER_TEMP/mamin" ]; then
+            rm -rf -- "$RUNNER_TEMP/mamin"
+          fi
