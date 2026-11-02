@@ -49,6 +49,43 @@ def reachable_addresses(hostname, port, timeout=2):
     return results
 
 
+def curl_probe(proxy_port, url, timeout=10):
+    """Return only curl numeric exit status and numeric HTTP code; discard stderr."""
+    command = [
+        "curl", "--silent", "--show-error", "--noproxy", "",
+        "--connect-timeout", "3", "--max-time", str(timeout),
+        "--output", os.devnull, "--write-out", "%{http_code}",
+        "--proxy", f"http://127.0.0.1:{proxy_port}", url,
+    ]
+    try:
+        result = subprocess.run(command, capture_output=True, text=True,
+                                timeout=timeout + 3, check=False)
+        http_code = int(result.stdout.strip()) if result.stdout.strip().isdigit() else 0
+        return result.returncode, http_code
+    except subprocess.TimeoutExpired:
+        return 124, 0
+    except OSError:
+        return 127, 0
+
+
+def classify_run_errors(path):
+    """Classify locally captured sing-box errors without printing their text."""
+    try:
+        content = path.read_bytes().lower()
+    except OSError:
+        return []
+    rules = (
+        ("singbox_error_timeout", (b"timeout", b"deadline exceeded")),
+        ("singbox_error_connection_reset", (b"connection reset",)),
+        ("singbox_error_connection_refused", (b"connection refused",)),
+        ("singbox_error_network_unreachable", (b"network is unreachable", b"no route to host")),
+        ("singbox_error_tls_or_reality", (b"tls", b"reality", b"handshake")),
+        ("singbox_error_eof", (b"unexpected eof",)),
+        ("singbox_error_dns", (b"lookup", b"no such host")),
+    )
+    return [name for name, patterns in rules if any(p in content for p in patterns)]
+
+
 def inspect_one(link, sing_box):
     counters = Counter()
     try:
@@ -105,11 +142,16 @@ def inspect_one(link, sing_box):
             return counters
         counters["sing_box_config_ok"] += 1
 
+        # Temporarily capture errors in a root-private directory, then delete.
+        # Never expose the raw log: it can include hostnames or credentials.
+        log_path = Path(workdir) / "singbox-errors.log"
         try:
-            process = subprocess.Popen(
-                [sing_box, "run", "-c", str(cfg)],
-                stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL, start_new_session=True)
+            with log_path.open("wb") as private_log:
+                os.chmod(log_path, 0o600)
+                process = subprocess.Popen(
+                    [sing_box, "run", "-c", str(cfg)],
+                    stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                    stderr=private_log, start_new_session=True)
         except OSError:
             counters["sing_box_start_error"] += 1
             return counters
@@ -129,7 +171,8 @@ def inspect_one(link, sing_box):
                 return counters
             counters["local_proxy_ready"] += 1
 
-            status, latency = http_probe(port, CONTROL_URL, timeout=9)
+            exit_code, status = curl_probe(port, CONTROL_URL, timeout=10)
+            counters[f"control_curl_exit_{exit_code}"] += 1
             if 200 <= status < 400:
                 counters["control_https_ok"] += 1
             elif status == 0:
@@ -160,6 +203,8 @@ def inspect_one(link, sing_box):
                 with suppress(ProcessLookupError):
                     os.killpg(process.pid, signal.SIGKILL)
                 process.wait()
+            for kind in classify_run_errors(log_path):
+                counters[kind] += 1
     return counters
 
 
@@ -212,6 +257,8 @@ def main():
         "stage_counts_only": dict(sorted(totals.items())),
         "sample_count": len(links),
         "strict_rule": "control HTTPS + all four service HTTPS checks",
+        "curl_exit_hint": "28=timeout; 35=TLS handshake; 56=read/reset; 60=certificate; 97=proxy handshake; 0=curl succeeded",
+        "raw_sing_box_logs_emitted": False,
         "changed_private_feed": False,
         "changed_router": False,
     }, indent=2, ensure_ascii=False))
