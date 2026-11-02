@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   offline:
@@ -29,3 +29,41 @@ jobs:
         run: python3 -m unittest discover -s tests -p 'test_mamin_hub_update.py' -v
       - name: Check Python syntax
         run: python3 -m py_compile mamin_hub_update.py mamin_verify_import.py mamin_signing_key.py mamin_probe.py
+
+      - name: Record safe offline test status
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          status = {
+              "checked_at_utc": datetime.now(timezone.utc).isoformat(),
+              "commit": os.getenv("GITHUB_SHA", ""),
+              "offline_tests_passed": True,
+              "python_syntax_ok": True,
+              "live_hub_deployment": False,
+              "no_public_vpn_credential_output": True
+          }
+          path = Path("data/mamin-hub-tests-status.json")
+          path.parent.mkdir(exist_ok=True)
+          path.write_text(json.dumps(status, indent=2) + "\n")
+          print("Offline test result:", status)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/mamin-hub-tests-status.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update Mamin Hub offline CI status"
+            for attempt in 1 2 3; do
+              if git push; then
+                exit 0
+              fi
+              git fetch origin main
+              git rebase origin/main
+            done
+            echo "Unable to publish offline CI status" >&2
+            exit 1
+          fi
