@@ -86,6 +86,30 @@ def classify_run_errors(path):
     return [name for name, patterns in rules if any(p in content for p in patterns)]
 
 
+def route_classification(endpoint):
+    """Classify actual route to a signed candidate without emitting its address."""
+    address = endpoint[0]
+    try:
+        out = subprocess.run(["ip", "-4", "route", "get", address],
+                             capture_output=True, text=True,
+                             timeout=3, check=False)
+    except (OSError, subprocess.TimeoutExpired):
+        return "route_lookup_failed"
+    if out.returncode != 0:
+        return "route_lookup_failed"
+    words = out.stdout.strip().split()
+    if "dev" not in words:
+        return "route_dev_missing"
+    iface = words[words.index("dev") + 1]
+    if iface == "enp1s0":
+        return "route_enp1s0"
+    if iface.startswith("tailscale"):
+        return "route_tailscale"
+    if iface in ("lo", "tun0", "wg0"):
+        return "route_local_or_tunnel"
+    return "route_other_interface"
+
+
 def inspect_one(link, sing_box):
     counters = Counter()
     try:
@@ -98,6 +122,7 @@ def inspect_one(link, sing_box):
         counters["dns_or_no_global_ip"] += 1
         return counters
     counters["dns_ok"] += 1
+    counters[route_classification(endpoint)] += 1
 
     # Crucial: compare existing checker's FIRST DNS address to all addresses.
     addresses = reachable_addresses(outbound["server"], outbound["server_port"])
@@ -107,6 +132,8 @@ def inspect_one(link, sing_box):
         counters["ipv6_tcp_ok"] += 1
     if not tcp_probe(endpoint, timeout=2):
         counters["first_resolved_ip_tcp_failed"] += 1
+        if tcp_probe(endpoint, timeout=6):
+            counters["first_ip_tcp_succeeds_with_6s"] += 1
         if addresses["ipv4"] or addresses["ipv6"]:
             counters["address_family_or_order_mismatch"] += 1
         return counters
@@ -139,6 +166,15 @@ def inspect_one(link, sing_box):
             return counters
         if check.returncode != 0:
             counters["sing_box_config_rejected"] += 1
+            safe_text = (check.stdout + check.stderr).lower() if isinstance(check.stdout, str) else (check.stdout + check.stderr).lower().decode("utf-8", "replace")
+            if "deprecated" in safe_text:
+                counters["config_rejected_deprecated_option"] += 1
+            elif "unknown field" in safe_text or "invalid" in safe_text:
+                counters["config_rejected_invalid_field"] += 1
+            elif "unsupported" in safe_text:
+                counters["config_rejected_unsupported"] += 1
+            else:
+                counters["config_rejected_other"] += 1
             return counters
         counters["sing_box_config_ok"] += 1
 
@@ -183,6 +219,13 @@ def inspect_one(link, sing_box):
                 counters["control_https_other_status"] += 1
 
             if not (200 <= status < 400):
+                # Different public HTTPS host: distinguishes a gstatic-specific
+                # block from an inability to use the tunnel at all.
+                alternate_exit, alternate_status = curl_probe(
+                    port, "https://www.google.com/", timeout=10)
+                counters[f"alternate_google_curl_exit_{alternate_exit}"] += 1
+                if 200 <= alternate_status < 400:
+                    counters["alternate_google_https_ok"] += 1
                 return counters
             all_services = True
             for name, url in SERVICE_URLS.items():
