@@ -28,15 +28,8 @@ Users independently decide whether and how to use collected information.
 
 The project authors do not own, operate or administer external resources referenced by collected data.
 
-## Experimental signed sources
+## Independently verified subscriptions
 
-- [Mamin VPN signed bootstrap audit](MAMIN_SOURCE.md) validates RS256, checks
-  the cloud VLESS parser and tests HTTPS through sing-box. This source is
-  **audit-only** and never overwrites published subscriptions or router settings.
+An isolated GitHub Actions job checks a signed external catalogue against a pinned APK public key and tests HTTPS through individual tunnels. It publishes only when a minimum threshold is met; no router or local checker configuration is changed.
 
-## Private GWZHUB source (Mamin VPN)
-
-- [Mamin local/private last-good updater](MAMIN_HUB.md): independently validates a
-  signed catalogue, probes HTTPS through sing-box and keeps a private 0600
-  last-good file on GWZHUB. It is **not** a public VPN feed or a change to
-  the live Podkop router configuration.
+This feed is public at an unlisted address. A long path is not authorization, and verification from a cloud runner does not establish reachability from every network.

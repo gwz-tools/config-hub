@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""Verify Mamin VPN Android bootstrap RS256 with an exact hash-pinned APK key.
+"""Verify a pinned signed Android bootstrap with RS256 with an exact hash-pinned APK key.
 
 The key is selected by the audited APK SHA256 and bootstrap public key SHA256;
 this is not independent proof of the APK publisher identity.
 
-Safe for GWZHUB: writes ONLY new .verified files and a sequence state;
-never edits github-candidates.txt, SQLite DB, Podkop or services.
-Usage: python3 mamin_verify_import.py [--output-dir /opt/gwzhub/data]
+Fail-closed signature and timestamp validation; writes only requested verified candidate files.
+Usage: python3 edge_source_verify.py [--output-dir /opt/gwzhub/data]
 Requires: Python 3 stdlib and openssl command-line.
 """
 import argparse
@@ -38,7 +37,7 @@ def b64url(s):
 def verify_rs256(payload, signature, public_key_der=None):
     if not shutil.which("openssl"):
         raise RuntimeError("openssl executable not found")
-    with tempfile.TemporaryDirectory(prefix="mamin-signature-") as td:
+    with tempfile.TemporaryDirectory(prefix="edge-signature-") as td:
         p = Path(td)
         (p / "key.der").write_bytes(public_key_der if public_key_der is not None else base64.b64decode(PUBLIC_KEY_DER_B64))
         (p / "payload.bin").write_bytes(payload)
@@ -58,7 +57,7 @@ def verify_rs256(payload, signature, public_key_der=None):
 
 def atomic_write(path, content):
     path.parent.mkdir(parents=True, exist_ok=True)
-    fd, temporary = tempfile.mkstemp(prefix=".mamin-", dir=str(path.parent))
+    fd, temporary = tempfile.mkstemp(prefix=".edge-", dir=str(path.parent))
     try:
         with os.fdopen(fd, "wb") as f:
             f.write(content)
@@ -72,7 +71,7 @@ def atomic_write(path, content):
 
 
 def fetch_catalog():
-    req = urllib.request.Request(CATALOG_URL, headers={"User-Agent": "GWZHUB-MaminVerify/1.0"})
+    req = urllib.request.Request(CATALOG_URL, headers={"User-Agent": "RelayVerifier/1.0"})
     with urllib.request.urlopen(req, timeout=20) as res:
         if not res.geturl().startswith("https://"):
             raise ValueError("Redirect to insecure URL blocked")
@@ -109,7 +108,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--output-dir", default="/opt/gwzhub/data", help="Where to place verified candidate files")
     ap.add_argument("--catalog-file", help="Optional local JSON for offline validation")
-    ap.add_argument("--apk-file", help="Exact hash-pinned Mamin APK 0.9.29 supplying bootstrap RSA key")
+    ap.add_argument("--apk-file", help="Exact hash-pinned source APK supplying bootstrap RSA key")
     ap.add_argument("--diagnose", action="store_true", help="Show safe signature metadata on failure")
     a = ap.parse_args()
     root = Path(a.output_dir)
@@ -120,7 +119,7 @@ def main():
     signature = b64url(catalog.get("signature"))
     public_key_der = None
     if a.apk_file:
-        from mamin_signing_key import pinned_bootstrap_key
+        from edge_source_key import pinned_bootstrap_key
         public_key_der = pinned_bootstrap_key(a.apk_file)
     try:
         verify_rs256(payload, signature, public_key_der=public_key_der)
@@ -150,7 +149,7 @@ def main():
         raise ValueError("Missing / invalid timestamps or sequence")
     if issued > now + 300 or expiry <= now or expiry < issued:
         raise ValueError("Catalogue not valid at current system time")
-    state_path = root / "mamin-catalogue-sequence.json"
+    state_path = root / "edge-catalogue-sequence.json"
     old_sequence = -1
     old_hash = None
     payload_hash = hashlib.sha256(payload).hexdigest()
@@ -170,8 +169,8 @@ def main():
     # The existing GWZHUB checker handles VLESS Reality; do not push SS/Trojan to it.
     if not reality:
         raise ValueError("No VLESS Reality candidates compatible with current GWZHUB checker")
-    atomic_write(root / "mamin-candidates.verified.txt", ("\n".join(nodes) + "\n").encode())
-    atomic_write(root / "mamin-vless-reality.verified.txt", ("\n".join(reality) + "\n").encode())
+    atomic_write(root / "edge-candidates.verified.txt", ("\n".join(nodes) + "\n").encode())
+    atomic_write(root / "edge-vless-reality.verified.txt", ("\n".join(reality) + "\n").encode())
     atomic_write(state_path, json.dumps({"sequence": sequence, "expires_at": expiry,
                                          "payload_sha256": payload_hash},
                                         ensure_ascii=False, indent=2).encode())
@@ -180,7 +179,7 @@ def main():
     print("RSA key source:", "exact audited APK SHA256" if a.apk_file else "legacy candidate (for unit testing)")
     print("All nodes:", len(nodes), dict(Counter(x.split("://", 1)[0] for x in nodes)))
     print("VLESS Reality candidates:", len(reality))
-    print("Output:", root / "mamin-vless-reality.verified.txt")
+    print("Output:", root / "edge-vless-reality.verified.txt")
     print("Existing checker, DB, live subscriptions and Podkop unchanged")
 
 

@@ -25,14 +25,14 @@ def source_candidates(apk: Path, limit: int) -> list[str]:
     with tempfile.TemporaryDirectory(prefix="edge-signed-source-") as td:
         out = Path(td)
         proc = subprocess.run(
-            [sys.executable, str(Path(__file__).with_name("mamin_verify_import.py")),
+            [sys.executable, str(Path(__file__).with_name("edge_source_verify.py")),
              "--apk-file", str(apk), "--output-dir", str(out)],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
             timeout=100, check=False,
         )
         if proc.returncode:
             raise RuntimeError("Signature, freshness or schema check failed")
-        candidates = unique_candidates(out / "mamin-vless-reality.verified.txt", limit)
+        candidates = unique_candidates(out / "edge-vless-reality.verified.txt", limit)
         if not candidates:
             raise RuntimeError("No compatible signed candidates")
         return candidates

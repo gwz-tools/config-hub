@@ -3,7 +3,7 @@ import json
 import io
 import hashlib
 import zipfile
-import mamin_signing_key as signing_key
+import edge_source_key as signing_key
 from contextlib import redirect_stderr
 import subprocess
 import sys
@@ -13,10 +13,10 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-import mamin_verify_import as m
+import edge_source_verify as m
 
 
-class MaminImportTests(unittest.TestCase):
+class EdgeSourceImportTests(unittest.TestCase):
     def test_exact_apk_sha256_and_bootstrap_public_key(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -140,7 +140,7 @@ class MaminImportTests(unittest.TestCase):
                                   ['import', '--catalog-file', str(source),
                                    '--output-dir', str(output)]):
                     m.main()
-                stored = output / 'mamin-vless-reality.verified.txt'
+                stored = output / 'edge-vless-reality.verified.txt'
                 self.assertEqual(stored.read_text().strip(), link)
 
                 make_catalog(1)

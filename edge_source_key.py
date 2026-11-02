@@ -19,7 +19,7 @@ B64_RE = re.compile(rb"(?<![A-Za-z0-9+/])[A-Za-z0-9+/]{300,2200}={0,2}(?![A-Za-z
 def _canonical_key(der):
     if len(der) > 4096:
         return None
-    with tempfile.TemporaryDirectory(prefix="mamin-key-") as td:
+    with tempfile.TemporaryDirectory(prefix="edge-key-") as td:
         p = Path(td)
         (p / "key.der").write_bytes(der)
         result = subprocess.run(["openssl", "pkey", "-pubin", "-inform", "DER",
