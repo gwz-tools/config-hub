@@ -29,8 +29,11 @@ Actions → **Mamin VPN signed catalogue audit** → Run workflow.
 There is also a weekly read-only audit on Monday 04:39 UTC.
 
 The audit downloads into `$RUNNER_TEMP/mamin`, prints counts only,
-and removes raw links afterward. The cloud parser confirms syntax and
-public routability constraints; this is **not a working VPN test**.
+and removes raw links afterward. The cloud parser confirms syntax and public routability constraints. Then
+`mamin_probe.py` starts isolated sing-box tunnels and attempts the same
+real HTTPS checks as the existing cloud verifier (control URL, Gemini,
+Instagram, Facebook, YouTube). Only aggregate counts are printed.
+A successful GitHub-runner probe is **not proof of access from Tele2/T2**.
 
 For trusted private GWZHUB local use (persistent sequence tracking):
 
