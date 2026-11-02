@@ -79,8 +79,11 @@ def promote(root: Path, staged_sequence: Path, results: list[dict],
     """Replace ONLY private Mamin last-good; refuse zero/under-threshold feeds."""
     good = [r for r in results if isinstance(r, dict) and
             isinstance(r.get("line"), str) and r["line"].startswith("vless://")]
-    if len(good) < min_live:
-        raise ValueError(f"Only {len(good)} of {min_live} required verified tunnels")
+    previous_count = last_good_count(root)
+    # Hysteresis: do not halve the size of a previously healthy source overnight.
+    required = max(min_live, (previous_count + 1) // 2)
+    if len(good) < required:
+        raise ValueError(f"Only {len(good)} of {required} required verified tunnels")
     if not staged_sequence.is_file():
         raise ValueError("Missing signed catalogue sequence state")
     signed_state = json.loads(staged_sequence.read_text(encoding="utf-8"))
@@ -143,6 +146,7 @@ def run(args: argparse.Namespace) -> int:
                 status["candidates_tested"] = len(candidates)
                 results = probe_candidates(candidates, args.sing_box, args.workers)
                 status["end_to_end_passed"] = len(results)
+                status["pass_rate_pct"] = round(100 * len(results) / len(candidates), 1)
                 count = promote(root, stage / SEQUENCE_FILE, results,
                                 args.min_live, args.max_live)
                 status["last_good_count"] = count
