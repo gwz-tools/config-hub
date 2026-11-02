@@ -1,0 +1,46 @@
+name: Mamin APK public key forensic audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/mamin-apk-audit.yml"
+      - "mamin_apk_audit.py"
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Download user-provided APK for read-only examination
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --retry 2 \
+            --connect-timeout 15 --max-time 180 \
+            "https://www.tvbox.one/atv-release/Mamin-VPN-0.9.29.apk" \
+            --output "$RUNNER_TEMP/mamin.apk"
+          test "$(stat -c %s "$RUNNER_TEMP/mamin.apk")" -gt 1024
+          file "$RUNNER_TEMP/mamin.apk"
+          python3 - <<'PY'
+          import os, zipfile
+          assert zipfile.is_zipfile(os.environ["RUNNER_TEMP"] + "/mamin.apk"), "Not an APK/ZIP"
+          print("APK archive structurally recognized")
+          PY
+
+      - name: Find pinned and extracted public keys and verify real catalogue
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 mamin_apk_audit.py --apk "$RUNNER_TEMP/mamin.apk"
+
+      - name: Remove APK without executing it
+        if: always()
+        shell: bash
+        run: rm -f -- "$RUNNER_TEMP/mamin.apk"
