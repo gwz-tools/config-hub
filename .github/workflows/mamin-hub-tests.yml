@@ -1,0 +1,31 @@
+name: Mamin GWZHUB private-source tests
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "mamin_hub_update.py"
+      - "mamin_verify_import.py"
+      - "mamin_signing_key.py"
+      - "tests/test_mamin_hub_update.py"
+      - ".github/workflows/mamin-hub-tests.yml"
+  pull_request:
+    paths:
+      - "mamin_hub_update.py"
+      - "tests/test_mamin_hub_update.py"
+      - ".github/workflows/mamin-hub-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run private source fail-closed tests
+        run: python3 -m unittest discover -s tests -p 'test_mamin_hub_update.py' -v
+      - name: Check Python syntax
+        run: python3 -m py_compile mamin_hub_update.py mamin_verify_import.py mamin_signing_key.py mamin_probe.py
