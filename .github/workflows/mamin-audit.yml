@@ -6,6 +6,7 @@ on:
     paths:
       - "mamin_verify_import.py"
       - "tests/test_mamin_verify_import.py"
+      - "mamin_probe.py"
       - ".github/workflows/mamin-audit.yml"
   workflow_dispatch:
   schedule:
@@ -51,6 +52,37 @@ jobs:
               raise SystemExit("No candidate is compatible with cloud checker; publication blocked")
           print("Signature checked; no endpoint was published or sent to Podkop")
           PY
+
+      - name: Install sing-box for real tunnel checks
+        if: github.event_name != 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://github.com/SagerNet/sing-box/releases/download/v1.12.22/sing-box-1.12.22-linux-amd64.tar.gz" \
+            --output "$RUNNER_TEMP/sing-box.tar.gz"
+          tar -xzf "$RUNNER_TEMP/sing-box.tar.gz" -C "$RUNNER_TEMP"
+          sudo install -m 0755 "$RUNNER_TEMP/sing-box-1.12.22-linux-amd64/sing-box" /usr/local/bin/sing-box
+
+      - name: Probe real HTTPS through verified Mamin candidates
+        if: github.event_name != 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 mamin_probe.py \
+            --source "$RUNNER_TEMP/mamin/mamin-vless-reality.verified.txt" \
+            --max-candidates 20 --workers 4 \
+            > "$RUNNER_TEMP/mamin-report.json"
+          cat "$RUNNER_TEMP/mamin-report.json"
+          {
+            echo "## Mamin signed catalogue audit"
+            echo ""
+            echo "Only counts are shown; no endpoints or credentials are published."
+            echo ""
+            echo '~~~json'
+            cat "$RUNNER_TEMP/mamin-report.json"
+            echo '~~~'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Remove ephemeral catalogue files
         if: always()
