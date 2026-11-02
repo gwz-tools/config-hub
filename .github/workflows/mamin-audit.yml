@@ -14,7 +14,7 @@ on:
     - cron: "39 4 * * 1"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: gwz-mamin-audit
@@ -47,6 +47,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 mamin_verify_import.py --output-dir "$RUNNER_TEMP/mamin" --diagnose --apk-file "$RUNNER_TEMP/mamin.apk"
+          touch "$RUNNER_TEMP/mamin-signature-ok"
 
       - name: Check accepted VLESS against existing cloud parser
         if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-mamin-audit]')
@@ -95,6 +96,53 @@ jobs:
             cat "$RUNNER_TEMP/mamin-report.json"
             echo '~~~'
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish non-sensitive audit counters only
+        if: always() && (github.event_name != 'push' || contains(github.event.head_commit.message, '[run-mamin-audit]'))
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from datetime import datetime, timezone
+          import json
+          import os
+          from pathlib import Path
+          temp = Path(os.environ["RUNNER_TEMP"])
+          source = temp / "mamin-report.json"
+          status = {
+              "checked_at_utc": datetime.now(timezone.utc).isoformat(),
+              "rsa_signature_verified": (temp / "mamin-signature-ok").exists(),
+              "candidates_tested": 0,
+              "end_to_end_passed": 0,
+              "status": "uncompleted",
+              "published": False,
+              "note": "Cloud-side check only; never proof of reachability on Tele2/T2",
+          }
+          if source.exists():
+              report = json.loads(source.read_text())
+              status["status"] = "completed"
+              status["candidates_tested"] = int(report.get("candidate_count", 0))
+              status["end_to_end_passed"] = int(report.get("end_to_end_passed", 0))
+          out = Path("data/mamin-audit-status.json")
+          out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_text(json.dumps(status, indent=2, ensure_ascii=False) + "\n")
+          print("Safe audit counters:", status)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/mamin-audit-status.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update safe Mamin audit counters"
+            for attempt in 1 2 3; do
+              if git push; then
+                exit 0
+              fi
+              git fetch origin main
+              git rebase origin/main
+            done
+            echo "Unable to save audit counters after 3 attempts" >&2
+            exit 1
+          fi
 
       - name: Remove ephemeral catalogue files
         if: always()
