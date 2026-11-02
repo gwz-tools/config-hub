@@ -10,6 +10,25 @@ a public RS256 verification key pinned from Mamin VPN Android 0.9.29.
 The authenticity of a signed payload is not proof that its endpoints work
 or that the service author permits public redistribution of credentials.
 
+## Live verification failure — 2 November 2026
+
+The first actual GitHub audit failed closed with:
+`ValueError: RS256 signature INVALID: catalogue rejected`.
+
+This means the catalogue's signature did not validate against the currently
+pinned RSA public key. The cause is **not yet established**: it may be an
+incorrectly extracted key, a signer/key rotation, or a signed-message format
+difference. Unit tests with a generated key do not prove that the live
+catalogue was signed by Mamin. No nodes were imported or published.
+
+The importer's `--diagnose` mode reports only the pinned key fingerprint,
+SHA256 of the encoded payload, signature byte count and key id. It never
+prints the contents of unverified nodes. Run the audit again and compare
+the pinned key with the **bootstrap signature verification key from the
+original APK 0.9.29**, not an untrusted key supplied by the failed catalogue.
+Do not disable RS256 validation or accept a new signing key without
+an independent authenticated key-rotation confirmation.
+
 ## Security checks
 - Requires HTTPS to fetch the upstream bootstrap-v2 catalogue.
 - Checks pinned public key, signature, algorithm and key ID.
