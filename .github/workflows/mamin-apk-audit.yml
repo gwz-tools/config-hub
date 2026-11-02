@@ -9,7 +9,7 @@ on:
       - "mamin_apk_audit.py"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   inspect:
@@ -38,7 +38,31 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 mamin_apk_audit.py --apk "$RUNNER_TEMP/mamin.apk"
+          python3 mamin_apk_audit.py --apk "$RUNNER_TEMP/mamin.apk" | tee "$RUNNER_TEMP/mamin-apk-audit-status.txt"
+
+      - name: Commit public-only audit fingerprints
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p data
+          cp "$RUNNER_TEMP/mamin-apk-audit-status.txt" data/mamin-apk-audit-status.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/mamin-apk-audit-status.txt
+          if ! git diff --cached --quiet; then
+            git commit -m "Record non-sensitive Mamin APK key audit"
+            for attempt in 1 2 3; do
+              if git push; then
+                break
+              fi
+              git fetch origin main
+              git rebase origin/main
+              if [ "$attempt" -eq 3 ]; then
+                echo "Failed to publish audit fingerprints" >&2
+                exit 1
+              fi
+            done
+          fi
 
       - name: Remove APK without executing it
         if: always()
