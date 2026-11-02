@@ -47,6 +47,10 @@ python3 -m py_compile "$TEMP/mamin_hub_update.py" "$TEMP/mamin_verify_import.py"
 for name in mamin_hub_update.py mamin_verify_import.py mamin_signing_key.py cloud_verified.py; do
   install -m 0600 "$TEMP/$name" "$INSTALL_DIR/$name"
 done
+curl --fail --silent --show-error --location --retry 2 \
+  "$PROJECT/enable_mamin_cron.sh" -o "$TEMP/enable_mamin_cron.sh"
+sh -n "$TEMP/enable_mamin_cron.sh"
+install -m 0700 "$TEMP/enable_mamin_cron.sh" "$INSTALL_DIR/enable_mamin_cron.sh"
 
 if [ ! -s "$APK_PATH" ] ||
    ! echo "$EXPECTED_APK_SHA256  $APK_PATH" | sha256sum -c - >/dev/null 2>&1; then
@@ -67,3 +71,6 @@ echo "Inspect safe status:"
 echo "cat $STATE_DIR/status.json"
 echo "Private last-good feed (only after >=3 verified tunnels):"
 echo "$STATE_DIR/mamin-private-live.txt"
+
+echo "After a healthy first run, optionally enable six-hour checks:"
+echo "sh $INSTALL_DIR/enable_mamin_cron.sh"
