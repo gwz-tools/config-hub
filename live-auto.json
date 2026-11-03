@@ -8,7 +8,8 @@
       "tag": "GWZHUB-AUTO",
       "outbounds": [
         "GWZ-01",
-        "GWZ-02"
+        "GWZ-02",
+        "GWZ-03"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -38,6 +39,28 @@
     {
       "type": "vless",
       "tag": "GWZ-02",
+      "server": "145.63.143.205",
+      "server_port": 8444,
+      "uuid": "35c9f200-7520-4005-b78e-f8a2fb9f68f7",
+      "tls": {
+        "enabled": true,
+        "server_name": "pl1.meshbeat.online",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "firefox"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/api/v1/devices/10be32b380/telemetry",
+        "headers": {
+          "Host": "pl1.meshbeat.online"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-03",
       "server": "94.249.180.86",
       "server_port": 443,
       "uuid": "0de1d303-d7de-0001-8679-c4cb67e2e2cc",

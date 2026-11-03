@@ -1,7 +1,8 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-03 / 07:45 (Moscow)
-# Количество: 2
+# Date/Time: 2026-11-03 / 09:39 (Moscow)
+# Количество: 3
 
-vless://0de1d303-d7de-0001-8679-c4cb67e2e2cc@94.249.180.86:443?security=reality&encryption=none&pbk=WWeAHWUVD-phmnjNJ823cer0c4CMIbEs08AhsuEZmDc&headerType=none&type=tcp&flow=xtls-rprx-vision&sni=amd.com&sid=a696de84963656de#%F0%9F%87%A9%F0%9F%87%AA | GWZ | Germany
-vless://0de1d303-d7de-0001-8679-c4cb67e2e2cc@94.249.180.86:443?encryption=none&flow=xtls-rprx-vision&fp=&pbk=WWeAHWUVD-phmnjNJ823cer0c4CMIbEs08AhsuEZmDc&security=reality&sid=a696de84963656de&sni=amd.com&type=tcp#%F0%9F%87%A9%F0%9F%87%AA | GWZ | Germany 02
+vless://0de1d303-d7de-0001-8679-c4cb67e2e2cc@94.249.180.86:443?encryption=none&flow=xtls-rprx-vision&fp=&pbk=WWeAHWUVD-phmnjNJ823cer0c4CMIbEs08AhsuEZmDc&security=reality&sid=a696de84963656de&sni=amd.com&type=tcp#%F0%9F%87%A9%F0%9F%87%AA | GWZ | Germany
+vless://35c9f200-7520-4005-b78e-f8a2fb9f68f7@145.63.143.205:8444?encryption=none&fp=firefox&host=pl1.meshbeat.online&path=/api/v1/devices/10be32b380/telemetry&security=tls&sni=pl1.meshbeat.online&type=ws#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands
+vless://0de1d303-d7de-0001-8679-c4cb67e2e2cc@94.249.180.86:443?security=reality&encryption=none&pbk=WWeAHWUVD-phmnjNJ823cer0c4CMIbEs08AhsuEZmDc&headerType=none&type=tcp&flow=xtls-rprx-vision&sni=amd.com&sid=a696de84963656de#%F0%9F%87%A9%F0%9F%87%AA | GWZ | Germany 02
