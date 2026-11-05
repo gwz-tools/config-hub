@@ -1,324 +1,116 @@
-"""
-Config Hub
-History manager v2
-
-Tracks dataset history and
-individual source stability.
-"""
-
-import os
+"""Bounded GWZHUB collection history (not a VPN liveness checker)."""
+import hashlib
 import json
-from datetime import datetime
+from datetime import datetime, timezone
+from pathlib import Path
 
-
-HISTORY_DIR = "history"
-
-QUALITY_DIR = os.path.join(
-    HISTORY_DIR,
-    "quality"
-)
-
-CURRENT_FILE = "data/validated.txt"
-
-LAST_GOOD = os.path.join(
-    HISTORY_DIR,
-    "last_good.txt"
-)
-
-PREVIOUS = os.path.join(
-    HISTORY_DIR,
-    "previous_validated.txt"
-)
-
-STATUS_FILE = os.path.join(
-    HISTORY_DIR,
-    "source_status.json"
-)
-
-
+CURRENT_FILE = Path('data/validated.txt')
+LAST_GOOD = Path('history/last_good.txt')
+PREVIOUS = Path('history/previous_validated.txt')
+STATUS_FILE = Path('history/source_status.json')
+QUALITY_FILE = Path('history/quality/compact.json')
+SUCCESS_FILE = Path('history/recent_success.json')
+WINDOW_SIZE = 10
+WINDOW_MASK = (1 << WINDOW_SIZE) - 1
+MAX_RECORDS = 20_000
+MIN_VALID_RECORDS = 80
 DROP_LIMIT = 0.5
 
 
-def ensure_history():
-
-    os.makedirs(
-        HISTORY_DIR,
-        exist_ok=True
-    )
-
-    os.makedirs(
-        QUALITY_DIR,
-        exist_ok=True
-    )
-
-
 def read_lines(path):
-
-    if not os.path.exists(path):
+    if not path.exists():
         return []
-
-    with open(
-        path,
-        "r",
-        encoding="utf-8"
-    ) as f:
-
-        return [
-            x.strip()
-            for x in f.readlines()
-            if x.strip()
-        ]
+    return [s.strip() for s in path.read_text(encoding='utf-8').splitlines() if s.strip()]
 
 
-def save_lines(path, data):
-
-    with open(
-        path,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        for item in data:
-            f.write(
-                item + "\n"
-            )
+def fingerprint(line):
+    return hashlib.sha256(line.split('#', 1)[0].strip().encode('utf-8')).hexdigest()
 
 
-def load_quality_history():
+def write_text(path, content):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + '.tmp')
+    temporary.write_text(content, encoding='utf-8')
+    temporary.replace(path)
 
-    path = os.path.join(
-        QUALITY_DIR,
-        "sources.json"
-    )
 
-    if not os.path.exists(path):
+def write_json(path, value):
+    write_text(path, json.dumps(value, ensure_ascii=False, separators=(',', ':')) + '\n')
+
+
+def load_object(path):
+    if not path.exists():
         return {}
-
-    with open(
-        path,
-        "r",
-        encoding="utf-8"
-    ) as f:
-
-        return json.load(f)
-
-
-def save_quality_history(data):
-
-    path = os.path.join(
-        QUALITY_DIR,
-        "sources.json"
-    )
-
-    with open(
-        path,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        json.dump(
-            data,
-            f,
-            indent=2,
-            ensure_ascii=False
-        )
+    try:
+        value = json.loads(path.read_text(encoding='utf-8'))
+    except (ValueError, OSError) as exc:
+        raise RuntimeError(f'History file corrupt: {path}') from exc
+    if not isinstance(value, dict):
+        raise RuntimeError(f'History file invalid: {path}')
+    return value
 
 
-def update_quality(validated):
-
-    history = load_quality_history()
-
-    today = datetime.utcnow().strftime(
-        "%Y-%m-%d"
-    )
-
-
-    for source in validated:
-
-
-        if source not in history:
-
-            history[source] = {
-
-                "score": 100,
-
-                "success": 1,
-
-                "fails": 0,
-
-                "first_seen": today,
-
-                "last_seen": today
-            }
-
-
-        else:
-
-            history[source]["success"] += 1
-
-            history[source]["fails"] = 0
-
-            history[source]["last_seen"] = today
-
-
-    # отсутствующие источники
-
-    for source in list(history.keys()):
-
-        if source not in validated:
-
-            history[source]["fails"] += 1
-
-            history[source]["score"] -= 10
-
-
-            if history[source]["score"] < 0:
-
-                history[source]["score"] = 0
-
-
-    save_quality_history(
-        history
-    )
-
-
-    snapshot = os.path.join(
-        QUALITY_DIR,
-        today + ".json"
-    )
-
-
-    with open(
-        snapshot,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        json.dump(
-            history,
-            f,
-            indent=2,
-            ensure_ascii=False
-        )
+def advance_windows(current, previous):
+    """One presence bit per accepted collection, at most 10 runs and 20k hashes."""
+    seen = {fingerprint(s) for s in current if s.startswith('vless://')}
+    new = {}
+    for key in sorted(seen):
+        if len(new) >= MAX_RECORDS:
+            break
+        old = previous.get(key, 0)
+        old = old if isinstance(old, int) and 0 <= old <= WINDOW_MASK else 0
+        new[key] = ((old << 1) | 1) & WINDOW_MASK
+    if len(new) < MAX_RECORDS:
+        stale = []
+        for key, mask in previous.items():
+            if key in seen or not isinstance(mask, int):
+                continue
+            shifted = (mask << 1) & WINDOW_MASK
+            if shifted:
+                stale.append((shifted, key))
+        for mask, key in sorted(stale, reverse=True)[:MAX_RECORDS - len(new)]:
+            new[key] = mask
+    return new
 
 
 def update_history():
+    current = read_lines(CURRENT_FILE)
+    previous = read_lines(LAST_GOOD)
+    now = datetime.now(timezone.utc).isoformat(timespec='seconds')
+    status = {'time': now, 'current_count': len(current), 'previous_count': len(previous)}
+    if len(current) < MIN_VALID_RECORDS or (previous and len(current) < len(previous) * DROP_LIMIT):
+        status['decision'] = 'rejected_keep_previous'
+        write_json(STATUS_FILE, status)
+        print(json.dumps(status))
+        return False
 
-    ensure_history()
+    state = load_object(QUALITY_FILE)
+    if state and state.get('version') != 1:
+        raise RuntimeError('Unsupported compact history format')
+    prior = state.get('records', {})
+    if not isinstance(prior, dict):
+        raise RuntimeError('Invalid compact history records')
+    records = advance_windows(current, prior)
+    runs = load_object(SUCCESS_FILE)
+    summary = runs.get('runs', [])
+    if not isinstance(summary, list):
+        raise RuntimeError('Invalid success history')
+    summary = [x for x in summary if isinstance(x, dict)][-(WINDOW_SIZE - 1):]
+    summary.append({'time': now, 'collected': len(current), 'tracked': len(records)})
 
-
-    current = read_lines(
-        CURRENT_FILE
-    )
-
-
-    previous = read_lines(
-        LAST_GOOD
-    )
-
-
-    status = {
-
-        "time":
-            datetime.utcnow().isoformat(),
-
-        "current_count":
-            len(current),
-
-        "previous_count":
-            len(previous),
-
-        "decision":
-            ""
-    }
-
-
-    update_quality(
-        current
-    )
-
-
-    if not previous:
-
-
-        save_lines(
-            LAST_GOOD,
-            current
-        )
+    write_json(QUALITY_FILE, {'version': 1, 'window': WINDOW_SIZE, 'records': records})
+    write_json(SUCCESS_FILE, {'version': 1, 'runs': summary})
+    if previous:
+        write_text(PREVIOUS, '\n'.join(previous) + '\n')
+    write_text(LAST_GOOD, '\n'.join(current) + '\n')
+    status['decision'] = 'dataset_updated' if previous else 'initial_dataset_saved'
+    status['tracked_fingerprints'] = len(records)
+    status['successful_runs_retained'] = len(summary)
+    write_json(STATUS_FILE, status)
+    print(json.dumps(status))
+    return True
 
 
-        save_lines(
-            PREVIOUS,
-            current
-        )
-
-
-        status["decision"] = (
-            "initial_dataset_saved"
-        )
-
-
-    else:
-
-
-        if len(current) < len(previous) * DROP_LIMIT:
-
-
-            save_lines(
-                PREVIOUS,
-                previous
-            )
-
-
-            status["decision"] = (
-                "large_drop_detected_keep_previous"
-            )
-
-
-        else:
-
-
-            save_lines(
-                PREVIOUS,
-                previous
-            )
-
-
-            save_lines(
-                LAST_GOOD,
-                current
-            )
-
-
-            status["decision"] = (
-                "dataset_updated"
-            )
-
-
-    with open(
-        STATUS_FILE,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-
-        json.dump(
-            status,
-            f,
-            indent=2,
-            ensure_ascii=False
-        )
-
-
-    print(
-        json.dumps(
-            status,
-            indent=2,
-            ensure_ascii=False
-        )
-    )
-
-
-if __name__ == "__main__":
-
-    update_history()
+if __name__ == '__main__':
+    if not update_history():
+        raise SystemExit(1)
