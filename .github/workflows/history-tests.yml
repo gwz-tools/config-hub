@@ -1,0 +1,25 @@
+name: History compactness tests
+
+on:
+  pull_request:
+    paths:
+      - 'history_manager.py'
+      - 'top_pool.py'
+      - 'tests/test_history_compact.py'
+      - '.github/workflows/update.yml'
+      - '.github/workflows/history-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  history-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run compact history tests
+        run: python -m unittest discover -s tests -p 'test_history_compact.py' -v
+      - name: Verify module syntax
+        run: python -m py_compile history_manager.py top_pool.py
