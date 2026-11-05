@@ -6,6 +6,9 @@ on:
       - cloud_verified.py
       - cloud_health.py
       - cloud_diversity.py
+      - source_audit.py
+      - source_catalog.txt
+      - tests/test_source_audit.py
       - tests/test_cloud_diversity.py
       - tests/test_cloud_diversity_integration.py
       - tests/test_cloud_health.py
@@ -25,5 +28,7 @@ jobs:
       - uses: actions/checkout@v5
       - name: Test parser, dedup and empty-list protection
         run: python -m unittest discover -s tests -p "test_cloud_*.py" -v
+      - name: Source audit classification tests
+        run: python -m unittest discover -s tests -p "test_source_audit.py" -v
       - name: Compile Python
-        run: python -m py_compile cloud_verified.py cloud_health.py cloud_diversity.py
+        run: python -m py_compile cloud_verified.py cloud_health.py cloud_diversity.py source_audit.py
