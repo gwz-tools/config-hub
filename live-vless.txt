@@ -1,6 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-05 / 04:36 (Moscow)
+# Date/Time: 2026-11-05 / 05:14 (Moscow)
 # Количество: 1
 
 vless://a8321cfe-39a2-48a0-a918-f01f7d9006ed@145.63.143.205:8444?encryption=none&fp=firefox&host=pl1.meshbeat.online&path=/api/v1/devices/10be32b380/telemetry&security=tls&sni=pl1.meshbeat.online&type=ws#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands
