@@ -93,7 +93,39 @@ data class VlessProfile(
 
 /** A complete sing-box 1.14.x configuration. Split routing comes from the verified local policy snapshot. */
 object VpnConfig {
-    fun build(profile: VlessProfile, snapshot: PolicyStore.Snapshot, splitRouting: Boolean): String {
+    fun build(profile: VlessProfile, snapshot: PolicyStore.Snapshot, splitRouting: Boolean): String =
+        buildWithOutbounds(JSONArray().put(profile.outbound()), snapshot, splitRouting)
+
+    /**
+     * sing-box URLTest performs real HTTP probes through each VLESS node, chooses
+     * a working outbound, and reevaluates every 3 minutes. No simulated connection.
+     * The same verified DIRECT/PROXY rules are used for manual and AUTO.
+     */
+    fun buildAuto(profiles: List<VlessProfile>, snapshot: PolicyStore.Snapshot, splitRouting: Boolean): String {
+        require(profiles.isNotEmpty()) { "Нет VLESS-узлов для автоматического подключения" }
+        val candidates = profiles.take(12)
+        val outboundList = JSONArray()
+        val tags = JSONArray()
+        candidates.forEachIndexed { index, profile ->
+            val tag = "node-${index + 1}"
+            tags.put(tag)
+            outboundList.put(profile.outbound().put("tag", tag))
+        }
+        outboundList.put(JSONObject().put("type", "urltest").put("tag", "proxy")
+            .put("outbounds", tags)
+            .put("url", "https://www.gstatic.com/generate_204")
+            .put("interval", "3m")
+            .put("tolerance", 50)
+            .put("idle_timeout", "30m")
+            .put("interrupt_exist_connections", true))
+        return buildWithOutbounds(outboundList, snapshot, splitRouting)
+    }
+
+    private fun buildWithOutbounds(
+        outboundList: JSONArray,
+        snapshot: PolicyStore.Snapshot,
+        splitRouting: Boolean
+    ): String {
         fun list(file: String): JSONArray = JSONArray().apply {
             snapshot.directory.resolve(file).useLines { lines ->
                 lines.map(String::trim).filter { it.isNotEmpty() && !it.startsWith('#') }.forEach { put(it) }
@@ -131,8 +163,7 @@ object VpnConfig {
                 .put("address", JSONArray().put("172.19.0.1/30").put("fdfe:dcba:9876::1/126"))
                 .put("mtu", 1500).put("auto_route", true).put("strict_route", true)
                 .put("dns_mode", "hijack").put("stack", "system")))
-            put("outbounds", JSONArray().put(profile.outbound())
-                .put(JSONObject().put("type", "direct").put("tag", "direct")))
+            put("outbounds", outboundList.put(JSONObject().put("type", "direct").put("tag", "direct")))
             put("route", JSONObject().put("auto_detect_interface", true)
                 .put("rules", rules).put("default_domain_resolver", "local").put("final", "proxy"))
         }.toString()
