@@ -1,6 +1,6 @@
 package ru.prostokvn.app
 
-import android.net.Uri
+import java.net.URLDecoder
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URI
@@ -30,14 +30,24 @@ data class VlessProfile(
             val uri = try { URI(trimmed) } catch (_: Exception) { throw IllegalArgumentException("Некорректная VLESS-ссылка") }
             require(uri.scheme.equals("vless", ignoreCase = true)) { "Нужна ссылка vless://" }
             require(uri.rawUserInfo != null && !uri.rawUserInfo.contains(':')) { "Не указан UUID VLESS" }
-            val user = Uri.decode(uri.rawUserInfo)
+            val user = URLDecoder.decode(uri.rawUserInfo, "UTF-8")
             try { UUID.fromString(user) } catch (_: Exception) { throw IllegalArgumentException("Некорректный UUID") }
             val server = uri.host?.trim('[', ']')?.takeIf { it.isNotBlank() }
                 ?: throw IllegalArgumentException("Не указан сервер")
             require(server.length <= 253 && !server.any { it.isWhitespace() }) { "Некорректный сервер" }
             require(uri.port in 1..65535) { "Не указан порт" }
-            val query = Uri.parse(trimmed)
-            fun param(name: String, default: String = "") = (query.getQueryParameter(name) ?: default).trim()
+            // java.net.URI keeps parsing testable without Android runtime stubs.
+            val params = (uri.rawQuery ?: "").split("&").mapNotNull { field ->
+                val key = field.substringBefore("=", "")
+                if (key.isBlank()) null else {
+                    try {
+                        URLDecoder.decode(key, "UTF-8") to
+                            URLDecoder.decode(field.substringAfter("=", ""), "UTF-8")
+                    } catch (_: Exception) { null }
+                }
+            }.toMap()
+            fun param(name: String, default: String = "") =
+                (params[name] ?: default).trim()
             val security = param("security", "tls").lowercase()
             require(security == "tls" || security == "reality") { "Поддерживаются VLESS TLS и Reality" }
             val type = param("type", "tcp").lowercase()
@@ -47,11 +57,11 @@ data class VlessProfile(
             require(flow.isEmpty() || type == "tcp") { "Vision требует TCP" }
             val pk = param("pbk")
             if (security == "reality") require(pk.length in 32..100) { "Не указан публичный ключ Reality (pbk)" }
-            val sni = param("sni", server)
-            require(sni.isNotEmpty() && sni.length <= 253) { "Некорректный SNI" }
+            val sni = param("sni").ifBlank { server }
+            require(sni.isNotEmpty() && sni.length <= 253 && !sni.any { it.isWhitespace() }) { "Некорректный SNI" }
             val fp = param("fp", "chrome")
             require(fp.isNotEmpty() && fp.length <= 32) { "Некорректный fingerprint" }
-            val name = Uri.decode(uri.rawFragment ?: "").take(64).ifBlank { server }
+            val name = (uri.fragment ?: "").take(64).ifBlank { server }
             return VlessProfile(server, uri.port, user, name, security, sni, fp, pk,
                 param("sid"), flow, type, param("path", "/"), param("host"), param("serviceName"))
         }
