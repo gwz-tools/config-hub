@@ -12,6 +12,17 @@ android {
         versionCode = 4
         versionName = "0.1.3-test"
     }
+    // Ship one native VPN engine per CPU architecture instead of all four in every APK.
+    // Builds: app-arm64-v8a-debug.apk (current Samsung/most phones), plus
+    // armeabi-v7a, x86 and x86_64 variants for older phones and emulators.
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+            isUniversalApk = false
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
