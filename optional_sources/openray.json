@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "OpenRay Top100",
+  "enabled_for_production": false,
+  "audit_enabled": true,
+  "source_repository": "https://github.com/sakha1370/OpenRay",
+  "url": "https://raw.githubusercontent.com/sakha1370/OpenRay/refs/heads/main/output/main_top100_checked.txt",
+  "kind": "mixed_uri_subscription",
+  "allowed_schemes": [
+    "vless"
+  ],
+  "max_download_bytes": 100000,
+  "min_total_lines": 40,
+  "min_vless_candidates": 5,
+  "max_vless_candidates": 100,
+  "network_timeout_seconds": 15,
+  "excluded_exit_country_codes": [
+    "RU"
+  ],
+  "notes": "Optional discovery only; does not affect existing LibertyVPN, ProfileGrid, Shishka or other working source pools. Geo/IP exit requires later active geolocation and HTTPS tunnel testing. Source labels are not proof of exit geography."
+}

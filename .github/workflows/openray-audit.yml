@@ -1,0 +1,32 @@
+name: Optional OpenRay source audit
+
+on:
+  pull_request:
+    paths:
+      - "optional_sources/**"
+      - "tests/test_openray_audit.py"
+      - ".github/workflows/openray-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Offline source guards
+        run: python -m unittest discover -s tests -p 'test_openray_audit.py' -v
+      - name: Download bounded OpenRay top100 and inspect
+        run: python optional_sources/audit_openray.py --output "$RUNNER_TEMP/openray-audit.json"
+      - name: Publish non-sensitive audit summary as artifact only
+        uses: actions/upload-artifact@v4
+        with:
+          name: openray-audit-summary
+          path: ${{ runner.temp }}/openray-audit.json
+          retention-days: 7
