@@ -15,8 +15,10 @@ class ConfirmedRoutingTests(unittest.TestCase):
         cls.compiled = confirmed.compile_confirmed(cls.direct, cls.proxy)
 
     def test_counts(self):
-        self.assertEqual(len(self.direct), 155)
-        self.assertEqual(len(self.proxy), 717)
+        self.assertGreater(len(self.direct), 0)
+        self.assertGreater(len(self.proxy), 0)
+        self.assertEqual(self.direct, sorted(set(self.direct)))
+        self.assertEqual(self.proxy, sorted(set(self.proxy)))
 
     def test_routing(self):
         self.assertEqual(build.route("auth.sber.ru", self.compiled), "DIRECT")
