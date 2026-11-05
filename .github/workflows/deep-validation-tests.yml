@@ -1,0 +1,28 @@
+name: Deep validation diagnostics unit checks
+
+on:
+  pull_request:
+    paths:
+      - "diagnostics/**"
+      - "tests/test_sustained_diagnostics.py"
+      - ".github/workflows/deep-validation-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Validate Python syntax
+        run: python -m py_compile diagnostics/sustained.py
+      - name: Diagnostics offline test suite
+        run: python -m unittest discover -s tests -p 'test_sustained_diagnostics.py' -v
+      - name: Existing core verification tests
+        run: python -m unittest discover -s tests -p 'test_cloud_verified.py' -v
