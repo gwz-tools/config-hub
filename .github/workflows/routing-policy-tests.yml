@@ -1,0 +1,77 @@
+name: Routing policy checks
+
+on:
+  pull_request:
+    paths:
+      - "routing/**"
+      - "tests/test_routing_policy.py"
+      - "tests/test_podkop_import.py"
+      - "tests/test_confirmed_routing.py"
+      - "tests/test_routing_bundle.py"
+      - "tests/test_routing_feed_client.py"
+      - ".github/workflows/routing-policy-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Compile policy without deploying to routers
+        run: |
+          python routing/build.py --out /tmp/gwz-routing-generated
+          python routing/export_ruleset.py --output /tmp/gwz-podkop-rulesets
+          python routing/build_confirmed.py --output /tmp/gwz-confirmed
+          python routing/publish_bundle.py --output /tmp/gwz-routing-bundle
+          python -m py_compile routing/release_to_branch.py routing/feed_client_reference.py
+      - name: Test domains, conflicts, CIDR and legacy import
+        run: |
+          python -m unittest discover -s tests -p "test_routing_policy.py" -v
+          python -m unittest discover -s tests -p "test_podkop_import.py" -v
+          python -m unittest discover -s tests -p "test_confirmed_routing.py" -v
+          python -m unittest discover -s tests -p "test_routing_bundle.py" -v
+          python -m unittest discover -s tests -p "test_routing_feed_client.py" -v
+      - name: Check generated outputs
+        run: |
+          test -s /tmp/gwz-routing-generated/rules.json
+          test -s /tmp/gwz-routing-generated/review.txt
+          test -s /tmp/gwz-confirmed/direct.txt
+          test -s /tmp/gwz-confirmed/proxy.txt
+          test -s /tmp/gwz-routing-bundle/manifest.json
+          python -m json.tool /tmp/gwz-routing-generated/rules.json >/dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("/tmp/gwz-podkop-rulesets")
+          for action in ("direct","proxy","block"):
+              doc=json.loads((root/f"{action}-domains.rule-set.json").read_text())
+              assert doc["version"] == 3
+              assert isinstance(doc["rules"], list)
+          report=json.loads((root/"build-report.json").read_text())
+          assert not report["deployment_eligible"], "No router exports: must remain staging only"
+          PY
+      - name: Compile rule-set with actual sing-box 1.12.22
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 2 --max-time 90 \
+            https://github.com/SagerNet/sing-box/releases/download/v1.12.22/sing-box-1.12.22-linux-amd64.tar.gz \
+            -o "$RUNNER_TEMP/sing-box.tar.gz"
+          tar -xzf "$RUNNER_TEMP/sing-box.tar.gz" -C "$RUNNER_TEMP"
+          SINGBOX="$RUNNER_TEMP/sing-box-1.12.22-linux-amd64/sing-box"
+          "$SINGBOX" version
+          for kind in direct proxy block; do
+            "$SINGBOX" rule-set compile \
+              --output "$RUNNER_TEMP/$kind.srs" \
+              "/tmp/gwz-podkop-rulesets/$kind-domains.rule-set.json"
+            test -s "$RUNNER_TEMP/$kind.srs"
+            "$SINGBOX" rule-set compile --output "$RUNNER_TEMP/confirmed-$kind.srs" "/tmp/gwz-confirmed/$kind.rule-set.json"
+            test -s "$RUNNER_TEMP/confirmed-$kind.srs"
+          done
