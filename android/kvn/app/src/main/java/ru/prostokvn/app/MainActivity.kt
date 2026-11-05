@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     private val consent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && VpnService.prepare(this) == null) {
-            KvnVpnService.requestStart(this)
+            startVpnSafely()
         } else if (result.resultCode != Activity.RESULT_CANCELED) {
             Toast.makeText(this, "Разрешение VPN не выдано", Toast.LENGTH_LONG).show()
         }
@@ -49,11 +49,21 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         // Keep automatic routing checks active even when settings are never opened.
         PolicyRefreshWorker.configure(this)
+        // A native crash resets the in-memory flow; restore the redacted last
+        // startup stage so users do not see a misleading clean "VPN выключен".
+        render(VpnState.value.value)
     }
 
     private fun toggleVpn() {
         when (VpnState.value.value.phase) {
-            VpnState.Phase.ON, VpnState.Phase.STARTING -> KvnVpnService.requestStop(this)
+            VpnState.Phase.ON, VpnState.Phase.STARTING -> {
+                try { KvnVpnService.requestStop(this) }
+                catch (e: RuntimeException) {
+                    VpnDiagnostics.failure(this, e)
+                    VpnState.update(VpnState.Phase.ERROR,
+                        "Android отказал в остановке VPN (${e.javaClass.simpleName})")
+                }
+            }
             VpnState.Phase.STOPPING -> Unit
             VpnState.Phase.OFF, VpnState.Phase.ERROR -> {
                 // A manual VLESS profile is optional. AUTO connects from the
@@ -74,8 +84,19 @@ class MainActivity : ComponentActivity() {
                 }
                 val permission = VpnService.prepare(this)
                 if (permission != null) consent.launch(permission)
-                else KvnVpnService.requestStart(this)
+                else startVpnSafely()
             }
+        }
+    }
+
+    private fun startVpnSafely() {
+        VpnDiagnostics.enter(this, "start")
+        try {
+            KvnVpnService.requestStart(this)
+        } catch (e: RuntimeException) {
+            VpnDiagnostics.failure(this, e)
+            VpnState.update(VpnState.Phase.ERROR,
+                "Android отказал в запуске VPN (${e.javaClass.simpleName})")
         }
     }
 
@@ -106,7 +127,7 @@ class MainActivity : ComponentActivity() {
             }
             VpnState.Phase.OFF -> {
                 label.text = "Включить"
-                detail.text = "VPN выключен"
+                detail.text = VpnDiagnostics.summary(this) ?: "VPN выключен"
                 button.isEnabled = true
             }
         }
