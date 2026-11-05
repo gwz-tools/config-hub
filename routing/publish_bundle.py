@@ -50,6 +50,8 @@ def verify_bundle(files, manifest):
     if set(files) != set(manifest["files"]):
         raise ValueError("Incomplete routing snapshot")
     for name, meta in manifest["files"].items():
+        if not isinstance(meta, dict) or type(meta.get("bytes")) is not int or not 0 <= meta["bytes"] <= 2_000_000:
+            raise ValueError("Invalid or oversized file metadata")
         data = files[name]
         if len(data) != meta["bytes"] or hashlib.sha256(data).hexdigest() != meta["sha256"]:
             raise ValueError("Hash/size mismatch for " + name)
@@ -61,6 +63,13 @@ def verify_bundle(files, manifest):
         actual = ruleset.get("rules", [])
         if actual != ([{"domain_suffix": expected}] if expected else []):
             raise ValueError("Rule-set does not match plain text")
+    fingerprint = hashlib.sha256(
+        json.dumps(manifest["files"], sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()[:20]
+    if manifest.get("version") != fingerprint:
+        raise ValueError("Manifest version does not match declared assets")
+    if manifest.get("default_route") != "PROXY":
+        raise ValueError("Unexpected default route")
     return True
 
 
