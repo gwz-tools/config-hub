@@ -7,7 +7,6 @@ Uses a single git commit for manifest and six sibling assets.
 """
 import argparse
 import os
-import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -51,6 +50,13 @@ def main():
         url = run("git", "remote", "get-url", opts.remote, cwd=Path.cwd()).stdout.strip()
         if not url:
             raise RuntimeError("Cannot identify authenticated repository remote")
+        token = os.getenv("GITHUB_TOKEN")
+        repo = os.getenv("GITHUB_REPOSITORY")
+        if token and repo:
+            # Dedicated temporary checkout; credential is not committed or logged.
+            url = "https://x-access-token:" + token + "@github.com/" + repo + ".git"
+        elif not opts.dry_run:
+            raise RuntimeError("GITHUB_TOKEN and GITHUB_REPOSITORY required for publish")
         run("git", "remote", "add", "origin", url, cwd=staging)
         found = run("git", "ls-remote", "--heads", "origin", BRANCH, cwd=staging).stdout.strip()
         if found:
