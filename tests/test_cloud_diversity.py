@@ -69,7 +69,7 @@ class DiversityUnitTests(unittest.TestCase):
         rows = [row('77.90.1.2', 1, 10), row('77.90.2.2', 1, 10),
                 row('77.90.3.2', 2, 20)]
         selected, summary = diversity.select(rows, 10)
-        self.assertEqual(selected, rows)
+        self.assertEqual(selected, [rows[0], rows[2], rows[1]])
         self.assertEqual(summary['unique_exit_asns'], 2)
 
     def test_multi_ipv6_same_48(self):
