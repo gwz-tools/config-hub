@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - cloud_verified.py
+      - cloud_health.py
+      - tests/test_cloud_health.py
       - tests/test_cloud_verified.py
       - .github/workflows/cloud-verified.yml
       - .github/workflows/cloud-tests.yml
@@ -19,6 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Test parser, dedup and empty-list protection
-        run: python -m unittest discover -s tests -p "test_cloud_verified.py" -v
+        run: python -m unittest discover -s tests -p "test_cloud_*.py" -v
       - name: Compile Python
-        run: python -m py_compile cloud_verified.py
+        run: python -m py_compile cloud_verified.py cloud_health.py

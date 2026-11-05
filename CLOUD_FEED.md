@@ -62,3 +62,27 @@ variables → Actions**. Never paste tokens into repository files or chat.
 The mirror is best-effort (`continue-on-error`): a Dropbox API outage cannot
 roll back the valid GitHub feed. A Dropbox download link must be created and
 checked separately; uploading alone does not create a public subscription URL.
+
+## Ranked cloud tunnel history (Step 2)
+
+The 6-hour `cloud-verified.yml` run now rotates candidates across the complete
+geographically balanced discovery list. Up to one third of each batch retests
+previously successful nodes; the remainder explores candidates not reached by
+previous runs. This prevents permanent first-48 selection bias.
+
+`cloud_health.py` keeps a bounded `data/cloud-health.json` ledger of actual
+VLESS **tunnel** tests, indexed by SHA-256 connection fingerprint (no VLESS URI,
+UUID, hostname or secret in the ledger). Each tested node stores up to 32
+observations for seven days. Unprobed nodes are not failures, and an all-zero
+cloud run does not count against nodes (the rotation cursor still advances).
+
+Published candidates must pass HTTPS via their own tunnel **during this run**.
+They are ranked 45% 24h success rate, 35% seven-day success rate (both
+smoothed), 15% latency, 5% freshness. This is **cloud vantage availability**:
+it is not a speed test, Russian ISP check, guarantee of future availability,
+or a replacement for local Podkop URLTest checks. After an insufficient passing
+sample, the last-good subscription stays in place.
+
+The existing public `cloud-vless.txt` remains the consumption format. There is
+no change to any router. The health ledger is bounded to 500 nodes so GitHub
+does not become a new history warehouse.
