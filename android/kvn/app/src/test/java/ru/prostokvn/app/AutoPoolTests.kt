@@ -53,6 +53,21 @@ class AutoPoolTests {
             .getJSONObject(1).getString("outbound"))
     }
 
+    @Test fun exportActualAutoConfigForNativeSingBoxValidation() {
+        val destination = System.getProperty("kvn.validation.json") ?: return
+        val directory = temporary.newFolder()
+        listOf("block", "direct", "proxy").forEach { action ->
+            File(directory, "${action}.txt").writeText(if (action == "direct") "example.ru\n" else "")
+        }
+        val snapshot = PolicyStore.Snapshot("test", directory, JSONObject())
+        val profile = VlessProfile.parse(vless("one.example.com"))
+        val output = File(destination)
+        output.parentFile?.mkdirs()
+        output.writeText(VpnConfig.buildAuto(listOf(profile), snapshot, true))
+        assertEquals("urltest", JSONObject(output.readText()).getJSONArray("outbounds")
+            .getJSONObject(1).getString("type"))
+    }
+
     @Test fun manualOutboundDoesNotUseUrltest() {
         val directory = temporary.newFolder()
         listOf("block", "direct", "proxy").forEach { File(directory, "$it.txt").writeText("") }
