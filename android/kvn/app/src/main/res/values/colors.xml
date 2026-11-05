@@ -1,0 +1,10 @@
+<resources>
+  <color name="kvn_red">#B71921</color>
+  <color name="kvn_red_dark">#89151C</color>
+  <color name="kvn_ink">#212126</color>
+  <color name="kvn_muted">#635F5F</color>
+  <color name="kvn_background">#FAF8F5</color>
+  <color name="kvn_surface">#FFFFFF</color>
+  <color name="kvn_border">#E9DFD8</color>
+  <color name="kvn_icon_background">#FFF8EF</color>
+</resources>
