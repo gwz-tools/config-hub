@@ -45,6 +45,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Keep automatic routing checks active even when settings are never opened.
+        PolicyRefreshWorker.configure(this)
+    }
+
     private fun toggleVpn() {
         when (VpnState.value.value.phase) {
             VpnState.Phase.ON, VpnState.Phase.STARTING -> KvnVpnService.requestStop(this)
