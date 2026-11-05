@@ -49,6 +49,18 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew --no-daemon --console=plain :app:assembleDebug :app:testDebugUnitTest :app:lintDebug
+      - name: Validate Kotlin-generated VPN config with upstream sing-box 1.14.4
+        shell: bash
+        run: |
+          set -euo pipefail
+          TARBALL="$RUNNER_TEMP/sing-box-1.14.4-linux-amd64.tar.gz"
+          curl --fail --location --silent --show-error --connect-timeout 15 --max-time 120 \
+            'https://github.com/SagerNet/sing-box/releases/download/v1.14.4/sing-box-1.14.4-linux-amd64.tar.gz' \
+            --output "$TARBALL"
+          echo "699a1b510aa4396b2176d32d1181920399ebf1e267835da6f3b598d0f7c24968  $TARBALL" | sha256sum -c -
+          tar -xzf "$TARBALL" -C "$RUNNER_TEMP"
+          test -s app/build/ci-validation/vpn-auto.json
+          "$RUNNER_TEMP/sing-box-1.14.4-linux-amd64/sing-box" check -c app/build/ci-validation/vpn-auto.json
       - name: Verify ARM64 and other ABI APKs, record SHA-256
         run: python3 scripts/check_apk_abis.py app/build/outputs/apk/debug
       - name: Publish APK as downloadable test artifact
