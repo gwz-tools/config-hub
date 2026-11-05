@@ -144,7 +144,7 @@ SOURCES = [
         "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/refs/heads/main/Splitted-By-Protocol/vless.txt",
         "type": "github",
         "priority": 85,
-        "enabled": True,
+        "enabled": False,
         "remark_mode": "keep",
         "tags": ["vless", "additional", "discovery"]
     },
@@ -217,6 +217,112 @@ SOURCES = [
         "enabled": True,
         "remark_mode": "keep",
         "tags": ["vless", "additional", "discovery"]
+    },
+
+    # ========================================================
+    # VERIFIED PUBLIC FEEDS: SOURCE AUDIT 2026-11-05
+    # These respond with VLESS. Reachability of nodes is checked downstream.
+    # Avoid mirroring the same upstream across GitHub/GitLab/Codeberg.
+    # ========================================================
+
+    {
+        "name": "sakha_openray",
+        "url": "https://raw.githubusercontent.com/sakha1370/OpenRay/main/output/all_valid_proxies.txt",
+        "type": "github",
+        "priority": 88,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless","mamin_discovery"]
+    },
+
+    {
+        "name": "cyberportal_cp005",
+        "url": "https://gitverse.ru/cyberportal/wl/content/master/CP-005.txt",
+        "type": "gitverse",
+        "priority": 86,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless","cyberportal","mobile"]
+    },
+
+    {
+        "name": "cyberportal_cp038",
+        "url": "https://gitverse.ru/cyberportal/wl/content/master/CP-038.txt",
+        "type": "gitverse",
+        "priority": 85,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless","cyberportal","lite"]
+    },
+
+    {
+        "name": "cyberportal_cp041",
+        "url": "https://gitverse.ru/cyberportal/wl/content/master/CP-041.txt",
+        "type": "gitverse",
+        "priority": 83,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless","cyberportal","mix"]
+    },
+
+    {
+        "name": "cyberportal_cp002",
+        "url": "https://gitverse.ru/cyberportal/wl/content/master/CP-002.txt",
+        "type": "gitverse",
+        "priority": 75,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless","cyberportal","black"]
+    },
+
+    {
+        "name": "cyberportal_cp003",
+        "url": "https://gitverse.ru/cyberportal/wl/content/master/CP-003.txt",
+        "type": "gitverse",
+        "priority": 74,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless","cyberportal","mobile"]
+    },
+
+    {
+        "name": "mehrtat_vless",
+        "url": "https://raw.githubusercontent.com/mehrtat/vless-collector/main/vless.txt",
+        "type": "github",
+        "priority": 73,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless","mamin_discovery"]
+    },
+
+    {
+        "name": "roosterkid_v2ray",
+        "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_RAW.txt",
+        "type": "github",
+        "priority": 72,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless","mamin_discovery"]
+    },
+
+    {
+        "name": "igareck_white_mobile",
+        "url": "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt",
+        "type": "github",
+        "priority": 71,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless","igareck","mobile"]
+    },
+
+    {
+        "name": "igareck_white_cidr",
+        "url": "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt",
+        "type": "github",
+        "priority": 70,
+        "enabled": True,
+        "remark_mode": "keep",
+        "tags": ["vless","igareck","white_list"]
     },
 
     # ========================================================

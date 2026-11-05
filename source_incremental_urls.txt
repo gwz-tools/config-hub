@@ -1,0 +1,13 @@
+cyber_cp005 https://gitverse.ru/cyberportal/wl/content/master/CP-005.txt
+cyber_cp039 https://gitverse.ru/cyberportal/wl/content/master/CP-039.txt
+cyber_cp038 https://gitverse.ru/cyberportal/wl/content/master/CP-038.txt
+cyber_cp002 https://gitverse.ru/cyberportal/wl/content/master/CP-002.txt
+cyber_cp003 https://gitverse.ru/cyberportal/wl/content/master/CP-003.txt
+cyber_cp041 https://gitverse.ru/cyberportal/wl/content/master/CP-041.txt
+mehrtat_vless https://raw.githubusercontent.com/mehrtat/vless-collector/main/vless.txt
+roosterkid_v2ray https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_RAW.txt
+sakha_openray https://raw.githubusercontent.com/sakha1370/OpenRay/main/output/all_valid_proxies.txt
+igareck_white_mobile https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt
+igareck_white_cidr https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt
+matin_base64 https://raw.githubusercontent.com/MatinGhanbari/v2ray-configs/main/subscriptions/filtered/subs/vless.txt
+au1rxx_base64 https://raw.githubusercontent.com/Au1rxx/free-vpn-subscriptions/main/output/v2ray-base64.txt
