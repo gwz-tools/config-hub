@@ -1,0 +1,31 @@
+name: Validate Android app release metadata
+on:
+  push:
+    paths: ["app-release.json", ".github/workflows/app-release-check.yml"]
+  pull_request:
+    paths: ["app-release.json", ".github/workflows/app-release-check.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - run: |
+          python - <<'PY'
+          import json, urllib.parse
+          d = json.load(open("app-release.json", encoding="utf-8"))
+          assert d["schema_version"] == 1
+          assert type(d["version_code"]) is int and 0 < d["version_code"] <= 2100000000
+          assert type(d["version_name"]) is str and 0 < len(d["version_name"]) < 40
+          u = urllib.parse.urlsplit(d["release_page"])
+          assert u.scheme == "https" and u.netloc == "github.com"
+          assert u.path.startswith("/gwz-tools/config-hub/releases/tag/")
+          assert not u.username and not u.password and not u.query and not u.fragment
+          print("App release metadata format valid")
+          PY
