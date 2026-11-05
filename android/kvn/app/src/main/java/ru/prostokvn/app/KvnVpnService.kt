@@ -182,6 +182,10 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
             .setOngoing(true).setOnlyAlertOnce(true).build()
     }
     private fun updateNotification(status: String) {
+        if (Build.VERSION.SDK_INT >= 33 &&
+            androidx.core.content.ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.POST_NOTIFICATIONS
+            ) != android.content.pm.PackageManager.PERMISSION_GRANTED) return
         getSystemService(NotificationManager::class.java).notify(NOTIFICATION_ID, notification(status))
     }
 
