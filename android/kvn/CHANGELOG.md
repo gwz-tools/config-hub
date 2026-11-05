@@ -1,3 +1,12 @@
+## 0.1.5-test — startup diagnostics / launcher repair (device verification pending)
+
+- Catch Android service launch exceptions instead of terminating the activity immediately.
+- Persist only redacted VPN startup stages and error types, even across process termination.
+- Render prior incomplete startup stage on the home screen after reopening; do not claim connected on error.
+- Restore white internal elements of the launcher mark without reinstating external white square.
+- Validate actual Kotlin-generated AUTO VLESS config against official checksum-pinned sing-box 1.14.4 CLI during CI.
+- Debug signing and actual Android 17 device traffic are not CI-proven; do not distribute as a verified VPN yet.
+
 ## 0.1.4-test — AUTO GWZHUB (device check pending)
 
 - Default one-button start from verified/live-vless.txt with independent cloud-vless.txt fallback; no pasted link required.
