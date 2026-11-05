@@ -6,6 +6,7 @@ Checks are indicative of the runner's network, not the subscriber's ISP.
 Never replace a usable published subscription with an empty result.
 """
 import argparse
+import cloud_health
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
@@ -229,7 +230,13 @@ def unique_candidates(source, limit):
 
 
 def build(args):
-    candidates = unique_candidates(args.source, args.max_candidates)
+    # An opt-in health ledger is used by the scheduled cloud job. Existing
+    # callers/tests without health_file preserve their original behavior.
+    health_file = getattr(args, "health_file", None)
+    health_state = cloud_health.load(health_file) if health_file else None
+    pool = unique_candidates(args.source, 10000 if health_file else args.max_candidates)
+    candidates = (cloud_health.choose(pool, health_state, args.max_candidates)
+                  if health_file else pool)
     if not candidates:
         raise RuntimeError("No valid candidate URLs")
     results = []
@@ -239,7 +246,15 @@ def build(args):
             result = future.result()
             if result:
                 results.append(result)
-    results.sort(key=lambda x: (-x["functional"], x["latency"]))
+    # Never record all-negative runs: a transient runner/WAN outage must not
+    # condemn healthy servers. On partial success, record only actually tested
+    # candidates and re-test successful nodes in later runs.
+    checked_at = int(datetime.now(timezone.utc).timestamp())
+    if health_file and results:
+        cloud_health.observe(health_state, candidates, results, checked_at)
+        results = cloud_health.rank(results, health_state, checked_at)
+    else:
+        results.sort(key=lambda x: (-x["functional"], x["latency"]))
     stats = Counter()
     for result in results:
         for name, status in result["statuses"].items():
@@ -253,6 +268,16 @@ def build(args):
         "published": False,
         "services_with_http_2xx_3xx": {k: stats[k] for k in SERVICE_URLS},
     }
+    if health_file:
+        metadata["ranking"] = "actual_tunnel_checks_24h_7d_latency"
+        metadata["health_state_updated"] = bool(results)
+        metadata["health_tracked_nodes"] = len(health_state["nodes"])
+        metadata["candidate_rotation_cursor"] = health_state["cursor"]
+        metadata["success_scores"] = [
+            round(cloud_health.score(health_state["nodes"].get(cloud_health.identity(x["line"]), {}),
+                                     checked_at), 2)
+            for x in results[:args.max_published]
+        ]
     # No zero updates. Preserve the last GOOD subscription rather than publish empty.
     if len(results) >= args.min_live:
         text = "".join(x["line"] + "\n" for x in results[:args.max_published])
@@ -273,6 +298,8 @@ def build(args):
     args.metadata.parent.mkdir(parents=True, exist_ok=True)
     args.metadata.write_text(json.dumps(metadata, indent=2, ensure_ascii=False) + "\n",
                              encoding="utf-8")
+    if health_file and results:
+        cloud_health.save(health_file, health_state)
     print(json.dumps(metadata, indent=2, ensure_ascii=False))
 
 
@@ -282,6 +309,7 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path, default=Path("cloud-vless.txt"))
     parser.add_argument("--metadata", type=Path, default=Path("data/cloud-status.json"))
     parser.add_argument("--sing-box", default="sing-box")
+    parser.add_argument("--health-file", type=Path, default=None)
     parser.add_argument("--max-candidates", type=int, default=48)
     parser.add_argument("--max-published", type=int, default=40)
     parser.add_argument("--min-live", type=int, default=3)
