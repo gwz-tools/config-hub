@@ -71,6 +71,8 @@ def feed_url_parts(manifest_url):
             or url.port not in (None, 443) or url.query or url.fragment
             or not url.hostname or not url.path.endswith("/manifest.json")):
         raise UpdateFailed("Invalid manifest URL")
+    if url.hostname != "raw.githubusercontent.com" or not url.path.startswith("/gwz-tools/config-hub/routing-feed/"):
+        raise UpdateFailed("Policy feed origin not approved")
     return manifest_url.rsplit("/", 1)[0] + "/"
 
 
