@@ -276,8 +276,9 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
         }
     }
     private class IterStrings(strings: List<String>) : StringIterator {
-        private val items = strings.iterator()
-        override fun len() = strings.size
+        private val stored = strings
+        private val items = stored.iterator()
+        override fun len() = stored.size
         override fun hasNext() = items.hasNext()
         override fun next(): String = items.next()
     }
