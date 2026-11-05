@@ -43,6 +43,11 @@ class StoredProfile(private val context: Context) {
     }
     fun summary(): String = try { read()?.let { VlessProfile.parse(it).name } ?: "Профиль не добавлен" }
         catch (_: Exception) { "Профиль повреждён — добавьте его заново" }
+    /** AUTO is the default. A pasted personal profile is optional and opt-in. */
+    var manualEnabled: Boolean
+        get() = prefs.getBoolean("manual_enabled", false)
+        set(value) { prefs.edit().putBoolean("manual_enabled", value).apply() }
+
     var splitRouting: Boolean
         get() = prefs.getBoolean("split_routing", true)
         set(value) { prefs.edit().putBoolean("split_routing", value).apply() }
