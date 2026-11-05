@@ -56,17 +56,21 @@ class MainActivity : ComponentActivity() {
             VpnState.Phase.ON, VpnState.Phase.STARTING -> KvnVpnService.requestStop(this)
             VpnState.Phase.STOPPING -> Unit
             VpnState.Phase.OFF, VpnState.Phase.ERROR -> {
-                try {
-                    val stored = StoredProfile(this).read() ?: run {
-                        Toast.makeText(this, "Добавьте VLESS-профиль в настройках", Toast.LENGTH_LONG).show()
+                // A manual VLESS profile is optional. AUTO connects from the
+                // verified GWZHUB feed without any setup by the user.
+                if (StoredProfile(this).manualEnabled) {
+                    try {
+                        val stored = StoredProfile(this).read() ?: run {
+                            Toast.makeText(this, "Вручную выбранный VLESS-профиль отсутствует", Toast.LENGTH_LONG).show()
+                            startActivity(Intent(this, SettingsActivity::class.java))
+                            return
+                        }
+                        VlessProfile.parse(stored)
+                    } catch (_: Exception) {
+                        Toast.makeText(this, "Проверьте VLESS-профиль в настройках", Toast.LENGTH_LONG).show()
                         startActivity(Intent(this, SettingsActivity::class.java))
                         return
                     }
-                    VlessProfile.parse(stored)
-                } catch (_: Exception) {
-                    Toast.makeText(this, "Проверьте VLESS-профиль в настройках", Toast.LENGTH_LONG).show()
-                    startActivity(Intent(this, SettingsActivity::class.java))
-                    return
                 }
                 val permission = VpnService.prepare(this)
                 if (permission != null) consent.launch(permission)
