@@ -86,3 +86,31 @@ sample, the last-good subscription stays in place.
 The existing public `cloud-vless.txt` remains the consumption format. There is
 no change to any router. The health ledger is bounded to 500 nodes so GitHub
 does not become a new history warehouse.
+
+## Step 3: entry/exit subnet and ASN diversity
+
+The cloud runner now requires metadata for both the **actual resolved entry IP**
+and the **outgoing IP as seen THROUGH the tested VLESS tunnel**, not a country
+label from the URI. Both are looked up through the free HTTPS `ipwho.is` API
+after a successful HTTPS functional check. Unknown, non-global or Russian
+(`RU`) endpoints are rejected from *newly published* feeds. The geolocation
+service is an external dependency and its database is only an estimate.
+
+Only individually successful tunnels are eligible. The selection first
+prioritizes different entry ASN and exit ASN, then allows a maximum of two
+servers per ASN, while enforcing one entry IPv4 /24 or IPv6 /48 and a maximum
+of three per exit country. These limits intentionally reduce duplicate failure
+domains at the cost of a smaller subscription.
+
+At least **three** independently eligible nodes are required before replacing
+`cloud-vless.txt`. If that threshold is not met, the existing feed is
+retained with metadata indicating stale reuse. A previous list published
+before this policy is **not retroactively guaranteed to be diverse**.
+
+New checks use 64 rotating candidates every six hours. Metadata reports
+counts of distinct entry subnets, entry ASNs, exit ASNs and exit countries;
+raw credentials, client UUIDs and exact exit IPs are not added to metadata.
+An ASN is a useful network-operator signal but cannot guarantee independent
+hardware or routing. Checks from a GitHub cloud runner do not guarantee
+reachability from Russian ISPs; local OpenWrt/Podkop verification remains
+essential.

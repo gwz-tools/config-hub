@@ -5,6 +5,9 @@ on:
     paths:
       - cloud_verified.py
       - cloud_health.py
+      - cloud_diversity.py
+      - tests/test_cloud_diversity.py
+      - tests/test_cloud_diversity_integration.py
       - tests/test_cloud_health.py
       - tests/test_cloud_verified.py
       - .github/workflows/cloud-verified.yml
@@ -23,4 +26,4 @@ jobs:
       - name: Test parser, dedup and empty-list protection
         run: python -m unittest discover -s tests -p "test_cloud_*.py" -v
       - name: Compile Python
-        run: python -m py_compile cloud_verified.py cloud_health.py
+        run: python -m py_compile cloud_verified.py cloud_health.py cloud_diversity.py

@@ -7,6 +7,9 @@ on:
       - ".github/workflows/cloud-verified.yml"
       - "cloud_verified.py"
       - "cloud_health.py"
+      - "cloud_diversity.py"
+      - "tests/test_cloud_diversity.py"
+      - "tests/test_cloud_diversity_integration.py"
       - "tests/test_cloud_health.py"
   workflow_dispatch:
   schedule:
@@ -48,7 +51,8 @@ jobs:
             --output cloud-vless.txt \
             --metadata data/cloud-status.json \
             --health-file data/cloud-health.json \
-            --max-candidates 48 \
+            --max-candidates 64 \
+            --diversity \
             --min-live 3 \
             --workers 6
 
