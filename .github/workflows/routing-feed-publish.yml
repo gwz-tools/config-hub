@@ -1,0 +1,56 @@
+name: Publish GWZHUB routing feed (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type PUBLISH to promote checked DIRECT/PROXY policy"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gwzhub-routing-feed-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: ${{ github.ref == 'refs/heads/main' && inputs.confirm == 'PUBLISH' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout source policy on main
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Verify domain policy and bundle safety
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p "test_confirmed_routing.py" -v
+          python -m unittest discover -s tests -p "test_routing_bundle.py" -v
+          python routing/publish_bundle.py --output "$RUNNER_TEMP/routing"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ["RUNNER_TEMP"])/"routing"
+          manifest=json.loads((root/"manifest.json").read_text())
+          assert manifest["default_route"] == "PROXY"
+          assert len((root/"direct.txt").read_text().splitlines()) >= 1
+          assert len((root/"proxy.txt").read_text().splitlines()) >= 1
+          print("Confirmed manifest version:",manifest["version"])
+          PY
+      - name: Publish complete snapshot in one commit on dedicated routing-feed branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python routing/release_to_branch.py --bundle "$RUNNER_TEMP/routing"
+      - name: Stable feed URL
+        run: |
+          echo "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/routing-feed/manifest.json" >> "$GITHUB_STEP_SUMMARY"
+          echo "Client still needs SHA256 verification, caching and fail-closed VPN policy." >> "$GITHUB_STEP_SUMMARY"
