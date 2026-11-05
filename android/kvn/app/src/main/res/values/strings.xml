@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">КВН</string>
+    <string name="brand_name">КВН</string>
+    <string name="app_description">Управление сетевыми профилями, маршрутами и подключениями.</string>
+    <string name="brand_short">КВН</string>
+    <string name="brand_subtitle">Конструктор Виртуальных Настроек</string>
+    <string name="test_build">Тестовая версия 0.1.3</string>
+    <string name="settings_title">Настройки</string>
+    <string name="profile_title">VLESS-профиль</string>
+    <string name="profile_hint">Вставьте vless://…</string>
+    <string name="save_profile">Сохранить профиль</string>
+    <string name="profile_security_note">Ссылка хранится в зашифрованном виде на устройстве. Не публикуйте её в GitHub.</string>
+    <string name="split_routing">Раздельная маршрутизация DIRECT / PROXY</string>
+    <string name="split_routing_note">Включено: проверенные домены DIRECT идут напрямую, остальные через VLESS. Выключено: всё через VLESS. Изменения применяются после перезапуска VPN.</string>
+    <string name="vpn_start">Включить</string>
+    <string name="vpn_off">VPN выключен</string>
+    <string name="connection_title">Подключение</string>
+    <string name="connection_unavailable">Пока недоступно</string>
+    <string name="connection_note">VPN-движок ещё не подключён. Приложение не создаёт туннель и не защищает сетевой трафик.</string>
+    <string name="rules_title">Правила маршрутизации</string>
+    <string name="rules_loading">Проверяем локальный набор…</string>
+    <string name="no_rules">Проверенного набора пока нет. Нажмите «Обновить правила».</string>
+    <string name="rules_summary">Версия правил: %1$s
+SHA-256 проверен</string>
+    <string name="check_summary">Последняя успешная проверка: %1$s
+Автопроверка каждые 6 часов и при открытии, если срок истёк. Android может отложить фоновую задачу.%2$s</string>
+    <string name="rules_note">Правила загружены, но VPN-движок пока не подключён. Они ещё не управляют трафиком.</string>
+    <string name="brand_accessibility">КВН. Конструктор Виртуальных Настроек. Управление сетевыми профилями, маршрутами и подключениями.</string>
+    <string name="route_direct">DIRECT</string>
+    <string name="route_proxy">PROXY</string>
+    <string name="route_block">BLOCK</string>
+    <string name="number_na">—</string>
+    <string name="not_checked">ещё не выполнялась</string>
+    <string name="cached_after_error">\nОбновление не завершено. Проверенный локальный набор сохранён; если его нет, подключение остаётся недоступным.</string>
+    <string name="refresh_rules">Обновить правила</string>
+    <string name="rules_waiting">Проверка: ожидаем сеть или результат…</string>
+    <string name="app_updates_title">Обновления приложения</string>
+    <string name="app_updates_note">Правила обновляются отдельно от APK. Новую версию приложения вы устанавливаете только после подтверждения.</string>
+    <string name="check_release">Проверить новую версию</string>
+    <string name="checking_release">Проверяем версию…</string>
+    <string name="no_release">По официальным данным новой версии нет.</string>
+    <string name="new_release">Доступна версия %1$s</string>
+    <string name="release_consent">Открыть проверенную страницу релиза GitHub? APK не скачивается и не устанавливается автоматически. Для обновления должны совпадать пакет и ключ подписи.</string>
+    <string name="open_release">Открыть релиз</string>
+    <string name="later">Позже</string>
+    <string name="no_browser">Не найден браузер для открытия релиза.</string>
+    <string name="release_failed">Не удалось проверить версию. Локальные правила сохранены.</string>
+</resources>
