@@ -63,3 +63,15 @@ jobs:
             android/kvn/app/build/reports/lint-results-debug.html
           retention-days: 30
           if-no-files-found: error
+
+      - name: Upload diagnostics after build failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kvn-android-diagnostics-${{ github.run_number }}
+          path: |
+            android/kvn/app/build/reports/lint-results-debug.html
+            android/kvn/app/build/intermediates/lint_intermediate_text_report/debug/lintReportDebug/lint-results-debug.txt
+            android/kvn/app/build/test-results/testDebugUnitTest/
+          retention-days: 7
+          if-no-files-found: ignore
