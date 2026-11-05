@@ -1,0 +1,31 @@
+name: Routing policy checks
+
+on:
+  pull_request:
+    paths:
+      - "routing/**"
+      - "tests/test_routing_policy.py"
+      - ".github/workflows/routing-policy-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Compile policy without deploying to routers
+        run: python routing/build.py --out /tmp/gwz-routing-generated
+      - name: Test domains, conflicts and CIDR classification
+        run: python -m unittest discover -s tests -p "test_routing_policy.py" -v
+      - name: Check generated outputs
+        run: |
+          test -s /tmp/gwz-routing-generated/rules.json
+          test -s /tmp/gwz-routing-generated/review.txt
+          python -m json.tool /tmp/gwz-routing-generated/rules.json >/dev/null
