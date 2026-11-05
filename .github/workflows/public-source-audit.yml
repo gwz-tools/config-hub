@@ -5,6 +5,8 @@ on:
     paths:
       - source_link_audit.py
       - source_audit_urls.txt
+      - source_incremental.py
+      - source_incremental_urls.txt
       - source_audit_cyberportal_mirrors.txt
       - .github/workflows/public-source-audit.yml
   workflow_dispatch:
@@ -29,3 +31,5 @@ jobs:
             source_audit_urls.txt \
             source_audit_cyberportal_mirrors.txt \
             --jobs 8
+      - name: Compare new compatible VLESS nodes with current GWZHUB baseline
+        run: python source_incremental.py
