@@ -44,7 +44,7 @@ def validate_policy(policy):
             addr = ipaddress.ip_address(raw)
         except ValueError as exc:
             raise PolicyDenied("destination must be literal IP") from exc
-        if not addr.is_global or addr.ipv4_mapped:
+        if not addr.is_global or (isinstance(addr, ipaddress.IPv6Address) and addr.ipv4_mapped):
             raise PolicyDenied("non-public or mapped destination")
         # No trust in synthetic IPv6 with embedded IPv4 until NAT64 mapping is verified.
         if isinstance(addr, ipaddress.IPv6Address) and (
