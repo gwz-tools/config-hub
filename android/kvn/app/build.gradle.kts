@@ -9,8 +9,8 @@ android {
         applicationId = "ru.prostokvn.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "0.1.4-test"
+        versionCode = 6
+        versionName = "0.1.5-test"
     }
     // Ship one native VPN engine per CPU architecture instead of all four in every APK.
     // Builds: app-arm64-v8a-debug.apk (current Samsung/most phones), plus
@@ -29,7 +29,10 @@ android {
     }
     kotlinOptions { jvmTarget = "17" }
     testOptions {
-        unitTests.all { it.systemProperty("gwzhub.assets", file("src/main/assets/routing").absolutePath) }
+        unitTests.all {
+            it.systemProperty("gwzhub.assets", file("src/main/assets/routing").absolutePath)
+            it.systemProperty("kvn.validation.json", file("build/ci-validation/vpn-auto.json").absolutePath)
+        }
     }
 }
 dependencies {
