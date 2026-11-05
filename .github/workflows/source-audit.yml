@@ -1,0 +1,59 @@
+name: Audit public VPN source URLs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "source_audit.py"
+      - "source_catalog.txt"
+      - ".github/workflows/source-audit.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "35 2 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gwz-source-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -p 'test_source_audit.py' -v
+
+      - name: Inspect 57 public URLs
+        run: python source_audit.py
+
+      - name: Validate report before publication
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('data/source_audit.json').read_text())
+          assert data['total'] == len(Path('source_catalog.txt').read_text().splitlines()) == 57
+          assert data['valid_content_sources'] >= 1, 'No usable sources, refusing to publish empty report'
+          for row in data['sources']:
+              assert 'vless://' not in str(row)
+          print('Audited',data['total'],'sources; usable',data['valid_content_sources'])
+          PY
+
+      - name: Commit summary only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/source_audit.json data/source_audit_report.txt
+          git diff --cached --quiet && exit 0
+          git commit -m "Update audited VPN source availability"
+          for attempt in 1 2 3; do
+            git push && exit 0
+            git fetch origin main
+            git rebase origin/main
+          done
+          exit 1
