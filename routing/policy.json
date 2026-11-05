@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "note": "Staged draft only. NOT the full Dunay/Zorik ~144 DIRECT domains: import exact router export before promotion.",
+  "default_public_route": "PROXY",
+  "precedence": [
+    "BLOCK",
+    "PROXY",
+    "DIRECT",
+    "DEFAULT_PROXY"
+  ],
+  "direct_domains": [
+    "gosuslugi.ru",
+    "sberbank.ru",
+    "yandex.ru",
+    "vk.com"
+  ],
+  "proxy_domains": [
+    "ifconfig.me",
+    "ipify.org",
+    "checkip.amazonaws.com"
+  ],
+  "block_domains": [],
+  "review_direct_candidates": [
+    "yastatic.net",
+    "yandex.net",
+    "yandexcloud.net",
+    "trvl.yandex.net",
+    "mycdn.me",
+    "okcdn.ru",
+    "userapi.com",
+    "ozonusercontent.com",
+    "wbstatic.net",
+    "cdn-vk.ru",
+    "cdn-tinkoff.ru",
+    "webvisor.com",
+    "webvisor.org",
+    "vk.link",
+    "vk.me",
+    "vk.cc",
+    "2gis.com"
+  ],
+  "cidr_source_candidates": [
+    {
+      "url": "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt",
+      "declared_kind": "vless_subscription",
+      "route_import_allowed": false,
+      "note": "Despite CIDR name, contains vless:// URIs, not IP networks"
+    }
+  ],
+  "deny_direct_ip_check": [
+    "ifconfig.me",
+    "ipify.org",
+    "checkip.amazonaws.com"
+  ]
+}
