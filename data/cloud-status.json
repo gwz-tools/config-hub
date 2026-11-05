@@ -1,26 +1,42 @@
 {
-  "checked_at_utc": "2026-11-05T09:33:10.960114+00:00",
-  "runner_note": "HTTP requests tested via VLESS from GitHub runner; not proof of access in Russia",
-  "candidates_tested": 48,
-  "passed": 6,
+  "checked_at_utc": "2026-11-05T10:17:21.102774+00:00",
+  "runner_note": "HTTP requests tested via VLESS from GitHub runner; not proof of access in Russia; entry and exit country/ASN from best-effort external geolocation",
+  "candidates_tested": 64,
+  "passed": 12,
   "published": true,
   "services_with_http_2xx_3xx": {
-    "gemini": 6,
-    "instagram": 6,
-    "meta": 6,
-    "youtube": 6
+    "gemini": 12,
+    "instagram": 12,
+    "meta": 12,
+    "youtube": 12
+  },
+  "diversity": {
+    "eligible": 12,
+    "selected": 7,
+    "unique_entry_prefixes": 7,
+    "unique_entry_asns": 7,
+    "unique_exit_asns": 7,
+    "exit_countries": {
+      "AT": 1,
+      "DE": 1,
+      "FI": 3,
+      "NL": 1,
+      "PL": 1
+    },
+    "policy": "unique_entry_/24_or_/48_max_2_per_ASN_max_3_per_exit_country"
   },
   "ranking": "actual_tunnel_checks_24h_7d_latency",
   "health_state_updated": true,
-  "health_tracked_nodes": 48,
-  "candidate_rotation_cursor": 48,
+  "health_tracked_nodes": 106,
+  "candidate_rotation_cursor": 106,
   "success_scores": [
-    72.69,
-    72.63,
-    72.62,
-    72.56,
     72.54,
-    72.46
+    72.09,
+    72.04,
+    71.94,
+    71.43,
+    71.02,
+    65.69
   ],
-  "published_count": 6
+  "published_count": 7
 }
