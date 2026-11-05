@@ -7,6 +7,7 @@ Never replace a usable published subscription with an empty result.
 """
 import argparse
 import cloud_health
+import cloud_diversity
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
@@ -141,7 +142,7 @@ def http_probe(port, url, timeout=7):
         return 0, round(time.monotonic() - started, 3)
 
 
-def test_candidate(link, sing_box):
+def test_candidate(link, sing_box, check_diversity=False):
     try:
         outbound = parse_vless(link)
         endpoint = public_endpoint(outbound["server"], outbound["server_port"])
@@ -187,8 +188,10 @@ def test_candidate(link, sing_box):
                 functional = sum(200 <= code < 400 for code in statuses.values())
                 if functional < len(SERVICE_URLS):
                     return None
+                network = (cloud_diversity.enrich(endpoint[0], port)
+                           if check_diversity else {})
                 return {"line": link, "functional": functional, "latency": latency,
-                        "statuses": statuses}
+                        "statuses": statuses, **network}
             finally:
                 try:
                     os.killpg(proc.pid, signal.SIGTERM)
@@ -240,8 +243,10 @@ def build(args):
     if not candidates:
         raise RuntimeError("No valid candidate URLs")
     results = []
+    check_diversity = getattr(args, "diversity", False)
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        futures = [pool.submit(test_candidate, x, args.sing_box) for x in candidates]
+        futures = [(pool.submit(test_candidate, x, args.sing_box, True) if check_diversity
+                    else pool.submit(test_candidate, x, args.sing_box)) for x in candidates]
         for future in as_completed(futures):
             result = future.result()
             if result:
@@ -255,6 +260,8 @@ def build(args):
         results = cloud_health.rank(results, health_state, checked_at)
     else:
         results.sort(key=lambda x: (-x["functional"], x["latency"]))
+    selected, diversity_summary = (cloud_diversity.select(results, args.max_published)
+                                   if check_diversity else (results[:args.max_published], None))
     stats = Counter()
     for result in results:
         for name, status in result["statuses"].items():
@@ -268,6 +275,9 @@ def build(args):
         "published": False,
         "services_with_http_2xx_3xx": {k: stats[k] for k in SERVICE_URLS},
     }
+    if check_diversity:
+        metadata["diversity"] = diversity_summary
+        metadata["runner_note"] += "; entry and exit country/ASN from best-effort external geolocation"
     if health_file:
         metadata["ranking"] = "actual_tunnel_checks_24h_7d_latency"
         metadata["health_state_updated"] = bool(results)
@@ -276,11 +286,11 @@ def build(args):
         metadata["success_scores"] = [
             round(cloud_health.score(health_state["nodes"].get(cloud_health.identity(x["line"]), {}),
                                      checked_at), 2)
-            for x in results[:args.max_published]
+            for x in selected
         ]
     # No zero updates. Preserve the last GOOD subscription rather than publish empty.
-    if len(results) >= args.min_live:
-        text = "".join(x["line"] + "\n" for x in results[:args.max_published])
+    if len(selected) >= args.min_live:
+        text = "".join(x["line"] + "\n" for x in selected)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=args.output.parent,
                                          prefix=".cloud-", delete=False) as tmp:
@@ -288,9 +298,9 @@ def build(args):
             temp_name = tmp.name
         os.replace(temp_name, args.output)
         metadata["published"] = True
-        metadata["published_count"] = min(len(results), args.max_published)
+        metadata["published_count"] = len(selected)
     else:
-        metadata["reason"] = f"Safety guard: {len(results)} < {args.min_live} validated nodes"
+        metadata["reason"] = f"Safety guard: {len(selected)} < {args.min_live} independently eligible nodes"
         if not args.output.exists() or not any(
                 l.startswith("vless://") for l in args.output.read_text(encoding="utf-8").splitlines()):
             raise RuntimeError(metadata["reason"] + "; no previous good cloud subscription")
@@ -312,6 +322,8 @@ if __name__ == "__main__":
     parser.add_argument("--metadata", type=Path, default=Path("data/cloud-status.json"))
     parser.add_argument("--sing-box", default="sing-box")
     parser.add_argument("--health-file", type=Path, default=None)
+    parser.add_argument("--diversity", action="store_true",
+                        help="Require geo-verified non-RU entry/exit and diverse ASN/subnets")
     parser.add_argument("--max-candidates", type=int, default=48)
     parser.add_argument("--max-published", type=int, default=40)
     parser.add_argument("--min-live", type=int, default=3)
