@@ -1,4 +1,6 @@
-<img src="assets/kvn-mark.svg" alt="КВН" width="62" height="62">## Config Hub
+<img src="assets/kvn-mark.svg" alt="КВН" width="62" height="62">
+
+# Config Hub
 
 Automated open configuration research and availability monitoring toolkit.
 
