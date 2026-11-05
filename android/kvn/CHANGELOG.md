@@ -1,3 +1,12 @@
+## 0.1.4-test — AUTO GWZHUB (device check pending)
+
+- Default one-button start from verified/live-vless.txt with independent cloud-vless.txt fallback; no pasted link required.
+- Encrypted last-known-good feed cache; refresh at connect if older than six hours.
+- sing-box URLTest probes individual VLESS nodes over HTTPS every three minutes and switches outbound when needed.
+- Manual VLESS is optional in Settings; fixes blank SNI fallback.
+- Preserves DIRECT/PROXY split routing, updates, Android package ID and native engine.
+- Note: Android CI is not proof of successful VPN traffic on a real Russian mobile provider; device testing is required.
+
 # КВН — изменения
 
 ## 0.1.3-test (versionCode 4) — исходники, сборка НЕ подтверждена
