@@ -54,6 +54,8 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
         const val ACTION_STOP = "ru.prostokvn.app.vpn.STOP"
         private const val NOTIFICATION_ID = 7801
         private const val CHANNEL_ID = "kvn_vpn"
+        private val nativeSetupLock = Any()
+        private var nativeSetupCompleted = false
 
         fun requestStart(context: Context) {
             val intent = Intent(context, KvnVpnService::class.java).setAction(ACTION_START)
@@ -110,11 +112,20 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
                     debug = false
                     logMaxLines = 500
                 }
-                Libbox.setup(setup)
+                synchronized(nativeSetupLock) {
+                    if (!nativeSetupCompleted) {
+                        Libbox.setup(setup)
+                        nativeSetupCompleted = true
+                    }
+                }
                 val server = CommandServer(this@KvnVpnService, this@KvnVpnService)
                 commandServer = server
                 server.start()
                 server.startOrReloadService(config, OverrideOptions())
+                if (stopping) {
+                    cleanup()
+                    return@launch
+                }
                 check(tunnel != null) { "VPN-интерфейс Android не создан" }
                 if (!stopping) {
                     VpnState.update(VpnState.Phase.ON, profile.name)
