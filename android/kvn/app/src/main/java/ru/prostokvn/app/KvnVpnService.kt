@@ -97,13 +97,27 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
         runningJob = scope.launch {
             try {
                 if (prepare(this@KvnVpnService) != null) error("Системное разрешение VPN отсутствует")
-                val link = StoredProfile(this@KvnVpnService).read()
-                    ?: error("Добавьте VLESS-профиль в настройках")
-                val profile = VlessProfile.parse(link)
+                val store = StoredProfile(this@KvnVpnService)
                 val snapshot = PolicyStore(this@KvnVpnService).ensureBundled()
                     ?: error("Проверенные правила недоступны")
-                val config = VpnConfig.build(profile, snapshot,
-                    StoredProfile(this@KvnVpnService).splitRouting)
+                val manual = store.manualEnabled
+                val candidateProfiles: List<VlessProfile> = if (manual) {
+                    val link = store.read() ?: error("Добавьте свой VLESS-профиль в настройках")
+                    listOf(VlessProfile.parse(link))
+                } else {
+                    AutoPool(this@KvnVpnService).resolve().also {
+                        check(it.isNotEmpty()) {
+                            "Нет доступных проверенных VLESS-узлов. Проверьте интернет или повторите позже."
+                        }
+                    }
+                }
+                val config = if (manual) {
+                    VpnConfig.build(candidateProfiles.first(), snapshot, store.splitRouting)
+                } else {
+                    VpnConfig.buildAuto(candidateProfiles, snapshot, store.splitRouting)
+                }
+                val connectionLabel = if (manual) candidateProfiles.first().name
+                                      else "AUTO · ${candidateProfiles.size} узлов"
                 val work = getExternalFilesDir(null) ?: filesDir
                 val setup = SetupOptions().apply {
                     basePath = filesDir.absolutePath
@@ -128,7 +142,7 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
                 }
                 check(tunnel != null) { "VPN-интерфейс Android не создан" }
                 if (!stopping) {
-                    VpnState.update(VpnState.Phase.ON, profile.name)
+                    VpnState.update(VpnState.Phase.ON, connectionLabel)
                     updateNotification("VPN запущен")
                 }
             } catch (e: kotlinx.coroutines.CancellationException) {
