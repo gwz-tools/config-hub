@@ -6,6 +6,7 @@ connection identities and counts. A compatible URL has a valid sing-box VLESS
 transport, not evidence of a reachable server.
 """
 import base64
+from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
 from pathlib import Path
@@ -62,20 +63,23 @@ def main():
     baseline = set(filter(None, map(identity, VLESS.findall(original))))
     seen = set(baseline)
     print("BASELINE", len(baseline), flush=True)
-    for item in Path("source_incremental_urls.txt").read_text().splitlines():
-        if not item.strip() or item.startswith("#"):
-            continue
-        name, url = item.split(" ", 1)
+    lines = [x for x in Path("source_incremental_urls.txt").read_text().splitlines()
+             if x.strip() and not x.startswith("#")]
+    def fetch(line):
+        name, url = line.split(" ", 1)
         try:
-            items = set(filter(None, map(identity, extract(download(url)))))
-            incremental = items - seen
-            unseen = items - baseline
-            seen.update(items)
-            record = {"name": name, "compatible": len(items), "new_vs_existing": len(unseen),
-                      "additional_unique": len(incremental), "status": "ok"}
+            return name, set(filter(None, map(identity, extract(download(url))))), "ok"
         except Exception as exc:
-            record = {"name": name, "compatible": 0, "new_vs_existing": 0,
-                      "additional_unique": 0, "status": type(exc).__name__}
+            return name, set(), type(exc).__name__
+
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        reports = list(pool.map(fetch, lines))
+    for name, items, status in reports:
+        incremental = items - seen
+        unseen = items - baseline
+        seen.update(items)
+        record = {"name": name, "compatible": len(items), "new_vs_existing": len(unseen),
+                  "additional_unique": len(incremental), "status": status}
         print("INCREMENTAL_JSON "+json.dumps(record, separators=(",",":")), flush=True)
 
 
