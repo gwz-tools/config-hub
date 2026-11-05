@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'android/kvn/**'
+      - '.github/workflows/kvn-android-ci.yml'
   workflow_dispatch:
 
 permissions:
@@ -40,6 +41,8 @@ jobs:
           SDK_TOOL="$(command -v sdkmanager || true)"
           if [ -z "$SDK_TOOL" ]; then SDK_TOOL="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"; fi
           "$SDK_TOOL" 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Fetch pinned libbox engine
+        run: python3 scripts/fetch_libbox.py
       - name: Validate bundled domain rules
         run: python3 scripts/check_assets.py
       - name: Compile Android, unit tests, Lint
