@@ -1,0 +1,24 @@
+name: Telegram fallback safety (offline)
+
+on:
+  pull_request:
+    paths:
+      - "experiments/telegram-fallback/**"
+      - "tests/test_telegram_fallback_safety.py"
+      - ".github/workflows/telegram-fallback-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-guards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - run: python -m unittest discover -s tests -p 'test_telegram_fallback_safety.py' -v
+      - run: python -m py_compile experiments/telegram-fallback/safety.py
