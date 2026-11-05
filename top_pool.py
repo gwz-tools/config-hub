@@ -1,150 +1,59 @@
-"""
-GWZ TOP Pool selector
+"""TOP candidate selection from compact collection-presence history.
 
-Selects most stable configurations
-using quality history.
+Do not interpret collection presence as verified VPN connectivity.
 """
-
-import os
 import json
+from pathlib import Path
+from history_manager import QUALITY_FILE, fingerprint, read_lines
 
-
-VALIDATED_FILE = "data/validated.txt"
-
-QUALITY_FILE = (
-    "history/quality/sources.json"
-)
-
-OUTPUT_FILE = (
-    "data/top_pool.txt"
-)
-
-
-MIN_SCORE = 70
-
+VALIDATED_FILE = Path('data/validated.txt')
+OUTPUT_FILE = Path('data/top_pool.txt')
+FAST_FILE = Path('fast.txt')
 TOP_LIMIT = 50
 
 
-
-def read_lines(path):
-
-    if not os.path.exists(path):
-        return []
-
-    with open(
-        path,
-        "r",
-        encoding="utf-8"
-    ) as f:
-
-        return [
-            x.strip()
-            for x in f.readlines()
-            if x.strip()
-        ]
-
-
-
-def load_quality():
-
-    if not os.path.exists(
-        QUALITY_FILE
-    ):
-        return {}
-
-    with open(
-        QUALITY_FILE,
-        "r",
-        encoding="utf-8"
-    ) as f:
-
-        return json.load(f)
-
-
-
 def build_pool():
+    if not QUALITY_FILE.exists():
+        print('No compact history; retaining existing TOP pool')
+        return False
+    state = json.loads(QUALITY_FILE.read_text(encoding='utf-8'))
+    if state.get('version') != 1 or not isinstance(state.get('records'), dict):
+        raise RuntimeError('Compact history format invalid')
+    records = state['records']
+    eligible = {}
+    for cfg in read_lines(VALIDATED_FILE):
+        if not cfg.startswith('vless://'):
+            continue
+        identity = fingerprint(cfg)
+        mask = records.get(identity, 0)
+        if isinstance(mask, int) and (mask & 1):
+            eligible.setdefault(identity, (mask.bit_count(), cfg))
+    if len(eligible) < 5:
+        print('Insufficient candidates; retaining TOP pool')
+        return False
 
-    configs = read_lines(
-        VALIDATED_FILE
-    )
-
-
-    quality = load_quality()
-
-
-    ranked = []
-
-
-    for cfg in configs:
-
-        info = quality.get(
-            cfg,
-            {}
-        )
-
-
-        score = info.get(
-            "score",
-            0
-        )
-
-
-        fails = info.get(
-            "fails",
-            99
-        )
-
-
-        success = info.get(
-            "success",
-            0
-        )
-
-
-        if score >= MIN_SCORE and fails < 3:
-
-
-            ranked.append(
-                (
-                    score,
-                    success,
-                    cfg
-                )
-            )
+    # Preserve previously published candidates during a storage-only migration.
+    # Actual tunnel quality ranking will be implemented separately.
+    result = []
+    selected = set()
+    for cfg in read_lines(FAST_FILE):
+        ident = fingerprint(cfg)
+        if ident in eligible and ident not in selected:
+            result.append(eligible[ident][1])
+            selected.add(ident)
+            if len(result) >= TOP_LIMIT:
+                break
+    for ident, (seen_count, cfg) in sorted(eligible.items(), key=lambda item: (-item[1][0], item[0])):
+        if len(result) >= TOP_LIMIT:
+            break
+        if ident not in selected:
+            result.append(cfg)
+            selected.add(ident)
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_FILE.write_text('\n'.join(result) + '\n', encoding='utf-8')
+    print('TOP pool:', len(result))
+    return True
 
 
-
-    ranked.sort(
-        reverse=True
-    )
-
-
-    result = [
-        x[2]
-        for x in ranked[:TOP_LIMIT]
-    ]
-
-
-    with open(
-        OUTPUT_FILE,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        for item in result:
-
-            f.write(
-                item + "\n"
-            )
-
-
-    print(
-        "TOP pool:",
-        len(result)
-    )
-
-
-
-if __name__ == "__main__":
-
+if __name__ == '__main__':
     build_pool()
