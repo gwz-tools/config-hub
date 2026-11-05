@@ -144,7 +144,7 @@ SOURCES = [
         "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/refs/heads/main/Splitted-By-Protocol/vless.txt",
         "type": "github",
         "priority": 85,
-        "enabled": True,
+        "enabled": False,
         "remark_mode": "keep",
         "tags": ["vless", "additional", "discovery"]
     },
