@@ -29,6 +29,9 @@ jobs:
       - name: Test bounded collection history
         run: python -m unittest discover -s tests -p 'test_history_compact.py' -v
 
+      - name: Test source formats and enabled registry
+        run: python -m unittest discover -s tests -p 'test_source_formats.py' -v
+
       - name: Run collector
         run: python collector.py
 
