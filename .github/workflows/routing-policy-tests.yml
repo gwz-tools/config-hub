@@ -29,6 +29,7 @@ jobs:
           python routing/export_ruleset.py --output /tmp/gwz-podkop-rulesets
           python routing/build_confirmed.py --output /tmp/gwz-confirmed
           python routing/publish_bundle.py --output /tmp/gwz-routing-bundle
+          python -m py_compile routing/release_to_branch.py
       - name: Test domains, conflicts, CIDR and legacy import
         run: |
           python -m unittest discover -s tests -p "test_routing_policy.py" -v
