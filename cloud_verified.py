@@ -298,7 +298,9 @@ def build(args):
     args.metadata.parent.mkdir(parents=True, exist_ok=True)
     args.metadata.write_text(json.dumps(metadata, indent=2, ensure_ascii=False) + "\n",
                              encoding="utf-8")
-    if health_file and results:
+    if health_file:
+        # Advance the scan cursor even after zero successes, without marking
+        # tested servers failed when the runner itself might be offline.
         cloud_health.save(health_file, health_state)
     print(json.dumps(metadata, indent=2, ensure_ascii=False))
 
