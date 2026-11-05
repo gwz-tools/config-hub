@@ -5,6 +5,7 @@ on:
     paths:
       - "routing/**"
       - "tests/test_routing_policy.py"
+      - "tests/test_podkop_import.py"
       - ".github/workflows/routing-policy-tests.yml"
   workflow_dispatch:
 
@@ -14,18 +15,49 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
       - name: Compile policy without deploying to routers
-        run: python routing/build.py --out /tmp/gwz-routing-generated
-      - name: Test domains, conflicts and CIDR classification
-        run: python -m unittest discover -s tests -p "test_routing_policy.py" -v
+        run: |
+          python routing/build.py --out /tmp/gwz-routing-generated
+          python routing/export_ruleset.py --output /tmp/gwz-podkop-rulesets
+      - name: Test domains, conflicts, CIDR and legacy import
+        run: |
+          python -m unittest discover -s tests -p "test_routing_policy.py" -v
+          python -m unittest discover -s tests -p "test_podkop_import.py" -v
       - name: Check generated outputs
         run: |
           test -s /tmp/gwz-routing-generated/rules.json
           test -s /tmp/gwz-routing-generated/review.txt
           python -m json.tool /tmp/gwz-routing-generated/rules.json >/dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("/tmp/gwz-podkop-rulesets")
+          for action in ("direct","proxy","block"):
+              doc=json.loads((root/f"{action}-domains.rule-set.json").read_text())
+              assert doc["version"] == 3
+              assert isinstance(doc["rules"], list)
+          report=json.loads((root/"build-report.json").read_text())
+          assert not report["deployment_eligible"], "No router exports: must remain staging only"
+          PY
+      - name: Compile rule-set with actual sing-box 1.12.22
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 2 --max-time 90 \
+            https://github.com/SagerNet/sing-box/releases/download/v1.12.22/sing-box-1.12.22-linux-amd64.tar.gz \
+            -o "$RUNNER_TEMP/sing-box.tar.gz"
+          tar -xzf "$RUNNER_TEMP/sing-box.tar.gz" -C "$RUNNER_TEMP"
+          SINGBOX="$RUNNER_TEMP/sing-box-1.12.22-linux-amd64/sing-box"
+          "$SINGBOX" version
+          for kind in direct proxy block; do
+            "$SINGBOX" rule-set compile \
+              --output "$RUNNER_TEMP/$kind.srs" \
+              "/tmp/gwz-podkop-rulesets/$kind-domains.rule-set.json"
+            test -s "$RUNNER_TEMP/$kind.srs"
+          done
