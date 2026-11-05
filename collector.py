@@ -331,25 +331,34 @@ def download(url):
 
 
 def extract_vless(text):
+    """Read plain VLESS lists or Base64 subscription bodies.
 
-    text = html.unescape(
-        text
-    )
+    Trust only source URLs declared in sources.py. A Base64 subscription can
+    contain mixed protocols; only VLESS entries are extracted. Never log
+    decoded links or use HTML pages as configuration sources.
+    """
+    import base64
+    import binascii
 
-
+    text = html.unescape(text)
     pattern = r"vless://[^\s<>\"']+"
+    found = re.findall(pattern, text, flags=re.MULTILINE)
+    if found:
+        return found
 
-
-    return re.findall(
-
-        pattern,
-
-        text,
-
-        flags=re.MULTILINE
-
-    )
-
+    encoded = "".join(text.split())
+    if not (40 <= len(encoded) <= 16 * 1024 * 1024):
+        return []
+    if not re.fullmatch(r"[A-Za-z0-9+/_=-]+", encoded):
+        return []
+    try:
+        decoded_bytes = base64.urlsafe_b64decode(encoded + "=" * (-len(encoded) % 4))
+        if len(decoded_bytes) > 12 * 1024 * 1024:
+            return []
+        decoded = decoded_bytes.decode("utf-8", errors="ignore")
+    except (ValueError, binascii.Error):
+        return []
+    return re.findall(pattern, decoded, flags=re.MULTILINE)
 
 # ============================================================
 # FLAG HELPERS
