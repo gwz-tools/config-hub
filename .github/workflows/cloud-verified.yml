@@ -6,6 +6,8 @@ on:
     paths:
       - ".github/workflows/cloud-verified.yml"
       - "cloud_verified.py"
+      - "cloud_health.py"
+      - "tests/test_cloud_health.py"
   workflow_dispatch:
   schedule:
     # Stagger after the existing collector at 00/06/12/18 UTC.
@@ -26,7 +28,7 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Python unit tests
-        run: python -m unittest discover -s tests -p "test_cloud_verified.py" -v
+        run: python -m unittest discover -s tests -p "test_cloud_*.py" -v
 
       - name: Download official sing-box 1.12.22
         shell: bash
@@ -45,6 +47,7 @@ jobs:
             --source data/gwzhub_candidates.txt \
             --output cloud-vless.txt \
             --metadata data/cloud-status.json \
+            --health-file data/cloud-health.json \
             --max-candidates 48 \
             --min-live 3 \
             --workers 6
@@ -68,7 +71,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cloud-vless.txt data/cloud-status.json
+          git add cloud-vless.txt data/cloud-status.json data/cloud-health.json
           git diff --cached --quiet || git commit -m "Refresh verified cloud VLESS feed"
           # Another trusted workflow may update main while tunnel checks are running.
           # Never force-push; rebase and retry instead.
