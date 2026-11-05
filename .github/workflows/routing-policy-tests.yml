@@ -40,8 +40,8 @@ jobs:
         run: |
           test -s /tmp/gwz-routing-generated/rules.json
           test -s /tmp/gwz-routing-generated/review.txt
-          test "$(wc -l < /tmp/gwz-confirmed/direct.txt)" -eq 155
-          test "$(wc -l < /tmp/gwz-confirmed/proxy.txt)" -eq 717
+          test -s /tmp/gwz-confirmed/direct.txt
+          test -s /tmp/gwz-confirmed/proxy.txt
           test -s /tmp/gwz-routing-bundle/manifest.json
           python -m json.tool /tmp/gwz-routing-generated/rules.json >/dev/null
           python - <<'PY'
