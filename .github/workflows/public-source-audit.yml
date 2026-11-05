@@ -1,0 +1,31 @@
+name: Public source link and content audit
+
+on:
+  pull_request:
+    paths:
+      - source_link_audit.py
+      - source_audit_urls.txt
+      - source_audit_cyberportal_mirrors.txt
+      - .github/workflows/public-source-audit.yml
+  workflow_dispatch:
+  schedule:
+    - cron: "31 3 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Audit HTTP + actual response format for 57 original links and 8 backup candidates
+        run: |
+          python source_link_audit.py \
+            source_audit_urls.txt \
+            source_audit_cyberportal_mirrors.txt \
+            --jobs 8
