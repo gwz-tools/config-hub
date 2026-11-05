@@ -6,6 +6,7 @@ on:
       - "routing/**"
       - "tests/test_routing_policy.py"
       - "tests/test_podkop_import.py"
+      - "tests/test_confirmed_routing.py"
       - ".github/workflows/routing-policy-tests.yml"
   workflow_dispatch:
 
@@ -25,14 +26,18 @@ jobs:
         run: |
           python routing/build.py --out /tmp/gwz-routing-generated
           python routing/export_ruleset.py --output /tmp/gwz-podkop-rulesets
+          python routing/build_confirmed.py --output /tmp/gwz-confirmed
       - name: Test domains, conflicts, CIDR and legacy import
         run: |
           python -m unittest discover -s tests -p "test_routing_policy.py" -v
           python -m unittest discover -s tests -p "test_podkop_import.py" -v
+          python -m unittest discover -s tests -p "test_confirmed_routing.py" -v
       - name: Check generated outputs
         run: |
           test -s /tmp/gwz-routing-generated/rules.json
           test -s /tmp/gwz-routing-generated/review.txt
+          test "$(wc -l < /tmp/gwz-confirmed/direct.txt)" -eq 155
+          test "$(wc -l < /tmp/gwz-confirmed/proxy.txt)" -eq 717
           python -m json.tool /tmp/gwz-routing-generated/rules.json >/dev/null
           python - <<'PY'
           import json
@@ -60,4 +65,6 @@ jobs:
               --output "$RUNNER_TEMP/$kind.srs" \
               "/tmp/gwz-podkop-rulesets/$kind-domains.rule-set.json"
             test -s "$RUNNER_TEMP/$kind.srs"
+            "$SINGBOX" rule-set compile --output "$RUNNER_TEMP/confirmed-$kind.srs" "/tmp/gwz-confirmed/$kind.rule-set.json"
+            test -s "$RUNNER_TEMP/confirmed-$kind.srs"
           done
