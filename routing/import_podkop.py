@@ -73,7 +73,7 @@ def main():
         name, sep, path = entry.partition("=")
         if not sep or not re.fullmatch(r"[a-z0-9_-]{2,30}", name) or name in files:
             parser.error("Provide unique NAME=FILE for each source")
-        files[name] = Path(path).read_text(encoding="utf-8")
+        files[name] = Path(path).read_text(encoding="utf-8-sig")
     report = inspect_exports(files)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n",
