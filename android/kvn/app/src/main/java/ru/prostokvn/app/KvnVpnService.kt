@@ -76,7 +76,8 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
 
     override fun onCreate() {
         super.onCreate()
-        createChannel()
+        // Notification errors must never crash the entire Android process.
+        runCatching { createChannel() }.onFailure { VpnDiagnostics.failure(this, it) }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -86,21 +87,26 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
         }
         if (runningJob?.isActive == true) return START_NOT_STICKY
         stopping = false
+        VpnDiagnostics.enter(this, "start")
         // Mandatory: promote before any slow native setup; Android may kill slow foreground services.
         try { startForeground(NOTIFICATION_ID, notification("Подключение…")) }
-        catch (e: Exception) {
-            VpnState.update(VpnState.Phase.ERROR, "Нет разрешения на запуск VPN-службы")
+        catch (e: Throwable) {
+            VpnDiagnostics.failure(this, e)
+            VpnState.update(VpnState.Phase.ERROR, "Android запретил фоновую VPN-службу (${e.javaClass.simpleName})")
             stopSelf()
             return START_NOT_STICKY
         }
         VpnState.update(VpnState.Phase.STARTING)
         runningJob = scope.launch {
             try {
+                VpnDiagnostics.enter(this@KvnVpnService, "permissions")
                 if (prepare(this@KvnVpnService) != null) error("Системное разрешение VPN отсутствует")
+                VpnDiagnostics.enter(this@KvnVpnService, "rules")
                 val store = StoredProfile(this@KvnVpnService)
                 val snapshot = PolicyStore(this@KvnVpnService).ensureBundled()
                     ?: error("Проверенные правила недоступны")
                 val manual = store.manualEnabled
+                VpnDiagnostics.enter(this@KvnVpnService, "pool")
                 val candidateProfiles: List<VlessProfile> = if (manual) {
                     val link = store.read() ?: error("Добавьте свой VLESS-профиль в настройках")
                     listOf(VlessProfile.parse(link))
@@ -111,6 +117,7 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
                         }
                     }
                 }
+                VpnDiagnostics.enter(this@KvnVpnService, "config")
                 val config = if (manual) {
                     VpnConfig.build(candidateProfiles.first(), snapshot, store.splitRouting)
                 } else {
@@ -126,31 +133,42 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
                     debug = false
                     logMaxLines = 500
                 }
+                VpnDiagnostics.enter(this@KvnVpnService, "native_setup")
                 synchronized(nativeSetupLock) {
                     if (!nativeSetupCompleted) {
                         Libbox.setup(setup)
                         nativeSetupCompleted = true
                     }
                 }
+                VpnDiagnostics.enter(this@KvnVpnService, "command_server")
                 val server = CommandServer(this@KvnVpnService, this@KvnVpnService)
                 commandServer = server
                 server.start()
+                VpnDiagnostics.enter(this@KvnVpnService, "engine_start")
                 server.startOrReloadService(config, OverrideOptions())
                 if (stopping) {
                     cleanup()
                     return@launch
                 }
+                VpnDiagnostics.enter(this@KvnVpnService, "tun")
                 check(tunnel != null) { "VPN-интерфейс Android не создан" }
                 if (!stopping) {
+                    VpnDiagnostics.connected(this@KvnVpnService)
                     VpnState.update(VpnState.Phase.ON, connectionLabel)
                     updateNotification("VPN запущен")
                 }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 // User requested STOP while the native engine was starting.
                 cleanup()
-                if (stopping) VpnState.update(VpnState.Phase.OFF)
-            } catch (e: Exception) {
-                Log.e("KVN", "VPN startup failed (diagnostic details intentionally redacted)")
+                if (stopping) {
+                    VpnDiagnostics.stopped(this@KvnVpnService)
+                    VpnState.update(VpnState.Phase.OFF)
+                }
+            } catch (e: Throwable) {
+                // Also catches JNI LinkageError and other non-Exception startup failures.
+                // Native SIGABRT/SIGSEGV cannot be caught, hence the stage journal above.
+                VpnDiagnostics.failure(this@KvnVpnService, e)
+                Log.e("KVN", "VPN startup failed: ${e.javaClass.simpleName} (profile redacted)")
                 VpnState.update(VpnState.Phase.ERROR,
                     when (e) {
                         is IllegalArgumentException, is IllegalStateException -> e.message?.take(180) ?: "Ошибка профиля"
@@ -169,6 +187,7 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
         scope.launch {
             runningJob?.cancel()
             cleanup()
+            VpnDiagnostics.stopped(this@KvnVpnService)
             VpnState.update(VpnState.Phase.OFF)
             stopSelf()
         }
