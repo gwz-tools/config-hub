@@ -37,13 +37,39 @@ class SettingsActivity : ComponentActivity() {
             insets
         }
         val store = StoredProfile(this)
-        findViewById<TextView>(R.id.saved_profile).text = store.summary()
+        val modeSwitch = findViewById<Switch>(R.id.manual_mode)
+        modeSwitch.isChecked = store.manualEnabled
+        fun renderProfileMode() {
+            findViewById<TextView>(R.id.saved_profile).text =
+                if (store.manualEnabled) store.summary()
+                else "Режим AUTO активен. Личный профиль не требуется."
+        }
+        renderProfileMode()
+        modeSwitch.setOnCheckedChangeListener { _, enabled ->
+            if (enabled && store.read() == null) {
+                toast("Сначала сохраните личный VLESS-профиль или используйте AUTO")
+                modeSwitch.isChecked = false
+            } else {
+                store.manualEnabled = enabled
+                renderProfileMode()
+            }
+        }
+        lifecycleScope.launch {
+            val count = withContext(Dispatchers.IO) {
+                AutoPool(this@SettingsActivity).cachedCount()
+            }
+            findViewById<TextView>(R.id.auto_pool_status).text =
+                if (count > 0) "Сохранено $count проверенных узлов. Обновление при следующем подключении после 6 часов. Автовыбор каждые 3 минуты."
+                else "При первом подключении КВН загрузит проверенный пул из GitHub. Ручная VLESS-ссылка не требуется."
+        }
         findViewById<Button>(R.id.save_profile).setOnClickListener {
             val link = findViewById<EditText>(R.id.profile_link).text.toString().trim()
             try {
                 val name = VlessProfile.parse(link).name
                 store.save(link)
-                findViewById<TextView>(R.id.saved_profile).text = name
+                store.manualEnabled = true
+                modeSwitch.isChecked = true
+                renderProfileMode()
                 findViewById<EditText>(R.id.profile_link).text.clear()
                 toast("Профиль сохранён. Для применения выключите и включите VPN.")
             } catch (e: Exception) { toast(e.message ?: "Некорректная ссылка") }
