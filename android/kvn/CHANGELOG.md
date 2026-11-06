@@ -1,3 +1,11 @@
+## 0.1.8-test — actionable libbox startup diagnostics (device test required)
+
+- In the Android 17 user log from 2026-11-06 11:18–11:19, libbox no longer aborts; five attempts fail with Go class `proxyerror` returned by `CommandServer.startOrReloadService`.
+- The current app redacted **the whole native error message**, preventing root cause identification. New test build shows `Throwable.message` on the main page and in local logcat, retains it in private app diagnostics, and marks when `openTun` is called.
+- Tapping VPN in AUTO and manual mode should now reveal the actual engine error (e.g. TUN, route, DNS, platform interface) instead of a generic failure.
+- An APK with a new GitHub runner's debug signing key still cannot update an earlier build; stable secret-backed signing remains a separate release blocker.
+- Not verified to pass VPN traffic yet. PR is DRAFT.
+
 ## 0.1.7-test — root-cause fix for native SIGABRT (device test pending)
 
 - Diagnosed Samsung Android 17 native Go panic in user-provided logcat: `netip.ParsePrefix("fe80::...%rmnet_data0/64")` refuses IPv6 zone IDs.
