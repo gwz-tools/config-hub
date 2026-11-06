@@ -316,7 +316,12 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
                 }
                 flags = OsConstants.IFF_UP or OsConstants.IFF_RUNNING
                 metered = !caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)
-                addresses = IterStrings(jni.interfaceAddresses.map { "${it.address.hostAddress}/${it.networkPrefixLength}" })
+                // Inet6Address.hostAddress can contain a scope such as
+                // fe80::1%rmnet_data0. sing-box libbox parses interface prefixes
+                // with Go netip.ParsePrefix, which panics on scoped IPv6.
+                addresses = IterStrings(jni.interfaceAddresses.map {
+                    NetworkPrefixFormatter.toPrefix(it.address, it.networkPrefixLength.toInt())
+                })
                 dnsServer = IterStrings(link.dnsServers.mapNotNull { it.hostAddress })
                 gateway = IterStrings(link.routes.mapNotNull { it.gateway?.hostAddress })
             }
