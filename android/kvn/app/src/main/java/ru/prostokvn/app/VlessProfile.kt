@@ -157,13 +157,15 @@ object VpnConfig {
         }
         return JSONObject().apply {
             put("log", JSONObject().put("level", "warn"))
-            put("dns", JSONObject().put("servers", JSONArray()
-                .put(JSONObject().put("tag", "remote").put("type", "udp")
-                    .put("server", "1.1.1.1").apply {
-                        if (!diagnosticDirect) put("detour", "proxy")
-                    })
-                .put(JSONObject().put("tag", "local").put("type", "udp")
-                    .put("server", "77.88.8.8")))
+            // "local" is resolved using Android DnsResolver against the physical
+            // ConnectivityManager.Network; never hardcode UDP/53 on mobile data.
+            val dnsServers = JSONArray()
+            if (!diagnosticDirect) {
+                dnsServers.put(JSONObject().put("tag", "remote").put("type", "udp")
+                    .put("server", "1.1.1.1").put("detour", "proxy"))
+            }
+            dnsServers.put(JSONObject().put("tag", "local").put("type", "local"))
+            put("dns", JSONObject().put("servers", dnsServers)
                 .put("rules", dnsRules)
                 .put("final", if (diagnosticDirect) "local" else "remote")
                 .put("strategy", "ipv4_only"))

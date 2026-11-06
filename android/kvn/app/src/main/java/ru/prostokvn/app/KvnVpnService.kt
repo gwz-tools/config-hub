@@ -79,6 +79,9 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
     @Volatile private var selectedUnderlyingNetwork: Network? = null
     @Volatile private var selectedUnderlyingInterface: String? = null
     private val firstProtectedSocketLogged = AtomicBoolean(false)
+    // Android system resolver is explicitly bound to the physical upstream.
+    // This avoids assuming UDP/53 access to a public resolver on cellular.
+    private val systemDns by lazy { KvnLocalResolver { physicalNetworkForDns() } }
     private var runningJob: Job? = null
     @Volatile private var stopping = false
 
@@ -285,7 +288,23 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
             Log.i("KVN", "First outbound socket protected from VPN routing")
         }
     }
-    override fun localDNSTransport(): LocalDNSTransport? = null
+    override fun localDNSTransport(): LocalDNSTransport = systemDns
+
+    private fun physicalNetworkForDns(): Network? {
+        selectedUnderlyingNetwork?.let { return it }
+        // Callback delivery is asynchronous; DNS can be requested before it arrives.
+        // Never select the VPN itself as an upstream resolver network.
+        val physical = connectivity.allNetworks.firstOrNull { network ->
+            val caps = connectivity.getNetworkCapabilities(network)
+            val name = connectivity.getLinkProperties(network)?.interfaceName
+            caps != null && name != null && !name.startsWith("tun") &&
+                caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN) &&
+                !caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+        }
+        if (physical == null) Log.w("KVN", "No physical network available for Android DNS")
+        return physical
+    }
     override fun findConnectionOwner(ipProtocol: Int, sourceAddress: String?, sourcePort: Int,
                                      destinationAddress: String?, destinationPort: Int): ConnectionOwner {
         val owner = ConnectionOwner()
