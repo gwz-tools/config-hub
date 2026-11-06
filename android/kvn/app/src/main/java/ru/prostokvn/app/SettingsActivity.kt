@@ -40,13 +40,14 @@ class SettingsActivity : ComponentActivity() {
         val modeSwitch = findViewById<Switch>(R.id.manual_mode)
         modeSwitch.isChecked = store.manualEnabled
         fun renderProfileMode() {
+            val savedName = store.summary()
             findViewById<TextView>(R.id.saved_profile).text =
-                if (store.manualEnabled) store.summary()
-                else "Режим AUTO активен. Личный профиль не требуется."
+                if (store.manualEnabled) "Личный профиль сохранён: $savedName. Вводить ссылку повторно не нужно."
+                else "Режим AUTO активен. Личная ссылка не требуется."
         }
         renderProfileMode()
         modeSwitch.setOnCheckedChangeListener { _, enabled ->
-            if (enabled && store.read() == null) {
+            if (enabled && runCatching { store.read() }.getOrNull() == null) {
                 toast("Сначала сохраните личный VLESS-профиль или используйте AUTO")
                 modeSwitch.isChecked = false
             } else {
@@ -71,7 +72,7 @@ class SettingsActivity : ComponentActivity() {
                 modeSwitch.isChecked = true
                 renderProfileMode()
                 findViewById<EditText>(R.id.profile_link).text.clear()
-                toast("Профиль сохранён. Для применения выключите и включите VPN.")
+                toast("VLESS сохранён на устройстве. Поле ввода очищено для безопасности.")
             } catch (e: Exception) { toast(e.message ?: "Некорректная ссылка") }
         }
         findViewById<Switch>(R.id.split_routing).apply {
