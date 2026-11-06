@@ -1,3 +1,11 @@
+## 0.1.7-test — root-cause fix for native SIGABRT (device test pending)
+
+- Diagnosed Samsung Android 17 native Go panic in user-provided logcat: `netip.ParsePrefix("fe80::...%rmnet_data0/64")` refuses IPv6 zone IDs.
+- Fixed Android `KvnVpnService.getInterfaces()`: reconstruct IP from raw bytes via `NetworkPrefixFormatter` before adding network prefix, following upstream sing-box-for-android conversion.
+- Added regression unit tests for scoped IPv6, IPv4, IPv6 and prefix bounds.
+- Does not disable IPv6. No changes to public VLESS feed or DIRECT/PROXY routing.
+- CI builds an APK but physical device must still confirm connection and traffic; don't merge PR until then.
+
 ## 0.1.6-test — Android runtime and profile stability (device confirmation pending)
 
 - Enable upstream sing-box `fixAndroidStack` workaround on Android 9+ (SFA client reference).
