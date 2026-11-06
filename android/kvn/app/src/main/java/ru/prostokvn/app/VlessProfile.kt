@@ -156,7 +156,7 @@ object VpnConfig {
                 .put(JSONObject().put("tag", "remote").put("type", "udp")
                     .put("server", "1.1.1.1").put("detour", "proxy"))
                 .put(JSONObject().put("tag", "local").put("type", "udp")
-                    .put("server", "77.88.8.8").put("detour", "direct")))
+                    .put("server", "77.88.8.8")))
                 .put("rules", dnsRules).put("final", "remote").put("strategy", "ipv4_only"))
             put("inbounds", JSONArray().put(JSONObject()
                 .put("type", "tun").put("tag", "tun-in")
