@@ -101,7 +101,15 @@ class SettingsActivity : ComponentActivity() {
             renderRules()
         }
     }
-    override fun onResume() { super.onResume(); renderRules() }
+    override fun onResume() {
+        super.onResume()
+        renderRules()
+        val details = VpnDiagnostics.summary(this)
+        findViewById<TextView>(R.id.vpn_diagnostics).apply {
+            visibility = if (details.isNullOrBlank()) android.view.View.GONE else android.view.View.VISIBLE
+            text = details ?: ""
+        }
+    }
     private fun renderRules() {
         lifecycleScope.launch {
             val snap = withContext(Dispatchers.IO) { PolicyStore(this@SettingsActivity).current() }
