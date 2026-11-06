@@ -7,7 +7,8 @@
       "type": "urltest",
       "tag": "GWZHUB-AUTO",
       "outbounds": [
-        "GWZ-01"
+        "GWZ-01",
+        "GWZ-02"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -16,6 +17,27 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
+      "server": "185.209.15.44",
+      "server_port": 443,
+      "uuid": "255a8044-3337-473e-af26-46a37208adcc",
+      "tls": {
+        "enabled": true,
+        "server_name": "nl2.botfight.fun",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "firefox"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "KzMIiJZl6BXPiDBCOFNEiL1Uc3CJg_ZSZJLrc4MgFnU",
+          "short_id": "f3912f1a2dd0ed8e"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-02",
       "server": "193.233.199.84",
       "server_port": 443,
       "uuid": "db80088c-32a1-4cb8-a907-0f3cb7844152",

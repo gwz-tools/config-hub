@@ -1,6 +1,7 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-06 / 11:02 (Moscow)
-# Количество: 1
+# Date/Time: 2026-11-06 / 12:40 (Moscow)
+# Количество: 2
 
+vless://255a8044-3337-473e-af26-46a37208adcc@185.209.15.44:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=KzMIiJZl6BXPiDBCOFNEiL1Uc3CJg_ZSZJLrc4MgFnU&security=reality&sid=f3912f1a2dd0ed8e&sni=nl2.botfight.fun&type=tcp#%F0%9F%8C%90 | GWZ | Unknown
 vless://db80088c-32a1-4cb8-a907-0f3cb7844152@193.233.199.84:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=1ONSjyJWD3lAomwIqFmmzb6lAhg077bvMJ7rGJCDk0g&security=reality&sid=38559e47f5536913&sni=fi3game.japancase.site&type=tcp#%F0%9F%8C%90 | GWZ | RU
