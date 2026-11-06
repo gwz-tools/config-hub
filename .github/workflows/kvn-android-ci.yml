@@ -85,6 +85,32 @@ jobs:
           echo "sing-box startup survived 8s with real DNS and proxy outbounds."
       - name: Verify ARM64 and other ABI APKs, record SHA-256
         run: python3 scripts/check_apk_abis.py app/build/outputs/apk/debug
+      - name: Self-test stable signing with disposable CI certificate
+        shell: bash
+        run: |
+          set -euo pipefail
+          # This key is never used for distributed APKs. It proves that the
+          # configured apksigner command can re-sign an assembled debug APK.
+          export KVN_SIGNING_PASSWORD='CI-only-disposable-password'
+          TEMP_KEY="$RUNNER_TEMP/kvn-disposable-ci.p12"
+          TEMP_APK="$RUNNER_TEMP/kvn-ci-re-signed.apk"
+          trap 'rm -f "$TEMP_KEY" "$TEMP_APK"' EXIT
+          keytool -genkeypair -noprompt -alias kvn \
+            -keyalg RSA -keysize 2048 -validity 1 -storetype PKCS12 \
+            -keystore "$TEMP_KEY" \
+            -storepass "$KVN_SIGNING_PASSWORD" \
+            -keypass "$KVN_SIGNING_PASSWORD" \
+            -dname 'CN=Disposable CI Test'
+          SIGNER="$ANDROID_HOME/build-tools/35.0.0/apksigner"
+          "$SIGNER" sign \
+            --ks "$TEMP_KEY" --ks-type PKCS12 --ks-key-alias kvn \
+            --ks-pass env:KVN_SIGNING_PASSWORD \
+            --key-pass env:KVN_SIGNING_PASSWORD \
+            --out "$TEMP_APK" \
+            app/build/outputs/apk/debug/app-arm64-v8a-debug.apk
+          "$SIGNER" verify --verbose --print-certs "$TEMP_APK"
+          echo "Re-signing previously debug-signed APK works with a PKCS12 key."
+
       # Optional stable signing. NEVER commit a keystore to this public repo.
       # Configure the two Actions secrets described in SIGNING.md. Without
       # them the verified CI debug APK is still emitted, but CAN'T update
