@@ -105,9 +105,12 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
                 val store = StoredProfile(this@KvnVpnService)
                 val snapshot = PolicyStore(this@KvnVpnService).ensureBundled()
                     ?: error("Проверенные правила недоступны")
+                val diagnosticDirect = store.consumeDiagnosticDirectNextStart()
                 val manual = store.manualEnabled
                 VpnDiagnostics.enter(this@KvnVpnService, "pool")
-                val candidateProfiles: List<VlessProfile> = if (manual) {
+                val candidateProfiles: List<VlessProfile> = if (diagnosticDirect) {
+                    emptyList() // No VLESS fetch or use in explicit direct test.
+                } else if (manual) {
                     val link = store.read() ?: error("Добавьте свой VLESS-профиль в настройках")
                     listOf(VlessProfile.parse(link))
                 } else {
@@ -118,13 +121,16 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
                     }
                 }
                 VpnDiagnostics.enter(this@KvnVpnService, "config")
-                val config = if (manual) {
-                    VpnConfig.build(candidateProfiles.first(), snapshot, store.splitRouting)
-                } else {
-                    VpnConfig.buildAuto(candidateProfiles, snapshot, store.splitRouting)
+                val config = when {
+                    diagnosticDirect -> VpnConfig.buildDirectDiagnostic(snapshot)
+                    manual -> VpnConfig.build(candidateProfiles.first(), snapshot, store.splitRouting)
+                    else -> VpnConfig.buildAuto(candidateProfiles, snapshot, store.splitRouting)
                 }
-                val connectionLabel = if (manual) candidateProfiles.first().name
-                                      else "AUTO · ${candidateProfiles.size} узлов"
+                val connectionLabel = when {
+                    diagnosticDirect -> "ТЕСТ DIRECT · БЕЗ ШИФРОВАНИЯ"
+                    manual -> candidateProfiles.first().name
+                    else -> "AUTO · ${candidateProfiles.size} узлов"
+                }
                 val work = getExternalFilesDir(null) ?: filesDir
                 val setup = SetupOptions().apply {
                     basePath = filesDir.absolutePath
@@ -159,7 +165,7 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
                 if (!stopping) {
                     VpnDiagnostics.connected(this@KvnVpnService)
                     VpnState.update(VpnState.Phase.ON, connectionLabel)
-                    updateNotification("VPN запущен")
+                    updateNotification(if (diagnosticDirect) "ТЕСТ DIRECT — без шифрования" else "VPN запущен")
                 }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 // User requested STOP while the native engine was starting.

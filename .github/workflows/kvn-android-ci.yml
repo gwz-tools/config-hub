@@ -62,6 +62,8 @@ jobs:
           tar -xzf "$TARBALL" -C "$RUNNER_TEMP"
           test -s app/build/ci-validation/vpn-auto.json
           "$RUNNER_TEMP/sing-box-1.14.4-linux-amd64/sing-box" check -c app/build/ci-validation/vpn-auto.json
+          test -s app/build/ci-validation/vpn-direct.json
+          "$RUNNER_TEMP/sing-box-1.14.4-linux-amd64/sing-box" check -c app/build/ci-validation/vpn-direct.json
       - name: Smoke-test real sing-box engine startup (DNS, routing and VLESS)
         shell: bash
         run: |

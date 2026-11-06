@@ -55,4 +55,16 @@ class StoredProfile(private val context: Context) {
     var splitRouting: Boolean
         get() = prefs.getBoolean("split_routing", true)
         set(value) { check(prefs.edit().putBoolean("split_routing", value).commit()) }
+
+    /** Explicit one-shot; consumed before native engine initialization. */
+    var diagnosticDirectNextStart: Boolean
+        get() = prefs.getBoolean("diagnostic_direct_once", false)
+        set(value) { check(prefs.edit().putBoolean("diagnostic_direct_once", value).commit()) }
+
+    @Synchronized
+    fun consumeDiagnosticDirectNextStart(): Boolean {
+        if (!diagnosticDirectNextStart) return false
+        check(prefs.edit().remove("diagnostic_direct_once").commit())
+        return true
+    }
 }

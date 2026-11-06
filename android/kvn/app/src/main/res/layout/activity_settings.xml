@@ -47,6 +47,13 @@
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="6dp" android:text="@string/split_routing_note"
             android:textColor="@color/kvn_muted" android:textSize="13sp" />
+        <Switch android:id="@+id/diagnostic_direct" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="28dp"
+            android:minHeight="52dp" android:text="@string/diagnostic_direct_title"
+            android:textSize="16sp" android:textColor="@color/kvn_ink" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="6dp" android:text="@string/diagnostic_direct_note"
+            android:textColor="@color/kvn_red_dark" android:textSize="13sp" />
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="28dp" android:text="@string/rules_title"
             android:textSize="19sp" android:textStyle="bold" android:textColor="@color/kvn_ink" />

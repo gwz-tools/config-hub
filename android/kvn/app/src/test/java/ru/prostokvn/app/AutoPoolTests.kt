@@ -93,6 +93,8 @@ class AutoPoolTests {
         val output = File(destination)
         output.parentFile?.mkdirs()
         output.writeText(VpnConfig.buildAuto(listOf(profile), snapshot, true))
+        File(output.parentFile, "vpn-direct.json")
+            .writeText(VpnConfig.buildDirectDiagnostic(snapshot))
         assertEquals("urltest", JSONObject(output.readText()).getJSONArray("outbounds")
             .getJSONObject(1).getString("type"))
     }
@@ -123,6 +125,28 @@ class AutoPoolTests {
             assertEquals("direct", direct.getString("type"))
             assertFalse(direct.has("bind_interface"))
         }
+    }
+
+    @Test fun oneShotDirectDiagnosticHasNoProxyAndPreservesDnsHijack() {
+        val directory = temporary.newFolder()
+        listOf("block", "direct", "proxy").forEach {
+            File(directory, "${it}.txt").writeText("")
+        }
+        val snapshot = PolicyStore.Snapshot("test", directory, JSONObject())
+        val config = JSONObject(VpnConfig.buildDirectDiagnostic(snapshot))
+        val outbound = config.getJSONArray("outbounds")
+        assertEquals(1, outbound.length())
+        assertEquals("direct", outbound.getJSONObject(0).getString("tag"))
+        assertEquals("direct", config.getJSONObject("route").getString("final"))
+        val dns = config.getJSONObject("dns")
+        assertEquals("local", dns.getString("final"))
+        val servers = dns.getJSONArray("servers")
+        for (i in 0 until servers.length()) {
+            assertFalse(servers.getJSONObject(i).has("detour"))
+        }
+        assertEquals("hijack-dns", config.getJSONObject("route")
+            .getJSONArray("rules").getJSONObject(0).getString("action"))
+        assertEquals("tun", config.getJSONArray("inbounds").getJSONObject(0).getString("type"))
     }
 
     @Test fun manualOutboundDoesNotUseUrltest() {
