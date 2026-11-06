@@ -1,3 +1,12 @@
+## 0.1.6-test — Android runtime and profile stability (device confirmation pending)
+
+- Enable upstream sing-box `fixAndroidStack` workaround on Android 9+ (SFA client reference).
+- Save encrypted VLESS profile and AUTO/manual flags synchronously before attempting native startup, guarding against loss if Go runtime terminates.
+- Show explicit personal-profile-saved message rather than confusing empty input, and last redacted startup stage in Settings.
+- **Investigate Samsung Secure Folder**: VPN launched inside a Knox container may be restricted; verify the same APK outside Secure Folder before reporting a VPN failure as a library defect.
+- Google Play/release signing is NOT configured. Each GitHub ephemeral runner has a different default debug certificate; CI debug APKs do NOT update previously installed versions in place. Need a secure, persistent signing keystore for future updates.
+- CI success validates build/native JSON, not actual Android/Knox/ISP connectivity.
+
 ## 0.1.5-test — startup diagnostics / launcher repair (device verification pending)
 
 - Catch Android service launch exceptions instead of terminating the activity immediately.
