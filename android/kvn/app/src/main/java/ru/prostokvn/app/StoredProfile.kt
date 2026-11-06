@@ -31,8 +31,12 @@ class StoredProfile(private val context: Context) {
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         cipher.init(Cipher.ENCRYPT_MODE, key())
         val text = cipher.doFinal(link.trim().toByteArray(Charsets.UTF_8))
-        prefs.edit().putString("iv", Base64.encodeToString(cipher.iv, Base64.NO_WRAP))
-            .putString("cipher", Base64.encodeToString(text, Base64.NO_WRAP)).apply()
+        // commit() rather than apply(): a native Go crash just after "Save"
+        // must not lose an asynchronously queued profile write.
+        check(prefs.edit().putString("iv", Base64.encodeToString(cipher.iv, Base64.NO_WRAP))
+            .putString("cipher", Base64.encodeToString(text, Base64.NO_WRAP)).commit()) {
+            "Не удалось надёжно сохранить профиль"
+        }
     }
     fun read(): String? {
         val iv = prefs.getString("iv", null) ?: return null
@@ -46,9 +50,9 @@ class StoredProfile(private val context: Context) {
     /** AUTO is the default. A pasted personal profile is optional and opt-in. */
     var manualEnabled: Boolean
         get() = prefs.getBoolean("manual_enabled", false)
-        set(value) { prefs.edit().putBoolean("manual_enabled", value).apply() }
+        set(value) { check(prefs.edit().putBoolean("manual_enabled", value).commit()) }
 
     var splitRouting: Boolean
         get() = prefs.getBoolean("split_routing", true)
-        set(value) { prefs.edit().putBoolean("split_routing", value).apply() }
+        set(value) { check(prefs.edit().putBoolean("split_routing", value).commit()) }
 }
