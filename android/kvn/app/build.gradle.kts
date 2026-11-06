@@ -9,8 +9,8 @@ android {
         applicationId = "ru.prostokvn.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 13
-        versionName = "0.1.12-test"
+        versionCode = 14
+        versionName = "0.1.13-test"
     }
     // Ship one native VPN engine per CPU architecture instead of all four in every APK.
     // Builds: app-arm64-v8a-debug.apk (current Samsung/most phones), plus

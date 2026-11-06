@@ -143,6 +143,7 @@ class AutoPoolTests {
         val servers = dns.getJSONArray("servers")
         assertEquals(1, servers.length())
         assertEquals("local", servers.getJSONObject(0).getString("type"))
+        assertEquals(1400, config.getJSONArray("inbounds").getJSONObject(0).getInt("mtu"))
         for (i in 0 until servers.length()) {
             assertFalse(servers.getJSONObject(i).has("detour"))
         }
