@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fillViewport="true" android:background="@color/kvn_background">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="20dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/settings_title" android:textSize="26sp" android:textStyle="bold"
+            android:textColor="@color/kvn_red_dark" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="20dp" android:text="@string/auto_pool_title"
+            android:textSize="19sp" android:textStyle="bold" android:textColor="@color/kvn_ink" />
+        <TextView android:id="@+id/auto_pool_status" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:text="@string/auto_pool_note" android:textColor="@color/kvn_muted"
+            android:textSize="14sp" />
+        <TextView android:id="@+id/vpn_diagnostics" android:textIsSelectable="true" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:textSize="14sp" android:textColor="@color/kvn_red_dark"
+            android:visibility="gone" />
+        <Switch android:id="@+id/manual_mode" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="14dp"
+            android:minHeight="52dp" android:text="@string/manual_mode"
+            android:textSize="16sp" android:textColor="@color/kvn_ink" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="20dp" android:text="@string/profile_title"
+            android:textSize="19sp" android:textStyle="bold" android:textColor="@color/kvn_ink" />
+        <TextView android:id="@+id/saved_profile" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:textColor="@color/kvn_muted" android:textSize="15sp" />
+        <EditText android:id="@+id/profile_link" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="12dp"
+            android:hint="@string/profile_hint" android:inputType="textUri|textMultiLine"
+            android:importantForAutofill="no" android:autofillHints="" android:singleLine="false"
+            android:minHeight="68dp" android:padding="12dp" android:textSize="14sp" />
+        <Button android:id="@+id/save_profile" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp" android:minHeight="52dp"
+            android:text="@string/save_profile" android:textAllCaps="false"
+            android:textColor="@android:color/white" android:backgroundTint="@color/kvn_red" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="6dp" android:text="@string/profile_security_note"
+            android:textColor="@color/kvn_muted" android:textSize="12sp" />
+        <Switch android:id="@+id/split_routing" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="28dp"
+            android:minHeight="52dp" android:text="@string/split_routing"
+            android:textSize="16sp" android:textColor="@color/kvn_ink" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="6dp" android:text="@string/split_routing_note"
+            android:textColor="@color/kvn_muted" android:textSize="13sp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="28dp" android:text="@string/rules_title"
+            android:textSize="19sp" android:textStyle="bold" android:textColor="@color/kvn_ink" />
+        <TextView android:id="@+id/rules_summary" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:textColor="@color/kvn_ink" android:textSize="14sp" />
+        <TextView android:id="@+id/check_status" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="6dp"
+            android:textColor="@color/kvn_muted" android:textSize="12sp" />
+        <Button android:id="@+id/refresh_rules" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp" android:minHeight="52dp"
+            android:text="@string/refresh_rules" android:textAllCaps="false"
+            android:textColor="@android:color/white" android:backgroundTint="@color/kvn_red" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="28dp" android:text="@string/app_updates_title"
+            android:textSize="19sp" android:textStyle="bold" android:textColor="@color/kvn_ink" />
+        <Button android:id="@+id/check_release" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp" android:minHeight="52dp"
+            android:text="@string/check_release" android:textAllCaps="false"
+            android:textColor="@color/kvn_red" android:backgroundTint="#FFF0ED" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="20dp" android:text="@string/test_build"
+            android:textSize="12sp" android:textColor="@color/kvn_muted" />
+    </LinearLayout>
+</ScrollView>
