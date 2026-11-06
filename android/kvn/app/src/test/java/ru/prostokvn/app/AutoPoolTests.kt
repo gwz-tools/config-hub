@@ -70,8 +70,8 @@ class AutoPoolTests {
                 val local = (0 until servers.length())
                     .map { servers.getJSONObject(it) }
                     .single { it.getString("tag") == "local" }
-                assertEquals("udp", local.getString("type"))
-                assertEquals("77.88.8.8", local.getString("server"))
+                assertEquals("local", local.getString("type"))
+                assertFalse(local.has("server"))
                 assertFalse("LOCAL DNS must use its default direct dialer, not detour to empty outbound",
                     local.has("detour"))
                 val remote = (0 until servers.length())
@@ -116,7 +116,7 @@ class AutoPoolTests {
             val dns = config.getJSONObject("dns").getJSONArray("servers")
             val local = dns.getJSONObject(1)
             assertEquals("local", local.getString("tag"))
-            assertEquals("udp", local.getString("type"))
+            assertEquals("local", local.getString("type"))
             assertFalse("Local DNS cannot detour via empty direct outbound",
                 local.has("detour"))
             assertEquals("proxy", dns.getJSONObject(0).getString("detour"))
@@ -141,6 +141,8 @@ class AutoPoolTests {
         val dns = config.getJSONObject("dns")
         assertEquals("local", dns.getString("final"))
         val servers = dns.getJSONArray("servers")
+        assertEquals(1, servers.length())
+        assertEquals("local", servers.getJSONObject(0).getString("type"))
         for (i in 0 until servers.length()) {
             assertFalse(servers.getJSONObject(i).has("detour"))
         }
