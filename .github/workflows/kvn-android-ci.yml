@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'android/kvn/**'
+      - '.github/workflows/kvn-android-ci.yml'
   push:
     branches: [main]
     paths:
@@ -84,7 +85,72 @@ jobs:
           echo "sing-box startup survived 8s with real DNS and proxy outbounds."
       - name: Verify ARM64 and other ABI APKs, record SHA-256
         run: python3 scripts/check_apk_abis.py app/build/outputs/apk/debug
-      - name: Publish APK as downloadable test artifact
+      # Optional stable signing. NEVER commit a keystore to this public repo.
+      # Configure the two Actions secrets described in SIGNING.md. Without
+      # them the verified CI debug APK is still emitted, but CAN'T update
+      # APKs signed by another ephemeral runner (Android signature mismatch).
+      - name: Sign upgrade-compatible Android APKs
+        id: stable_signing
+        shell: bash
+        env:
+          KVN_KEYSTORE_BASE64: ${{ secrets.KVN_SIGNING_KEYSTORE_BASE64 }}
+          KVN_SIGNING_PASSWORD: ${{ secrets.KVN_SIGNING_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$KVN_KEYSTORE_BASE64" && -z "$KVN_SIGNING_PASSWORD" ]]; then
+            echo "::warning::Stable signing not configured; APKs are debug-signed and will require uninstall on the next CI run. See android/kvn/SIGNING.md"
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ -z "$KVN_KEYSTORE_BASE64" || -z "$KVN_SIGNING_PASSWORD" ]]; then
+            echo "::error::Both KVN_SIGNING_KEYSTORE_BASE64 and KVN_SIGNING_PASSWORD must be configured together."
+            exit 1
+          fi
+
+          umask 077
+          KEYSTORE_FILE="$(mktemp "$RUNNER_TEMP/kvn-signing-XXXXXXXX.p12")"
+          trap 'rm -f "$KEYSTORE_FILE"' EXIT
+          printf '%s' "$KVN_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_FILE"
+          test -s "$KEYSTORE_FILE"
+
+          OUT="app/build/outputs/apk/stable"
+          mkdir -p "$OUT"
+          SIGNER="$ANDROID_HOME/build-tools/35.0.0/apksigner"
+          test -x "$SIGNER"
+          shopt -s nullglob
+          apks=(app/build/outputs/apk/debug/*.apk)
+          if [[ "${#apks[@]}" -ne 4 ]]; then
+            echo "::error::Expected 4 ABI APKs for stable signing; found ${#apks[@]}."
+            exit 1
+          fi
+          # apksigner signs the already-built/tested binaries. This step never
+          # re-compiles, edits source or prints signing credentials.
+          for apk in "${apks[@]}"; do
+            name="$(basename "$apk" -debug.apk)-stable.apk"
+            "$SIGNER" sign \
+              --ks "$KEYSTORE_FILE" --ks-type PKCS12 --ks-key-alias kvn \
+              --ks-pass env:KVN_SIGNING_PASSWORD \
+              --key-pass env:KVN_SIGNING_PASSWORD \
+              --out "$OUT/$name" "$apk"
+            "$SIGNER" verify --verbose --print-certs "$OUT/$name"
+            (cd "$OUT" && sha256sum "$name" > "$name.sha256")
+          done
+          echo "enabled=true" >> "$GITHUB_OUTPUT"
+          echo "Stable-signed APKs ready. For an existing debug installation, one final reinstall is required."
+
+      - name: Publish stable-signed upgrade-compatible APKs
+        if: steps.stable_signing.outputs.enabled == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: kvn-android-stable-${{ github.run_number }}
+          path: |
+            android/kvn/app/build/outputs/apk/stable/*.apk
+            android/kvn/app/build/outputs/apk/stable/*.sha256
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Publish debug APKs (requires uninstall between CI runs)
+        if: steps.stable_signing.outputs.enabled != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: kvn-android-debug-${{ github.run_number }}
