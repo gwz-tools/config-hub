@@ -83,6 +83,7 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
     // This avoids assuming UDP/53 access to a public resolver on cellular.
     private val systemDns by lazy { KvnLocalResolver { physicalNetworkForDns() } }
     private var runningJob: Job? = null
+    private var trafficProbe: KvnTrafficProbe? = null
     @Volatile private var stopping = false
 
     override fun onCreate() {
@@ -167,6 +168,11 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
                 server.start()
                 VpnDiagnostics.enter(this@KvnVpnService, "engine_start")
                 server.startOrReloadService(config, OverrideOptions())
+                if (diagnosticDirect) {
+                    // Structured counters (no hostnames/URLs) expose whether TUN
+                    // produces any TCP/UDP connections and return traffic.
+                    trafficProbe = KvnTrafficProbe(scope).also { it.start() }
+                }
                 if (stopping) {
                     cleanup()
                     return@launch
@@ -216,6 +222,8 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
     }
 
     @Synchronized private fun cleanup() {
+        runCatching { trafficProbe?.close() }
+        trafficProbe = null
         runCatching { commandServer?.closeService() }
         runCatching { commandServer?.close() }
         commandServer = null
