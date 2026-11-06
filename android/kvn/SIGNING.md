@@ -22,6 +22,10 @@ keytool -genkeypair -alias kvn -keyalg RSA -keysize 3072 -validity 7300 -storety
 
 Choose one strong password when keytool asks; the same password is used for both key and store in PKCS#12. Paste the clipboard into the first secret. Put the password into the second secret. The generated keystore file must remain private. The filename has no significance to the Android package.
 
+## After the repository secrets are configured
+
+Once both Actions secrets are present, trigger a **new** run of KVN Android CI on this feature branch. Old artifacts are immutable and stay debug-signed. The new run should publish `kvn-android-stable-N`; select `app-arm64-v8a-stable.apk` for a Samsung SM-S918B. Inspect the signing certificate digest (not the private key) in CI logs, and keep the same secret keystore for all future updates.
+
 ## Migration limitation
 
 The currently installed 0.1.9-test debug APK (and earlier CI versions) **cannot** be upgraded in place to an APK using this new stable signing identity. Android will reject it for signature mismatch. There is no safe signing shortcut to avoid this. Before migrating, preserve any manual VLESS link externally: uninstalling deletes application data, including the Android Keystore key used to encrypt saved profiles.
