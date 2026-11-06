@@ -1,3 +1,10 @@
+## 0.1.9-test — native DNS initialization fix (device verification pending)
+
+- Fix confirmed libbox startup failure `start dns-transport: start dns/udp[local]: detour to an empty direct outbound makes no sense`: remove the `detour: direct` field only from the local UDP DNS server, retaining the proxy DNS detour, DIRECT/PROXY routing and AUTO pool.
+- Add Kotlin regression test for AUTO and manual modes to ensure local DNS never references empty direct outbound.
+- Add GitHub Actions native engine **runtime smoke test**: generate authentic VPN config in Kotlin, substitute only Android TUN with localhost mixed inbound on CI, and require sing-box 1.14.4 to stay running for eight seconds (config `check` alone missed the runtime failure).
+- Signing continuity, VPN traffic and real-device behaviour remain unverified. Keep PR draft until confirmed.
+
 ## 0.1.8-test — actionable libbox startup diagnostics (device test required)
 
 - In the Android 17 user log from 2026-11-06 11:18–11:19, libbox no longer aborts; five attempts fail with Go class `proxyerror` returned by `CommandServer.startOrReloadService`.
