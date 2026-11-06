@@ -6,6 +6,11 @@
 *.iml
 *.jks
 *.keystore
+*.p12
+*.pfx
+*signing-secrets*.txt
+*SIGNING-SECRETS*.txt
+*.b64
 /captures/
 
 /verification/
