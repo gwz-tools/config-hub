@@ -7,8 +7,7 @@
       "type": "urltest",
       "tag": "GWZHUB-AUTO",
       "outbounds": [
-        "GWZ-01",
-        "GWZ-02"
+        "GWZ-01"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -17,42 +16,20 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "145.63.143.205",
-      "server_port": 8444,
-      "uuid": "a8321cfe-39a2-48a0-a918-f01f7d9006ed",
+      "server": "193.233.199.84",
+      "server_port": 443,
+      "uuid": "db80088c-32a1-4cb8-a907-0f3cb7844152",
       "tls": {
         "enabled": true,
-        "server_name": "pl1.meshbeat.online",
+        "server_name": "fi3game.japancase.site",
         "utls": {
           "enabled": true,
           "fingerprint": "firefox"
-        }
-      },
-      "transport": {
-        "type": "ws",
-        "path": "/api/v1/devices/10be32b380/telemetry",
-        "headers": {
-          "Host": "pl1.meshbeat.online"
-        }
-      }
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-02",
-      "server": "45.141.202.69",
-      "server_port": 443,
-      "uuid": "5c32201a-6c0e-451b-8f0a-24b4bd40df59",
-      "tls": {
-        "enabled": true,
-        "server_name": "files.porsche.com",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "ios"
         },
         "reality": {
           "enabled": true,
-          "public_key": "kBTMVLCNE0jjwuJF6H5-65l5Pe0QToS0Hg-9Tmaa7Sk",
-          "short_id": "1a2b3c4d"
+          "public_key": "1ONSjyJWD3lAomwIqFmmzb6lAhg077bvMJ7rGJCDk0g",
+          "short_id": "38559e47f5536913"
         }
       },
       "flow": "xtls-rprx-vision"
