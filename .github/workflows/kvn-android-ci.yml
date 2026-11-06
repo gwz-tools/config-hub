@@ -61,6 +61,27 @@ jobs:
           tar -xzf "$TARBALL" -C "$RUNNER_TEMP"
           test -s app/build/ci-validation/vpn-auto.json
           "$RUNNER_TEMP/sing-box-1.14.4-linux-amd64/sing-box" check -c app/build/ci-validation/vpn-auto.json
+      - name: Smoke-test real sing-box engine startup (DNS, routing and VLESS)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/prepare_vpn_startup_smoke.py \
+            app/build/ci-validation/vpn-auto.json \
+            app/build/ci-validation/vpn-auto-smoke.json
+          BIN="$RUNNER_TEMP/sing-box-1.14.4-linux-amd64/sing-box"
+          "$BIN" check -c app/build/ci-validation/vpn-auto-smoke.json
+          set +e
+          timeout --signal=TERM --kill-after=2s 8s \
+            "$BIN" run -c app/build/ci-validation/vpn-auto-smoke.json \
+            > "$RUNNER_TEMP/kvn-sing-box-startup.log" 2>&1
+          code=$?
+          set -e
+          cat "$RUNNER_TEMP/kvn-sing-box-startup.log"
+          if [ "$code" -ne 124 ]; then
+            echo "::error::sing-box startup terminated prematurely with exit status $code"
+            exit 1
+          fi
+          echo "sing-box startup survived 8s with real DNS and proxy outbounds."
       - name: Verify ARM64 and other ABI APKs, record SHA-256
         run: python3 scripts/check_apk_abis.py app/build/outputs/apk/debug
       - name: Publish APK as downloadable test artifact
