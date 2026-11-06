@@ -121,10 +121,15 @@ object VpnConfig {
         return buildWithOutbounds(outboundList, snapshot, splitRouting)
     }
 
+    /** One-shot Android TUN test. DIRECT is unencrypted; normal AUTO is untouched. */
+    fun buildDirectDiagnostic(snapshot: PolicyStore.Snapshot): String =
+        buildWithOutbounds(JSONArray(), snapshot, false, diagnosticDirect = true)
+
     private fun buildWithOutbounds(
         outboundList: JSONArray,
         snapshot: PolicyStore.Snapshot,
-        splitRouting: Boolean
+        splitRouting: Boolean,
+        diagnosticDirect: Boolean = false
     ): String {
         fun list(file: String): JSONArray = JSONArray().apply {
             snapshot.directory.resolve(file).useLines { lines ->
@@ -134,7 +139,7 @@ object VpnConfig {
         val rules = JSONArray()
         // Capture DNS before domain rules so DNS cannot accidentally escape the tunnel.
         rules.put(JSONObject().put("protocol", "dns").put("action", "hijack-dns"))
-        if (splitRouting) {
+        if (splitRouting && !diagnosticDirect) {
             val blocks = list("block.txt")
             if (blocks.length() > 0) rules.put(JSONObject().put("domain_suffix", blocks).put("action", "reject"))
             val direct = list("direct.txt")
@@ -145,7 +150,7 @@ object VpnConfig {
                 .put("action", "route").put("outbound", "proxy"))
         }
         val dnsRules = JSONArray()
-        if (splitRouting) {
+        if (splitRouting && !diagnosticDirect) {
             val direct = list("direct.txt")
             if (direct.length() > 0) dnsRules.put(JSONObject().put("domain_suffix", direct).put("action", "route")
                 .put("server", "local"))
@@ -154,18 +159,25 @@ object VpnConfig {
             put("log", JSONObject().put("level", "warn"))
             put("dns", JSONObject().put("servers", JSONArray()
                 .put(JSONObject().put("tag", "remote").put("type", "udp")
-                    .put("server", "1.1.1.1").put("detour", "proxy"))
+                    .put("server", "1.1.1.1").apply {
+                        if (!diagnosticDirect) put("detour", "proxy")
+                    })
                 .put(JSONObject().put("tag", "local").put("type", "udp")
                     .put("server", "77.88.8.8")))
-                .put("rules", dnsRules).put("final", "remote").put("strategy", "ipv4_only"))
+                .put("rules", dnsRules)
+                .put("final", if (diagnosticDirect) "local" else "remote")
+                .put("strategy", "ipv4_only"))
             put("inbounds", JSONArray().put(JSONObject()
                 .put("type", "tun").put("tag", "tun-in")
                 .put("address", JSONArray().put("172.19.0.1/30").put("fdfe:dcba:9876::1/126"))
                 .put("mtu", 1500).put("auto_route", true).put("strict_route", true)
                 .put("dns_mode", "hijack").put("stack", "system")))
-            put("outbounds", outboundList.put(JSONObject().put("type", "direct").put("tag", "direct")))
+            val direct = JSONObject().put("type", "direct").put("tag", "direct")
+            put("outbounds", if (diagnosticDirect) JSONArray().put(direct)
+                 else outboundList.put(direct))
             put("route", JSONObject().put("auto_detect_interface", true)
-                .put("rules", rules).put("default_domain_resolver", "local").put("final", "proxy"))
+                .put("rules", rules).put("default_domain_resolver", "local")
+                .put("final", if (diagnosticDirect) "direct" else "proxy"))
         }.toString()
     }
 }

@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
             VpnState.Phase.OFF, VpnState.Phase.ERROR -> {
                 // A manual VLESS profile is optional. AUTO connects from the
                 // verified GWZHUB feed without any setup by the user.
-                if (StoredProfile(this).manualEnabled) {
+                if (StoredProfile(this).manualEnabled && !StoredProfile(this).diagnosticDirectNextStart) {
                     try {
                         val stored = StoredProfile(this).read() ?: run {
                             Toast.makeText(this, "Вручную выбранный VLESS-профиль отсутствует", Toast.LENGTH_LONG).show()

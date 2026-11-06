@@ -82,6 +82,24 @@ class SettingsActivity : ComponentActivity() {
                 toast("Режим сохранён. Для применения перезапустите VPN.")
             }
         }
+        val directTestSwitch = findViewById<Switch>(R.id.diagnostic_direct)
+        directTestSwitch.isChecked = store.diagnosticDirectNextStart
+        directTestSwitch.setOnCheckedChangeListener { _, enabled ->
+            if (enabled) {
+                AlertDialog.Builder(this)
+                    .setTitle("Одноразовая диагностика TUN")
+                    .setMessage("Следующее подключение будет работать БЕЗ VLESS. Весь трафик пойдёт напрямую, без VPN-шифрования. После одного запуска режим автоматически отключится. Для применения перезапустите КВН.")
+                    .setPositiveButton("Разрешаю тест DIRECT") { _, _ ->
+                        store.diagnosticDirectNextStart = true
+                        toast("Тест включён на ОДНО подключение. Перезапустите КВН.")
+                    }
+                    .setNegativeButton("Отмена") { _, _ -> directTestSwitch.isChecked = false }
+                    .setOnCancelListener { directTestSwitch.isChecked = false }
+                    .show()
+            } else {
+                store.diagnosticDirectNextStart = false
+            }
+        }
         refresh = findViewById(R.id.refresh_rules)
         refresh.setOnClickListener { PolicyRefreshWorker.requestNow(this) }
         findViewById<Button>(R.id.check_release).setOnClickListener { checkRelease() }
@@ -104,6 +122,10 @@ class SettingsActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         renderRules()
+        val directTestSwitch = findViewById<Switch>(R.id.diagnostic_direct)
+        if (directTestSwitch.isChecked && !StoredProfile(this).diagnosticDirectNextStart) {
+            directTestSwitch.isChecked = false
+        }
         val details = VpnDiagnostics.summary(this)
         findViewById<TextView>(R.id.vpn_diagnostics).apply {
             visibility = if (details.isNullOrBlank()) android.view.View.GONE else android.view.View.VISIBLE
