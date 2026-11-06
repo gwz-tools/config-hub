@@ -16,23 +16,22 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "193.233.199.84",
+      "server": "79.182.39.109",
       "server_port": 443,
-      "uuid": "db80088c-32a1-4cb8-a907-0f3cb7844152",
+      "uuid": "b7b8ee80-db83-4276-8c68-87dc88b0b0b5",
       "tls": {
         "enabled": true,
-        "server_name": "fi3game.japancase.site",
+        "server_name": "71b840t.de7.h1clayd.click",
         "utls": {
           "enabled": true,
           "fingerprint": "firefox"
         },
         "reality": {
           "enabled": true,
-          "public_key": "1ONSjyJWD3lAomwIqFmmzb6lAhg077bvMJ7rGJCDk0g",
-          "short_id": "38559e47f5536913"
+          "public_key": "3wFF83gtIA0sXj-6GGCAa--oQbSr0MVUj0FBc-0QmiE",
+          "short_id": "e572b6579ea525d4"
         }
-      },
-      "flow": "xtls-rprx-vision"
+      }
     },
     {
       "type": "direct",
