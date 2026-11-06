@@ -14,9 +14,10 @@ object VpnDiagnostics {
     private const val STAGE = "stage"
     private const val PENDING = "pending"
     private const val ERROR = "error_type"
+    private const val MESSAGE = "error_message"
     private val validStages = setOf(
         "start", "permissions", "rules", "pool", "config",
-        "native_setup", "command_server", "engine_start", "tun", "connected", "stopped"
+        "native_setup", "command_server", "engine_start", "tun_open", "tun", "connected", "stopped"
     )
 
     fun enter(context: Context, stage: String) {
@@ -24,18 +25,18 @@ object VpnDiagnostics {
         context.getSharedPreferences(NAME, Context.MODE_PRIVATE).edit()
             .putString(STAGE, safe)
             .putBoolean(PENDING, true)
-            .remove(ERROR)
+            .remove(ERROR).remove(MESSAGE)
             .commit()
     }
 
     fun connected(context: Context) {
         context.getSharedPreferences(NAME, Context.MODE_PRIVATE).edit()
-            .putString(STAGE, "connected").putBoolean(PENDING, false).remove(ERROR).commit()
+            .putString(STAGE, "connected").putBoolean(PENDING, false).remove(ERROR).remove(MESSAGE).commit()
     }
 
     fun stopped(context: Context) {
         context.getSharedPreferences(NAME, Context.MODE_PRIVATE).edit()
-            .putString(STAGE, "stopped").putBoolean(PENDING, false).remove(ERROR).commit()
+            .putString(STAGE, "stopped").putBoolean(PENDING, false).remove(ERROR).remove(MESSAGE).commit()
     }
 
     fun failure(context: Context, error: Throwable) {
@@ -43,6 +44,7 @@ object VpnDiagnostics {
         context.getSharedPreferences(NAME, Context.MODE_PRIVATE).edit()
             .putBoolean(PENDING, false)
             .putString(ERROR, type)
+            .putString(MESSAGE, (error.message ?: error.toString()).take(360))
             .commit()
     }
 
@@ -51,7 +53,7 @@ object VpnDiagnostics {
         val p = context.getSharedPreferences(NAME, Context.MODE_PRIVATE)
         val stage = p.getString(STAGE, "") ?: ""
         val error = p.getString(ERROR, null)
-        if (error != null) return "VPN: сбой на этапе $stage ($error)."
+        if (error != null) return "VPN: сбой на этапе $stage ($error): ${p.getString(MESSAGE, "подробности отсутствуют")}"
         return if (p.getBoolean(PENDING, false)) {
             "Предыдущее подключение прервалось на этапе $stage. Перезапустите VPN или отправьте журнал Android."
         } else null
