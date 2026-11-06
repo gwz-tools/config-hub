@@ -53,6 +53,35 @@ class AutoPoolTests {
             .getJSONObject(1).getString("outbound"))
     }
 
+    @Test fun localDnsMustNotDetourThroughEmptyDirectOutbound() {
+        val directory = temporary.newFolder()
+        listOf("block", "direct", "proxy").forEach {
+            File(directory, "${it}.txt").writeText(if (it == "direct") "example.ru\n" else "")
+        }
+        val snapshot = PolicyStore.Snapshot("test", directory, JSONObject())
+        val profile = VlessProfile.parse(vless("one.example.com"))
+        for (split in listOf(true, false)) {
+            val configurations = listOf(
+                JSONObject(VpnConfig.build(profile, snapshot, split)),
+                JSONObject(VpnConfig.buildAuto(listOf(profile), snapshot, split))
+            )
+            for (config in configurations) {
+                val servers = config.getJSONObject("dns").getJSONArray("servers")
+                val local = (0 until servers.length())
+                    .map { servers.getJSONObject(it) }
+                    .single { it.getString("tag") == "local" }
+                assertEquals("udp", local.getString("type"))
+                assertEquals("77.88.8.8", local.getString("server"))
+                assertFalse("LOCAL DNS must use its default direct dialer, not detour to empty outbound",
+                    local.has("detour"))
+                val remote = (0 until servers.length())
+                    .map { servers.getJSONObject(it) }
+                    .single { it.getString("tag") == "remote" }
+                assertEquals("proxy", remote.getString("detour"))
+            }
+        }
+    }
+
     @Test fun exportActualAutoConfigForNativeSingBoxValidation() {
         val destination = System.getProperty("kvn.validation.json") ?: return
         val directory = temporary.newFolder()
