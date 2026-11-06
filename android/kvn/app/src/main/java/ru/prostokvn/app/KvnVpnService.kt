@@ -172,12 +172,13 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
                 // Also catches JNI LinkageError and other non-Exception startup failures.
                 // Native SIGABRT/SIGSEGV cannot be caught, hence the stage journal above.
                 VpnDiagnostics.failure(this@KvnVpnService, e)
-                Log.e("KVN", "VPN startup failed: ${e.javaClass.simpleName} (profile redacted)")
+                // libbox throws a Go proxyerror with the actionable message in
+                // e.message. Logging only the type hid five identical failures.
+                // This is a local debug build; do not upload raw logs to GitHub.
+                val nativeReason = (e.message ?: e.toString()).take(320)
+                Log.e("KVN", "VPN engine failed at startup: ${e.javaClass.simpleName}: $nativeReason")
                 VpnState.update(VpnState.Phase.ERROR,
-                    when (e) {
-                        is IllegalArgumentException, is IllegalStateException -> e.message?.take(180) ?: "Ошибка профиля"
-                        else -> "Не удалось запустить VPN. Проверьте профиль и сеть."
-                    })
+                    "Движок VPN: $nativeReason")
                 cleanup()
                 stopSelf()
             }
@@ -239,6 +240,8 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
 
     // libbox.PlatformInterface — TUN file descriptor stays owned by this service until closed.
     override fun openTun(options: TunOptions): Int {
+        VpnDiagnostics.enter(this, "tun_open")
+        Log.i("KVN", "Native engine requested Android TUN")
         check(prepare(this) == null) { "Разрешение VPN отозвано" }
         val b = Builder().setSession("КВН").setMtu(options.mtu)
         val ipv4 = options.inet4Address
