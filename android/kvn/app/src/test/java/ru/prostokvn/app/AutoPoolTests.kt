@@ -68,6 +68,34 @@ class AutoPoolTests {
             .getJSONObject(1).getString("type"))
     }
 
+    @Test fun dnsLocalMustNotDetourThroughEmptyDirectOutbound() {
+        val directory = temporary.newFolder()
+        listOf("block", "direct", "proxy").forEach {
+            File(directory, "${it}.txt").writeText("")
+        }
+        val snapshot = PolicyStore.Snapshot("test", directory, JSONObject())
+        val p = VlessProfile.parse(vless("test.example.com"))
+        // Test both AUTO and manual paths: same DNS generator must be safe.
+        val variants = listOf(
+            VpnConfig.buildAuto(listOf(p), snapshot, true),
+            VpnConfig.build(p, snapshot, false)
+        )
+        for (configText in variants) {
+            val config = JSONObject(configText)
+            val dns = config.getJSONObject("dns").getJSONArray("servers")
+            val local = dns.getJSONObject(1)
+            assertEquals("local", local.getString("tag"))
+            assertEquals("udp", local.getString("type"))
+            assertFalse("Local DNS cannot detour via empty direct outbound",
+                local.has("detour"))
+            assertEquals("proxy", dns.getJSONObject(0).getString("detour"))
+            val outbounds = config.getJSONArray("outbounds")
+            val direct = outbounds.getJSONObject(outbounds.length() - 1)
+            assertEquals("direct", direct.getString("type"))
+            assertFalse(direct.has("bind_interface"))
+        }
+    }
+
     @Test fun manualOutboundDoesNotUseUrltest() {
         val directory = temporary.newFolder()
         listOf("block", "direct", "proxy").forEach { File(directory, "$it.txt").writeText("") }
