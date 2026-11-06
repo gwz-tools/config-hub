@@ -14,7 +14,7 @@
             android:layout_height="wrap_content" android:layout_marginTop="8dp"
             android:text="@string/auto_pool_note" android:textColor="@color/kvn_muted"
             android:textSize="14sp" />
-        <TextView android:id="@+id/vpn_diagnostics" android:layout_width="match_parent"
+        <TextView android:id="@+id/vpn_diagnostics" android:textIsSelectable="true" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_marginTop="8dp"
             android:textSize="14sp" android:textColor="@color/kvn_red_dark"
             android:visibility="gone" />
