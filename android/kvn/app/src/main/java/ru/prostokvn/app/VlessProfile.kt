@@ -171,7 +171,7 @@ object VpnConfig {
                 .put("type", "tun").put("tag", "tun-in")
                 .put("address", JSONArray().put("172.19.0.1/30").put("fdfe:dcba:9876::1/126"))
                 .put("mtu", 1500).put("auto_route", true).put("strict_route", true)
-                .put("dns_mode", "hijack").put("stack", "system")))
+                .put("dns_mode", "hijack").put("stack", "gvisor")))
             val direct = JSONObject().put("type", "direct").put("tag", "direct")
             put("outbounds", if (diagnosticDirect) JSONArray().put(direct)
                  else outboundList.put(direct))

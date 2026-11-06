@@ -149,6 +149,24 @@ class AutoPoolTests {
         assertEquals("tun", config.getJSONArray("inbounds").getJSONObject(0).getString("type"))
     }
 
+    @Test fun allModesUseUserspaceGvisorTunStack() {
+        val directory = temporary.newFolder()
+        listOf("block", "direct", "proxy").forEach { File(directory, "${it}.txt").writeText("") }
+        val snapshot = PolicyStore.Snapshot("test", directory, JSONObject())
+        val profile = VlessProfile.parse(vless("one.example.com"))
+        val all = listOf(
+            VpnConfig.buildAuto(listOf(profile), snapshot, true),
+            VpnConfig.build(profile, snapshot, false),
+            VpnConfig.buildDirectDiagnostic(snapshot)
+        )
+        for (json in all) {
+            val tun = JSONObject(json).getJSONArray("inbounds").getJSONObject(0)
+            assertEquals("gvisor", tun.getString("stack"))
+            assertTrue(tun.getBoolean("auto_route"))
+            assertEquals("hijack", tun.getString("dns_mode"))
+        }
+    }
+
     @Test fun manualOutboundDoesNotUseUrltest() {
         val directory = temporary.newFolder()
         listOf("block", "direct", "proxy").forEach { File(directory, "$it.txt").writeText("") }

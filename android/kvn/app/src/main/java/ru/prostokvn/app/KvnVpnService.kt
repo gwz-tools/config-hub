@@ -9,8 +9,11 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.net.VpnService
 import android.os.Build
+import android.os.Handler
+import android.os.HandlerThread
 import android.os.ParcelFileDescriptor
 import android.os.Process
 import android.system.OsConstants
@@ -46,6 +49,7 @@ import io.nekohasekai.libbox.WIFIState
 import io.nekohasekai.libbox.NetworkInterface as BoxNetworkInterface
 import java.net.InetSocketAddress
 import java.net.NetworkInterface
+import java.util.concurrent.atomic.AtomicBoolean
 
 /** Own VPN engine. Requires externally verified GPL sing-box libbox 1.14.4 AAR, not a third-party APK. */
 class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
@@ -71,6 +75,10 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
     private var commandServer: CommandServer? = null
     private var tunnel: ParcelFileDescriptor? = null
     private var networkCallback: ConnectivityManager.NetworkCallback? = null
+    private var networkCallbackThread: HandlerThread? = null
+    @Volatile private var selectedUnderlyingNetwork: Network? = null
+    @Volatile private var selectedUnderlyingInterface: String? = null
+    private val firstProtectedSocketLogged = AtomicBoolean(false)
     private var runningJob: Job? = null
     @Volatile private var stopping = false
 
@@ -210,8 +218,7 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
         commandServer = null
         runCatching { tunnel?.close() }
         tunnel = null
-        networkCallback?.let { runCatching { connectivity.unregisterNetworkCallback(it) } }
-        networkCallback = null
+        stopPhysicalNetworkMonitor()
     }
 
     override fun onRevoke() { stopVpn() }
@@ -266,10 +273,18 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
         if (Build.VERSION.SDK_INT >= 29) b.setMetered(false)
         val pfd = b.establish() ?: error("Android отказал в создании TUN")
         tunnel = pfd
+        Log.i("KVN", "TUN established (mtu=${options.mtu}, autoRoute=${options.autoRoute})")
         return pfd.fd
     }
     override fun usePlatformAutoDetectInterfaceControl() = true
-    override fun autoDetectInterfaceControl(fd: Int) { check(protect(fd)) { "Невозможно исключить сокет из VPN" } }
+    override fun autoDetectInterfaceControl(fd: Int) {
+        val protected = protect(fd)
+        if (!protected) Log.e("KVN", "VPN socket protect() returned false")
+        check(protected) { "Невозможно исключить сокет из VPN" }
+        if (firstProtectedSocketLogged.compareAndSet(false, true)) {
+            Log.i("KVN", "First outbound socket protected from VPN routing")
+        }
+    }
     override fun localDNSTransport(): LocalDNSTransport? = null
     override fun findConnectionOwner(ipProtocol: Int, sourceAddress: String?, sourcePort: Int,
                                      destinationAddress: String?, destinationPort: Int): ConnectionOwner {
@@ -281,29 +296,84 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
         return owner
     }
     override fun startDefaultInterfaceMonitor(listener: InterfaceUpdateListener) {
+        stopPhysicalNetworkMonitor()
+        // Android 9+ registerDefaultNetworkCallback() can report our VPN itself
+        // instead of the underlying cellular/Wi-Fi network. This leaves libbox
+        // without a usable default outbound interface. Follow SFA's strategy.
+        val request = NetworkRequest.Builder()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)
+            .build()
         val cb = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) { notifyInterface(listener, network) }
-            override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+            override fun onCapabilitiesChanged(network: Network, caps: NetworkCapabilities) {
                 notifyInterface(listener, network)
             }
-            override fun onLost(network: Network) { listener.updateDefaultInterface("", -1, false, false) }
+            override fun onLinkPropertiesChanged(network: Network, link: android.net.LinkProperties) {
+                notifyInterface(listener, network)
+            }
+            override fun onLost(network: Network) {
+                // An old network disappearing must not erase a newly selected one.
+                if (selectedUnderlyingNetwork == network) {
+                    selectedUnderlyingNetwork = null
+                    selectedUnderlyingInterface = null
+                    Log.w("KVN", "Physical upstream lost")
+                    listener.updateDefaultInterface("", -1, false, false)
+                }
+            }
+            override fun onUnavailable() { Log.w("KVN", "No physical upstream available") }
         }
-        networkCallback?.let { runCatching { connectivity.unregisterNetworkCallback(it) } }
+        val thread = HandlerThread("kvn-physical-network").apply { start() }
+        networkCallbackThread = thread
         networkCallback = cb
-        connectivity.registerDefaultNetworkCallback(cb)
-        connectivity.activeNetwork?.let { notifyInterface(listener, it) }
+        val handler = Handler(thread.looper)
+        try {
+            when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+                    connectivity.registerBestMatchingNetworkCallback(request, cb, handler)
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ->
+                    connectivity.requestNetwork(request, cb, handler)
+                else ->
+                    connectivity.registerDefaultNetworkCallback(cb, handler)
+            }
+            Log.i("KVN", "Physical-network monitor registered; SDK=${Build.VERSION.SDK_INT}")
+        } catch (e: Throwable) {
+            stopPhysicalNetworkMonitor()
+            Log.e("KVN", "Unable to register physical-network monitor: ${e.javaClass.simpleName}")
+            throw e
+        }
     }
     private fun notifyInterface(listener: InterfaceUpdateListener, network: Network) {
+        val caps = connectivity.getNetworkCapabilities(network) ?: return
+        if (caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ||
+            !caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)) return
         val link = connectivity.getLinkProperties(network) ?: return
         val name = link.interfaceName ?: return
         if (name.startsWith("tun")) return
         val id = runCatching { NetworkInterface.getByName(name)?.index ?: 0 }.getOrDefault(0)
-        val expensive = connectivity.isActiveNetworkMetered
+        if (id <= 0) {
+            Log.w("KVN", "Physical upstream interface index not yet available")
+            return
+        }
+        val expensive = !caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)
+        selectedUnderlyingNetwork = network
+        if (selectedUnderlyingInterface != name) {
+            selectedUnderlyingInterface = name
+            Log.i("KVN", "Selected physical upstream: $name (index=$id)")
+        }
         listener.updateDefaultInterface(name, id, expensive, false)
     }
-    override fun closeDefaultInterfaceMonitor(listener: InterfaceUpdateListener) {
+    private fun stopPhysicalNetworkMonitor() {
         networkCallback?.let { runCatching { connectivity.unregisterNetworkCallback(it) } }
         networkCallback = null
+        networkCallbackThread?.quitSafely()
+        networkCallbackThread = null
+        selectedUnderlyingNetwork = null
+        selectedUnderlyingInterface = null
+    }
+    override fun closeDefaultInterfaceMonitor(listener: InterfaceUpdateListener) {
+        stopPhysicalNetworkMonitor()
     }
     override fun getInterfaces(): NetworkInterfaceIterator {
         val result = mutableListOf<BoxNetworkInterface>()
@@ -311,7 +381,9 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
             val link = connectivity.getLinkProperties(network) ?: continue
             val caps = connectivity.getNetworkCapabilities(network) ?: continue
             val name = link.interfaceName ?: continue
-            if (name.startsWith("tun")) continue
+            if (name.startsWith("tun") ||
+                caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ||
+                !caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)) continue
             val jni = NetworkInterface.getByName(name) ?: continue
             result += BoxNetworkInterface().apply {
                 this.name = name
