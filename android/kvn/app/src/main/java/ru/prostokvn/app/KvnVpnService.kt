@@ -130,6 +130,10 @@ class KvnVpnService : VpnService(), PlatformInterface, CommandServerHandler {
                     basePath = filesDir.absolutePath
                     workingPath = work.absolutePath
                     tempPath = cacheDir.absolutePath
+                    // Official sing-box Android client enables this workaround
+                    // on Android 9+ (Go runtime stack issue #68760).
+                    // Our Samsung test device runs Android 17.
+                    fixAndroidStack = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
                     debug = false
                     logMaxLines = 500
                 }
