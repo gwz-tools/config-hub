@@ -16,22 +16,22 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "79.182.39.109",
+      "server": "50.7.176.65",
       "server_port": 443,
-      "uuid": "b7b8ee80-db83-4276-8c68-87dc88b0b0b5",
+      "uuid": "3bb97d46-789b-4229-88f6-9beb222a4137",
       "tls": {
         "enabled": true,
-        "server_name": "71b840t.de7.h1clayd.click",
+        "server_name": "smart2.khinikadze.com",
         "utls": {
           "enabled": true,
           "fingerprint": "firefox"
         },
         "reality": {
           "enabled": true,
-          "public_key": "3wFF83gtIA0sXj-6GGCAa--oQbSr0MVUj0FBc-0QmiE",
-          "short_id": "e572b6579ea525d4"
+          "public_key": "lIZbI6KG18rkVDyMhLo7e6KvmffxR6fvFNzzC-O9vT8"
         }
-      }
+      },
+      "flow": "xtls-rprx-vision"
     },
     {
       "type": "direct",
