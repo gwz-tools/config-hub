@@ -1,6 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-07 / 19:47 (Moscow)
+# Date/Time: 2026-11-07 / 21:50 (Moscow)
 # Количество: 1
 
 vless://3bb97d46-789b-4229-88f6-9beb222a4137@50.7.176.65:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=lIZbI6KG18rkVDyMhLo7e6KvmffxR6fvFNzzC-O9vT8&security=reality&sni=smart2.khinikadze.com&type=tcp#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands
