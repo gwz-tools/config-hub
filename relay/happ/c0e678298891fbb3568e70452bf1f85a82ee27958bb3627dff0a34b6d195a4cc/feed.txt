@@ -1,5 +1,6 @@
 # profile-title: Relay / VLESS
 # profile-update-interval: 6
-vless://db80088c-32a1-4cb8-a907-0f3cb7844152@de3.japancase.site:443?encryption=none&flow=xtls-rprx-vision&pbk=iaJ8vIpfWkkzA-Tegc_wIQSF7DWKm2yTYCd3kvaGXig&security=reality&sid=d9d9e325a7f069e2&sni=de3.japancase.site&type=tcp&fp=chrome#Relay%2001
-vless://948df76f-505d-4608-9c76-a933ee3ccc76@46.250.240.80:2053?security=reality&type=tcp&packetEncoding=xudp&sni=www.cloudflare.com&fp=chrome&sid=4cc9dc65f7770115&pbk=CYFeysLf--_IVhxQOCd3ZxLrAVWFFOkJzvIGHOVXN3E#Relay%2002
-vless://db80088c-32a1-4cb8-a907-0f3cb7844152@nl5.japancase.site:443?&security=reality&flow=xtls-rprx-vision&pbk=Yw0T7qr5Wk3HCqV8h6V9N5wcInMxQ0XsxUuLV62_bEM&sid=c498d5e4a069592c&fp=ios&sni=nl5.japancase.site&type=tcp&headerType=none&host=nl5.japancase.site&path=%2F#Relay%2003
+vless://dc620cd6-a9d8-4a0f-8f18-006b895db77e@66.70.179.198:2053?fp=random&pbk=k4l6TxwkBbx9DhZAFpByq5rfCWFSgyOex3f_eFe9CWU&security=reality&sid=83f8317a948bb769&sni=www.cloudflare.com&type=tcp#Relay%2001
+vless://db80088c-32a1-4cb8-a907-0f3cb7844152@nl5.japancase.site:443?&security=reality&flow=xtls-rprx-vision&pbk=Yw0T7qr5Wk3HCqV8h6V9N5wcInMxQ0XsxUuLV62_bEM&sid=c498d5e4a069592c&fp=ios&sni=nl5.japancase.site&type=tcp&headerType=none&host=nl5.japancase.site&path=%2F#Relay%2002
+vless://0de1d303-d7de-0001-8679-c4cb67e2e2cc@153.56.210.61:443?security=reality&type=tcp&packetEncoding=xudp&sni=amd.com&fp=chrome&flow=xtls-rprx-vision&sid=a696de84963656de&pbk=WWeAHWUVD-phmnjNJ823cer0c4CMIbEs08AhsuEZmDc&encryption=none#Relay%2003
+vless://a346c521-7a7f-452b-9356-a4893feb5982@62.133.63.45:8444?security=reality&encryption=none&pbk=FWitre1jinQR7qz5HQ0q2Q4Gg9xA9B0SyizCziN7Ch0&fp=chrome&type=grpc&serviceName=GunService&sni=github.com&sid=457fab2ac885dbe0#Relay%2004
