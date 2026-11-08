@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 
-/** A true one-button VPN screen: state originates from KvnVpnService, not a simulated toggle. */
+/** Existing KVN one-button UI, now driven by Xray TUN test service. */
 class MainActivity : ComponentActivity() {
     private val consent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && VpnService.prepare(this) == null) {
@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
     private fun toggleVpn() {
         when (VpnState.value.value.phase) {
             VpnState.Phase.ON, VpnState.Phase.STARTING -> {
-                try { KvnVpnService.requestStop(this) }
+                try { KvnXrayVpnService.requestStop(this) }
                 catch (e: RuntimeException) {
                     VpnDiagnostics.failure(this, e)
                     VpnState.update(VpnState.Phase.ERROR,
@@ -92,7 +92,7 @@ class MainActivity : ComponentActivity() {
     private fun startVpnSafely() {
         VpnDiagnostics.enter(this, "start")
         try {
-            KvnVpnService.requestStart(this)
+            KvnXrayVpnService.requestStart(this)
         } catch (e: RuntimeException) {
             VpnDiagnostics.failure(this, e)
             VpnState.update(VpnState.Phase.ERROR,
