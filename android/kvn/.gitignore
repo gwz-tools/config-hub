@@ -1,0 +1,24 @@
+/.gradle/
+/.kotlin/
+**/build/
+/local.properties
+/.idea/
+*.iml
+*.jks
+*.keystore
+*.p12
+*.pfx
+*signing-secrets*.txt
+*SIGNING-SECRETS*.txt
+*.b64
+/captures/
+
+/verification/
+*.apk
+*.aab
+*.env
+.env.*
+
+# 118 MB third-party native core is downloaded & SHA-256 verified at build time.
+app/libs/libbox.aar
+app/libs/libbox.aar.part

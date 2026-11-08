@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Interior of the original six-point KVN mark only. The exterior stays transparent.
+     Before this change a global white-key removal erased the internal white details. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="432"
+    android:viewportHeight="432">
+    <path android:fillColor="#FFFFFFFF"
+        android:pathData="M216,75 L341,146 L341,282 L216,355 L91,282 L91,146 Z" />
+</vector>

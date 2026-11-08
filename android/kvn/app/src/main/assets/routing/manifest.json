@@ -1,0 +1,44 @@
+{
+  "default_route": "PROXY",
+  "files": {
+    "block.rule-set.json": {
+      "bytes": 25,
+      "domains": null,
+      "sha256": "0c90e330dc7b3ee08cbd74dd7535f8580349210dc9256dccff44c4f39980e0fc"
+    },
+    "block.txt": {
+      "bytes": 0,
+      "domains": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "direct.rule-set.json": {
+      "bytes": 2072,
+      "domains": null,
+      "sha256": "67f985df0ada66688173e0019c78faeab5abd18c5d329f33cde18c659a6f2ed9"
+    },
+    "direct.txt": {
+      "bytes": 1718,
+      "domains": 155,
+      "sha256": "6a6a335157e8bf25249aa093ce1714a093fb0fe3bf831194b837b46c9676d195"
+    },
+    "proxy.rule-set.json": {
+      "bytes": 11762,
+      "domains": null,
+      "sha256": "933b796fd03d75cd75563e38c3573d083edb2acea272fac43d99dd1283f2eb60"
+    },
+    "proxy.txt": {
+      "bytes": 10284,
+      "domains": 717,
+      "sha256": "300b6a980f9c0390af7a40ee85de058dbc24a507e382e25de751be76480bdaf5"
+    }
+  },
+  "notes": "Paths are relative to manifest URL. Security-sensitive PROXY requires a separate fail-closed network policy.",
+  "schema_version": 1,
+  "update_policy": {
+    "atomic_activation": true,
+    "min_check_seconds": 3600,
+    "recommended_check_seconds": 21600,
+    "retain_last_known_good": true
+  },
+  "version": "a208defbf0fa6881fce9"
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/kvn_background">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="vertical" android:paddingStart="20dp" android:paddingEnd="20dp"
+        android:paddingTop="16dp" android:paddingBottom="22dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <ImageView android:layout_width="0dp" android:layout_weight="1"
+                android:layout_height="wrap_content" android:adjustViewBounds="true"
+                android:src="@drawable/kvn_brand_header" android:contentDescription="@string/brand_accessibility" />
+            <TextView android:id="@+id/open_settings" android:layout_width="wrap_content"
+                android:layout_height="56dp" android:minWidth="56dp" android:gravity="center"
+                android:contentDescription="@string/settings_title" android:text="⚙"
+                android:textSize="31sp" android:textColor="@color/kvn_red" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="0dp" android:layout_weight="1" />
+        <FrameLayout android:id="@+id/power_button" android:layout_width="244dp"
+            android:layout_height="244dp" android:layout_gravity="center_horizontal"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/power_button" android:clickable="true"
+            android:focusable="true" android:contentDescription="@string/vpn_start">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:gravity="center" android:layout_gravity="center">
+                <ImageView android:layout_width="100dp" android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal" android:src="@drawable/power_symbol"
+                    android:contentDescription="@null" />
+                <TextView android:id="@+id/power_label" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_marginTop="8dp"
+                    android:gravity="center" android:text="@string/vpn_start"
+                    android:textColor="@color/kvn_red_dark" android:textSize="27sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </FrameLayout>
+        <TextView android:id="@+id/connection_state" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="26dp"
+            android:gravity="center" android:text="@string/vpn_off"
+            android:textColor="@color/kvn_muted" android:textSize="17sp"
+            android:accessibilityLiveRegion="polite" />
+        <Space android:layout_width="1dp" android:layout_height="0dp" android:layout_weight="1" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center" android:text="@string/brand_short"
+            android:textColor="@color/kvn_muted" android:textSize="12sp" />
+    </LinearLayout>
+</FrameLayout>
