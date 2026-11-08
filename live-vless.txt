@@ -1,6 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-08 / 10:20 (Moscow)
+# Date/Time: 2026-11-08 / 12:10 (Moscow)
 # Количество: 3
 
 vless://db80088c-32a1-4cb8-a907-0f3cb7844152@178.22.31.171:443?&security=reality&flow=xtls-rprx-vision&pbk=zEntiD6D81wY__YHPvIw78e09CBIgYkyQ5meIo7c_hg&sid=41ae8e266bc3346f&fp=edge&sni=at1.japancase.site&type=tcp&headerType=none&host=at1.japancase.site&path=%2F&encryption=none#%F0%9F%8C%90 | GWZ | CH
