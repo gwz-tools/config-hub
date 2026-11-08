@@ -60,7 +60,7 @@ class SettingsActivity : ComponentActivity() {
                 AutoPool(this@SettingsActivity).cachedCount()
             }
             findViewById<TextView>(R.id.auto_pool_status).text =
-                if (count > 0) "Сохранено $count проверенных узлов. Обновление при следующем подключении после 6 часов. Автовыбор каждые 3 минуты."
+                if (count > 0) "В кеше $count узлов КВН. Проверенный источник в приоритете. Xray-эксперимент выбирает первый кандидат; автоматическая смена узла пока не включена."
                 else "При первом подключении КВН загрузит проверенный пул из GitHub. Ручная VLESS-ссылка не требуется."
         }
         findViewById<Button>(R.id.save_profile).setOnClickListener {
