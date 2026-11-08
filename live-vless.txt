@@ -1,6 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-08 / 20:39 (Moscow)
+# Date/Time: 2026-11-08 / 22:40 (Moscow)
 # Количество: 2
 
 vless://90157e25-cee1-4217-921e-91f300bc1a24@50.7.227.77:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=1vSZjvhZO01oAEH3b7eebR1qF5dLU1Dq2E7xu8pwGSs&security=reality&sid=428ef87fd47a3a32&sni=bizorg.su&type=tcp#%F0%9F%8C%90 | GWZ | CZ
