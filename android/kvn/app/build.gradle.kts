@@ -12,14 +12,13 @@ android {
         versionCode = 15
         versionName = "0.1.14-xray-test"
     }
-    // Ship one native VPN engine per CPU architecture instead of all four in every APK.
-    // Builds: app-arm64-v8a-debug.apk (current Samsung/most phones), plus
-    // armeabi-v7a, x86 and x86_64 variants for older phones and emulators.
+    // Experimental Xray proof-of-concept is ARM64 ONLY, matching test Samsung.
+    // Restore other ABI splits after confirming native Xray on a real device.
     splits {
         abi {
             isEnable = true
             reset()
-            include("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+            include("arm64-v8a")
             isUniversalApk = false
         }
     }
@@ -36,9 +35,8 @@ android {
     }
 }
 dependencies {
-    // The pinned AAR is fetched by scripts/fetch_libbox.py and verified by SHA-256.
-    implementation(files("libs/libbox.aar"))
     // Official AndroidLibXrayLite 26.9.30, SHA-256 pinned in fetch_libv2ray.py.
+    // Do NOT combine libbox and libv2ray: both bundle incompatible go.Seq classes.
     implementation(files("libs/libv2ray.aar"))
     implementation("androidx.core:core-ktx:1.16.0")
     implementation("androidx.activity:activity-ktx:1.10.1")

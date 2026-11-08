@@ -42,9 +42,7 @@ jobs:
           SDK_TOOL="$(command -v sdkmanager || true)"
           if [ -z "$SDK_TOOL" ]; then SDK_TOOL="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"; fi
           "$SDK_TOOL" 'platforms;android-35' 'build-tools;35.0.0'
-      - name: Fetch pinned libbox engine
-        run: python3 scripts/fetch_libbox.py
-      - name: Fetch verified official Xray AndroidLibXrayLite AAR
+       - name: Fetch verified official Xray AndroidLibXrayLite AAR
         run: python3 scripts/fetch_libv2ray.py
       - name: Validate bundled domain rules
         run: python3 scripts/check_assets.py
@@ -149,8 +147,8 @@ jobs:
           test -x "$SIGNER"
           shopt -s nullglob
           apks=(app/build/outputs/apk/debug/*.apk)
-          if [[ "${#apks[@]}" -ne 4 ]]; then
-            echo "::error::Expected 4 ABI APKs for stable signing; found ${#apks[@]}."
+          if [[ "${#apks[@]}" -ne 1 ]]; then
+            echo "::error::Expected 1 ARM64 APK for experimental Xray signing; found ${#apks[@]}."
             exit 1
           fi
           # apksigner signs the already-built/tested binaries. This step never

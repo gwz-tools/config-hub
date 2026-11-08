@@ -26,7 +26,9 @@ Limitations until Samsung device verification:
 - Native Xray start success is not the same as successful HTTPS delivery.
 - The official upstream 26.9.30 library is not byte-identical to
   the patched Mamin VPN 0.9.43 libgojni.so.
-- The four-ABI release retains old libbox until the Xray proof works.
+- Experimental Xray build is ARM64-only to avoid duplicating go.Seq JNI classes.
+- The original sing-box source code remains in Git history, but is not compiled
+  in the Xray branch. Production KVN remains unchanged until successful tests.
 - No personal/server credentials from Mamin are copied or exposed.
 - LGPL and MPL attribution/relink compliance before public release.
 
