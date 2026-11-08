@@ -42,7 +42,7 @@ jobs:
           SDK_TOOL="$(command -v sdkmanager || true)"
           if [ -z "$SDK_TOOL" ]; then SDK_TOOL="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"; fi
           "$SDK_TOOL" 'platforms;android-35' 'build-tools;35.0.0'
-       - name: Fetch verified official Xray AndroidLibXrayLite AAR
+      - name: Fetch verified official Xray AndroidLibXrayLite AAR
         run: python3 scripts/fetch_libv2ray.py
       - name: Validate bundled domain rules
         run: python3 scripts/check_assets.py
