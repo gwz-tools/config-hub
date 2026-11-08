@@ -1,0 +1,10 @@
+<resources>
+    <style name="Theme.KVN" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/kvn_background</item>
+        <item name="android:navigationBarColor">@color/kvn_background</item>
+        <item name="android:colorAccent">@color/kvn_red</item>
+        <item name="android:windowBackground">@color/kvn_background</item>
+    </style>
+</resources>
