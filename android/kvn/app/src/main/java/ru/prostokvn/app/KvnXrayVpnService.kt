@@ -93,12 +93,12 @@ class KvnXrayVpnService : VpnService() {
                 // Official AndroidLibXrayLite bridge, not extracted Mamin binary.
                 Libv2ray.initCoreEnv(filesDir.absolutePath, "")
                 val callback = object : CoreCallbackHandler {
-                    override fun startup(): Int = 0
-                    override fun shutdown(): Int = 0
-                    override fun onEmitStatus(status: Int, message: String?): Int {
+                    override fun startup(): Long = 0L
+                    override fun shutdown(): Long = 0L
+                    override fun onEmitStatus(status: Long, message: String?): Long {
                         // Status strings can contain private node data, do not log them.
                         if (status != 0) Log.w("KVN-XRAY", "Xray status=" + status)
-                        return 0
+                        return 0L
                     }
                 }
                 val engine = Libv2ray.newCoreController(callback)
