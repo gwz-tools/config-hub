@@ -30,7 +30,7 @@ android {
     testOptions {
         unitTests.all {
             it.systemProperty("gwzhub.assets", file("src/main/assets/routing").absolutePath)
-            it.systemProperty("kvn.validation.json", file("build/ci-validation/vpn-auto.json").absolutePath)
+            it.systemProperty("kvn.xray.validation.json", file("build/ci-validation/xray-kvn.json").absolutePath)
         }
     }
 }

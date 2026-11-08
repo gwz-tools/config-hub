@@ -97,7 +97,7 @@ class KvnXrayVpnService : VpnService() {
                     override fun shutdown(): Long = 0L
                     override fun onEmitStatus(status: Long, message: String?): Long {
                         // Status strings can contain private node data, do not log them.
-                        if (status != 0) Log.w("KVN-XRAY", "Xray status=" + status)
+                        if (status != 0L) Log.w("KVN-XRAY", "Xray status=" + status)
                         return 0L
                     }
                 }

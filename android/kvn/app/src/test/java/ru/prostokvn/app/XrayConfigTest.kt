@@ -36,6 +36,16 @@ class XrayConfigTest {
         assertTrue(config.toString().contains("domain:ads.example"))
     }
 
+    @Test fun exportXrayConfigForOfficialNativeValidation() {
+        val destination = System.getProperty("kvn.xray.validation.json") ?: return
+        val link = "vless://" + id +
+            "@test.example.com:443?type=tcp&security=tls&sni=www.example.com"
+        val output = File(destination)
+        output.parentFile?.mkdirs()
+        output.writeText(XrayConfig.build(VlessProfile.parse(link), snapshot(), true))
+        assertTrue(output.length() > 100)
+    }
+
     @Test fun directOnlyWorksWhenExplicitlyAuthorized() {
         val config = JSONObject(XrayConfig.build(null, snapshot(), false, true))
         assertEquals("direct", config.getJSONArray("outbounds").getJSONObject(0).getString("tag"))

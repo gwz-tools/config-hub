@@ -50,41 +50,20 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew --no-daemon --console=plain :app:assembleDebug :app:testDebugUnitTest :app:lintDebug
-      - name: Validate Kotlin-generated VPN config with upstream sing-box 1.14.4
+      - name: Validate Kotlin-generated config with original Xray-core v26.9.30
         shell: bash
         run: |
           set -euo pipefail
-          TARBALL="$RUNNER_TEMP/sing-box-1.14.4-linux-amd64.tar.gz"
+          ZIP="$RUNNER_TEMP/xray-linux-26.9.30.zip"
           curl --fail --location --silent --show-error --connect-timeout 15 --max-time 120 \
-            'https://github.com/SagerNet/sing-box/releases/download/v1.14.4/sing-box-1.14.4-linux-amd64.tar.gz' \
-            --output "$TARBALL"
-          echo "699a1b510aa4396b2176d32d1181920399ebf1e267835da6f3b598d0f7c24968  $TARBALL" | sha256sum -c -
-          tar -xzf "$TARBALL" -C "$RUNNER_TEMP"
-          test -s app/build/ci-validation/vpn-auto.json
-          "$RUNNER_TEMP/sing-box-1.14.4-linux-amd64/sing-box" check -c app/build/ci-validation/vpn-auto.json
-          test -s app/build/ci-validation/vpn-direct.json
-          "$RUNNER_TEMP/sing-box-1.14.4-linux-amd64/sing-box" check -c app/build/ci-validation/vpn-direct.json
-      - name: Smoke-test real sing-box engine startup (DNS, routing and VLESS)
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 scripts/prepare_vpn_startup_smoke.py \
-            app/build/ci-validation/vpn-auto.json \
-            app/build/ci-validation/vpn-auto-smoke.json
-          BIN="$RUNNER_TEMP/sing-box-1.14.4-linux-amd64/sing-box"
-          "$BIN" check -c app/build/ci-validation/vpn-auto-smoke.json
-          set +e
-          timeout --signal=TERM --kill-after=2s 8s \
-            "$BIN" run -c app/build/ci-validation/vpn-auto-smoke.json \
-            > "$RUNNER_TEMP/kvn-sing-box-startup.log" 2>&1
-          code=$?
-          set -e
-          cat "$RUNNER_TEMP/kvn-sing-box-startup.log"
-          if [ "$code" -ne 124 ]; then
-            echo "::error::sing-box startup terminated prematurely with exit status $code"
-            exit 1
-          fi
-          echo "sing-box startup survived 8s with real DNS and proxy outbounds."
+            'https://github.com/XTLS/Xray-core/releases/download/v26.9.30/Xray-linux-64.zip' \
+            --output "$ZIP"
+          echo "f851110beaff16e78d643f0ccfd9524b4a44dfd59bae3e34bb52bba378f7690e  $ZIP" | sha256sum -c -
+          mkdir -p "$RUNNER_TEMP/kvn-xray"
+          unzip -jo "$ZIP" xray -d "$RUNNER_TEMP/kvn-xray"
+          chmod +x "$RUNNER_TEMP/kvn-xray/xray"
+          test -s app/build/ci-validation/xray-kvn.json
+          "$RUNNER_TEMP/kvn-xray/xray" run -test -config app/build/ci-validation/xray-kvn.json
       - name: Verify ARM64 and other ABI APKs, record SHA-256
         run: python3 scripts/check_apk_abis.py app/build/outputs/apk/debug
       - name: Self-test stable signing with disposable CI certificate
