@@ -9,7 +9,8 @@
       "outbounds": [
         "GWZ-01",
         "GWZ-02",
-        "GWZ-03"
+        "GWZ-03",
+        "GWZ-04"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -18,20 +19,19 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "31.77.12.3",
+      "server": "smart2.khinikadze.com",
       "server_port": 443,
-      "uuid": "f8d52ece-fad4-478d-875d-df6eed3befa7",
+      "uuid": "3bb97d46-789b-4229-88f6-9beb222a4137",
       "tls": {
         "enabled": true,
-        "server_name": "de-b1.pythonmakemigreat.wiki",
+        "server_name": "smart2.khinikadze.com",
         "utls": {
           "enabled": true,
-          "fingerprint": "firefox"
+          "fingerprint": "chrome"
         },
         "reality": {
           "enabled": true,
-          "public_key": "5fkwwCKZzMsE6Eb_b3iqluu-1AWIfnYl-p0N3EL9Al8",
-          "short_id": "713e9e2cca714dfa"
+          "public_key": "lIZbI6KG18rkVDyMhLo7e6KvmffxR6fvFNzzC-O9vT8"
         }
       },
       "flow": "xtls-rprx-vision"
@@ -47,7 +47,7 @@
         "server_name": "smart2.khinikadze.com",
         "utls": {
           "enabled": true,
-          "fingerprint": "chrome"
+          "fingerprint": "firefox"
         },
         "reality": {
           "enabled": true,
@@ -73,6 +73,26 @@
           "enabled": true,
           "public_key": "6sEquzhND4g7HGZptDdnO-B0UjAKib9Pcjkd2_IoC2s",
           "short_id": "74de1ccddccaa017"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-04",
+      "server": "50.7.176.65",
+      "server_port": 443,
+      "uuid": "3bb97d46-789b-4229-88f6-9beb222a4137",
+      "tls": {
+        "enabled": true,
+        "server_name": "smart2.khinikadze.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "lIZbI6KG18rkVDyMhLo7e6KvmffxR6fvFNzzC-O9vT8"
         }
       },
       "flow": "xtls-rprx-vision"
