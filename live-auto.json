@@ -7,10 +7,7 @@
       "type": "urltest",
       "tag": "GWZHUB-AUTO",
       "outbounds": [
-        "GWZ-01",
-        "GWZ-02",
-        "GWZ-03",
-        "GWZ-04"
+        "GWZ-01"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -19,67 +16,6 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "50.7.227.77",
-      "server_port": 443,
-      "uuid": "90157e25-cee1-4217-921e-91f300bc1a24",
-      "tls": {
-        "enabled": true,
-        "server_name": "bizorg.su",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "firefox"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "1vSZjvhZO01oAEH3b7eebR1qF5dLU1Dq2E7xu8pwGSs",
-          "short_id": "428ef87fd47a3a32"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-02",
-      "server": "50.7.176.65",
-      "server_port": 443,
-      "uuid": "3bb97d46-789b-4229-88f6-9beb222a4137",
-      "tls": {
-        "enabled": true,
-        "server_name": "smart2.khinikadze.com",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "firefox"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "lIZbI6KG18rkVDyMhLo7e6KvmffxR6fvFNzzC-O9vT8"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-03",
-      "server": "smart2.khinikadze.com",
-      "server_port": 443,
-      "uuid": "3bb97d46-789b-4229-88f6-9beb222a4137",
-      "tls": {
-        "enabled": true,
-        "server_name": "smart2.khinikadze.com",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "lIZbI6KG18rkVDyMhLo7e6KvmffxR6fvFNzzC-O9vT8"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-04",
       "server": "50.7.176.65",
       "server_port": 443,
       "uuid": "3bb97d46-789b-4229-88f6-9beb222a4137",
