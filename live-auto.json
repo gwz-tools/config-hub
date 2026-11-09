@@ -39,6 +39,26 @@
     {
       "type": "vless",
       "tag": "GWZ-02",
+      "server": "50.7.176.65",
+      "server_port": 443,
+      "uuid": "3bb97d46-789b-4229-88f6-9beb222a4137",
+      "tls": {
+        "enabled": true,
+        "server_name": "smart2.khinikadze.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "lIZbI6KG18rkVDyMhLo7e6KvmffxR6fvFNzzC-O9vT8"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-03",
       "server": "154.86.119.227",
       "server_port": 443,
       "uuid": "f8d52ece-fad4-478d-875d-df6eed3befa7",
@@ -53,26 +73,6 @@
           "enabled": true,
           "public_key": "6sEquzhND4g7HGZptDdnO-B0UjAKib9Pcjkd2_IoC2s",
           "short_id": "74de1ccddccaa017"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-03",
-      "server": "50.7.176.65",
-      "server_port": 443,
-      "uuid": "3bb97d46-789b-4229-88f6-9beb222a4137",
-      "tls": {
-        "enabled": true,
-        "server_name": "smart2.khinikadze.com",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "lIZbI6KG18rkVDyMhLo7e6KvmffxR6fvFNzzC-O9vT8"
         }
       },
       "flow": "xtls-rprx-vision"
