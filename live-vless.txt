@@ -1,9 +1,10 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-09 / 17:23 (Moscow)
-# Количество: 4
+# Date/Time: 2026-11-09 / 19:23 (Moscow)
+# Количество: 5
 
 vless://3bb97d46-789b-4229-88f6-9beb222a4137@smart2.khinikadze.com:443?security=reality&encryption=none&pbk=lIZbI6KG18rkVDyMhLo7e6KvmffxR6fvFNzzC-O9vT8&headerType=&type=tcp&flow=xtls-rprx-vision&sni=smart2.khinikadze.com#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands
+vless://efd11a89-7506-44ce-95b6-6654859f155b@170.114.45.6:2096?security=tls&encryption=none&insecure=0&host=pcloud.z-tas.com&fp=firefox&type=ws&allowInsecure=0&sni=pcloud.z-tas.com#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA
 vless://3bb97d46-789b-4229-88f6-9beb222a4137@50.7.176.65:443?encryption=none&flow=xtls-rprx-vision&fp=chrome&pbk=lIZbI6KG18rkVDyMhLo7e6KvmffxR6fvFNzzC-O9vT8&security=reality&sni=smart2.khinikadze.com&type=tcp#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands 02
 vless://f8d52ece-fad4-478d-875d-df6eed3befa7@154.86.119.227:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=6sEquzhND4g7HGZptDdnO-B0UjAKib9Pcjkd2_IoC2s&security=reality&sid=74de1ccddccaa017&sni=be.golangwikito.cfd&type=tcp#%F0%9F%8C%90 | GWZ | HK
 vless://3bb97d46-789b-4229-88f6-9beb222a4137@50.7.176.65:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=lIZbI6KG18rkVDyMhLo7e6KvmffxR6fvFNzzC-O9vT8&security=reality&sni=smart2.khinikadze.com&type=tcp#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands 03

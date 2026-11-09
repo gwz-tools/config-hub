@@ -10,7 +10,8 @@
         "GWZ-01",
         "GWZ-02",
         "GWZ-03",
-        "GWZ-04"
+        "GWZ-04",
+        "GWZ-05"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -39,6 +40,28 @@
     {
       "type": "vless",
       "tag": "GWZ-02",
+      "server": "170.114.45.6",
+      "server_port": 2096,
+      "uuid": "efd11a89-7506-44ce-95b6-6654859f155b",
+      "tls": {
+        "enabled": true,
+        "server_name": "pcloud.z-tas.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "firefox"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/",
+        "headers": {
+          "Host": "pcloud.z-tas.com"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-03",
       "server": "50.7.176.65",
       "server_port": 443,
       "uuid": "3bb97d46-789b-4229-88f6-9beb222a4137",
@@ -58,7 +81,7 @@
     },
     {
       "type": "vless",
-      "tag": "GWZ-03",
+      "tag": "GWZ-04",
       "server": "154.86.119.227",
       "server_port": 443,
       "uuid": "f8d52ece-fad4-478d-875d-df6eed3befa7",
@@ -79,7 +102,7 @@
     },
     {
       "type": "vless",
-      "tag": "GWZ-04",
+      "tag": "GWZ-05",
       "server": "50.7.176.65",
       "server_port": 443,
       "uuid": "3bb97d46-789b-4229-88f6-9beb222a4137",
