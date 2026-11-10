@@ -9,7 +9,8 @@
       "outbounds": [
         "GWZ-01",
         "GWZ-02",
-        "GWZ-03"
+        "GWZ-03",
+        "GWZ-04"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -60,6 +61,28 @@
     {
       "type": "vless",
       "tag": "GWZ-03",
+      "server": "170.114.45.6",
+      "server_port": 2096,
+      "uuid": "efd11a89-7506-44ce-95b6-6654859f155b",
+      "tls": {
+        "enabled": true,
+        "server_name": "pcloud.z-tas.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "firefox"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/",
+        "headers": {
+          "Host": "pcloud.z-tas.com"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-04",
       "server": "170.114.45.6",
       "server_port": 2096,
       "uuid": "efd11a89-7506-44ce-95b6-6654859f155b",
