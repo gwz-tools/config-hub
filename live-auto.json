@@ -8,7 +8,8 @@
       "tag": "GWZHUB-AUTO",
       "outbounds": [
         "GWZ-01",
-        "GWZ-02"
+        "GWZ-02",
+        "GWZ-03"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -17,6 +18,27 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
+      "server": "154.86.119.227",
+      "server_port": 443,
+      "uuid": "f8d52ece-fad4-478d-875d-df6eed3befa7",
+      "tls": {
+        "enabled": true,
+        "server_name": "be.golangwikito.cfd",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "firefox"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "6sEquzhND4g7HGZptDdnO-B0UjAKib9Pcjkd2_IoC2s",
+          "short_id": "74de1ccddccaa017"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-02",
       "server": "196.245.217.70",
       "server_port": 443,
       "uuid": "4201786b-d99b-4147-a5f0-20d47acddb81",
@@ -37,24 +59,23 @@
     },
     {
       "type": "vless",
-      "tag": "GWZ-02",
-      "server": "154.86.119.227",
+      "tag": "GWZ-03",
+      "server": "195.206.235.7",
       "server_port": 443,
-      "uuid": "f8d52ece-fad4-478d-875d-df6eed3befa7",
+      "uuid": "b7b8ee80-db83-4276-8c68-87dc88b0b0b5",
       "tls": {
         "enabled": true,
-        "server_name": "be.golangwikito.cfd",
+        "server_name": "71b840t.de7.h1clayd.click",
         "utls": {
           "enabled": true,
           "fingerprint": "firefox"
         },
         "reality": {
           "enabled": true,
-          "public_key": "6sEquzhND4g7HGZptDdnO-B0UjAKib9Pcjkd2_IoC2s",
-          "short_id": "74de1ccddccaa017"
+          "public_key": "3wFF83gtIA0sXj-6GGCAa--oQbSr0MVUj0FBc-0QmiE",
+          "short_id": "e572b6579ea525d4"
         }
-      },
-      "flow": "xtls-rprx-vision"
+      }
     },
     {
       "type": "direct",
