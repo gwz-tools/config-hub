@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-11-09T10:10:21.484938+00:00",
+  "checked_at_utc": "2026-11-10T10:17:18.972766+00:00",
   "total": 57,
   "valid_content_sources": 25,
   "kinds": {
@@ -19,121 +19,121 @@
       "url": "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/main/BLACK_VLESS_RUS.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 184,
-      "bytes": 58062,
-      "content_fingerprint": "09d6522e0722c7eb"
+      "vless": 343,
+      "bytes": 102146,
+      "content_fingerprint": "31ed126b60167d5a"
     },
     {
       "url": "https://gitlab.com/igareck/vpn-configs-for-russia/-/raw/main/BLACK_VLESS_RUS.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 184,
-      "bytes": 58062,
-      "content_fingerprint": "09d6522e0722c7eb"
+      "vless": 343,
+      "bytes": 102146,
+      "content_fingerprint": "31ed126b60167d5a"
     },
     {
       "url": "https://codeberg.org/igareck/vpn-configs-for-russia/raw/branch/main/BLACK_VLESS_RUS.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 184,
-      "bytes": 58062,
-      "content_fingerprint": "09d6522e0722c7eb"
+      "vless": 343,
+      "bytes": 102146,
+      "content_fingerprint": "31ed126b60167d5a"
     },
     {
       "url": "https://cdn.jsdelivr.net/gh/igareck/vpn-configs-for-russia@main/BLACK_VLESS_RUS.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 654,
-      "bytes": 192416,
-      "content_fingerprint": "145cf765747061a6"
+      "vless": 223,
+      "bytes": 66342,
+      "content_fingerprint": "b29843238a0c2a15"
     },
     {
       "url": "https://gitlab.com/igareck/vpn-configs-for-russia/-/raw/main/BLACK_VLESS_RUS_mobile.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 133,
-      "bytes": 48774,
-      "content_fingerprint": "67c4100512f09b4c"
+      "vless": 138,
+      "bytes": 42424,
+      "content_fingerprint": "6fcd4cd4d07c1b46"
     },
     {
       "url": "https://codeberg.org/igareck/vpn-configs-for-russia/raw/branch/main/BLACK_VLESS_RUS_mobile.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 133,
-      "bytes": 48774,
-      "content_fingerprint": "67c4100512f09b4c"
+      "vless": 138,
+      "bytes": 42424,
+      "content_fingerprint": "6fcd4cd4d07c1b46"
     },
     {
       "url": "https://cdn.jsdelivr.net/gh/igareck/vpn-configs-for-russia@main/BLACK_VLESS_RUS_mobile.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 141,
-      "bytes": 46236,
-      "content_fingerprint": "6ee5e1a212471719"
+      "vless": 142,
+      "bytes": 45359,
+      "content_fingerprint": "a5d1958d9a9c0ebc"
     },
     {
       "url": "https://raw.githubusercontent.com/mehrtat/vless-collector/main/vless.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 25,
-      "bytes": 6363,
-      "content_fingerprint": "ea875627e2f2c710"
+      "vless": 77,
+      "bytes": 16703,
+      "content_fingerprint": "874fc010358b4928"
     },
     {
       "url": "https://raw.githubusercontent.com/aviamastersgh/vpn-free-russia/main/verified_configs.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 326,
-      "bytes": 129112,
-      "content_fingerprint": "07e6394d09c19fd2"
+      "vless": 331,
+      "bytes": 125131,
+      "content_fingerprint": "3f6a3ae81a4292eb"
     },
     {
       "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_RAW.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 23,
-      "bytes": 34280,
-      "content_fingerprint": "6f0f8d4e59fef25a"
+      "vless": 21,
+      "bytes": 34989,
+      "content_fingerprint": "f793b334486f2109"
     },
     {
       "url": "https://raw.githubusercontent.com/sakha1370/OpenRay/main/output/all_valid_proxies.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 3097,
-      "bytes": 1737637,
-      "content_fingerprint": "2f502b6fdc3f7838"
+      "vless": 3179,
+      "bytes": 1721201,
+      "content_fingerprint": "0a9a151d6e1d0726"
     },
     {
       "url": "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 88,
-      "bytes": 21184,
-      "content_fingerprint": "0238070ef5fc2a3f"
+      "vless": 102,
+      "bytes": 25895,
+      "content_fingerprint": "c368bcf82033d351"
     },
     {
       "url": "https://gitlab.com/igareck/vpn-configs-for-russia/-/raw/main/Vless-Reality-White-Lists-Rus-Mobile.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 88,
-      "bytes": 21184,
-      "content_fingerprint": "0238070ef5fc2a3f"
+      "vless": 102,
+      "bytes": 25895,
+      "content_fingerprint": "c368bcf82033d351"
     },
     {
       "url": "https://codeberg.org/igareck/vpn-configs-for-russia/raw/branch/main/Vless-Reality-White-Lists-Rus-Mobile.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 88,
-      "bytes": 21184,
-      "content_fingerprint": "0238070ef5fc2a3f"
+      "vless": 102,
+      "bytes": 25895,
+      "content_fingerprint": "c368bcf82033d351"
     },
     {
       "url": "https://cdn.jsdelivr.net/gh/igareck/vpn-configs-for-russia@main/Vless-Reality-White-Lists-Rus-Mobile.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 136,
-      "bytes": 32290,
-      "content_fingerprint": "afd7c216e71c2735"
+      "vless": 148,
+      "bytes": 40501,
+      "content_fingerprint": "8caf166be2b198da"
     },
     {
       "url": "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-SNI-RU-all.txt",
@@ -161,21 +161,21 @@
       "status": "ok",
       "kind": "routing_rules",
       "vless": 0,
-      "bytes": 21377
+      "bytes": 27219
     },
     {
       "url": "https://gitlab.com/igareck/vpn-configs-for-russia/-/raw/main/WHITE-CIDR-RU-all.txt",
       "status": "ok",
       "kind": "routing_rules",
       "vless": 0,
-      "bytes": 21377
+      "bytes": 27219
     },
     {
       "url": "https://codeberg.org/igareck/vpn-configs-for-russia/raw/branch/main/WHITE-CIDR-RU-all.txt",
       "status": "ok",
       "kind": "routing_rules",
       "vless": 0,
-      "bytes": 21377
+      "bytes": 27219
     },
     {
       "url": "https://github.com/igareck/vpn-configs-for-russia",
@@ -232,41 +232,41 @@
       "url": "https://raw.githubusercontent.com/0xRadikal/Free-v2ray-Configs/main/verified/configs.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 654,
-      "bytes": 290023,
-      "content_fingerprint": "02b77758ca26a681"
+      "vless": 677,
+      "bytes": 298020,
+      "content_fingerprint": "0fed96e517221caa"
     },
     {
       "url": "https://raw.githubusercontent.com/0xRadikal/Free-v2ray-Configs/main/top100.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 44,
-      "bytes": 29000,
-      "content_fingerprint": "5ad3129504c5e3f9"
+      "vless": 20,
+      "bytes": 21819,
+      "content_fingerprint": "9090679c8b4d803f"
     },
     {
       "url": "https://raw.githubusercontent.com/aviamastersgh/vpn-free-russia/main/all_configs.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 4788,
-      "bytes": 2466666,
-      "content_fingerprint": "c42865b4d296ee4a"
+      "vless": 4975,
+      "bytes": 2581624,
+      "content_fingerprint": "72a3021bbff8a7dd"
     },
     {
       "url": "https://raw.githubusercontent.com/morpheusadam/v2ray-config/main/subs/bundles/best.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 97,
-      "bytes": 309468,
-      "content_fingerprint": "371c102dddd02b64"
+      "vless": 647,
+      "bytes": 372438,
+      "content_fingerprint": "d388cfed7a4ced15"
     },
     {
       "url": "https://raw.githubusercontent.com/morpheusadam/v2ray-config/main/subs/bundles/reality.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 11610,
-      "bytes": 3581539,
-      "content_fingerprint": "8d8d48bf1ba53160"
+      "vless": 11748,
+      "bytes": 3597729,
+      "content_fingerprint": "61d4558f707700ec"
     },
     {
       "url": "https://raw.githubusercontent.com/Epodonios/v2ray-configs/refs/heads/main/Splitted-By-Protocol/vless.txt",
@@ -278,9 +278,9 @@
       "url": "https://raw.githubusercontent.com/MatinGhanbari/v2ray-configs/main/subscriptions/filtered/subs/vless.txt",
       "status": "ok",
       "kind": "vless_base64",
-      "vless": 194,
-      "bytes": 87444,
-      "content_fingerprint": "bf19527c3430e87c"
+      "vless": 195,
+      "bytes": 81988,
+      "content_fingerprint": "5d01ad3bfff3a73d"
     },
     {
       "url": "https://github.com/Hidashimora/free-vpn-anti-rkn",
@@ -310,17 +310,17 @@
       "url": "https://raw.githubusercontent.com/mehrtat/vless-collector/main/sub.txt",
       "status": "ok",
       "kind": "vless_base64",
-      "vless": 25,
-      "bytes": 8484,
-      "content_fingerprint": "ea875627e2f2c710"
+      "vless": 77,
+      "bytes": 22272,
+      "content_fingerprint": "874fc010358b4928"
     },
     {
       "url": "https://raw.githubusercontent.com/gwz-tools/config-hub/main/cloud-vless.txt",
       "status": "ok",
       "kind": "vless_text",
-      "vless": 12,
-      "bytes": 3672,
-      "content_fingerprint": "be37450b2012526e"
+      "vless": 13,
+      "bytes": 3612,
+      "content_fingerprint": "c575dcd4981e4710"
     },
     {
       "url": "https://mamin-starter-catalogue.surge.sh",
@@ -380,7 +380,7 @@
       "status": "ok",
       "kind": "webpage_not_feed",
       "vless": 0,
-      "bytes": 747224
+      "bytes": 746941
     },
     {
       "url": "https://gitverse.ru/cyberportal/wl/content/master/CP-002.txt",
@@ -415,7 +415,7 @@
       "status": "ok",
       "kind": "webpage_not_feed",
       "vless": 0,
-      "bytes": 770481
+      "bytes": 770485
     },
     {
       "url": "https://warp-gen.cyb-portal.org/git/CYBERPORTAL/wl/src/commit/e2a85b714b62b102fe492bedc09b510a59c0f1c8",
