@@ -9,8 +9,7 @@
       "outbounds": [
         "GWZ-01",
         "GWZ-02",
-        "GWZ-03",
-        "GWZ-04"
+        "GWZ-03"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -19,20 +18,20 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "169.40.34.41",
+      "server": "185.242.247.66",
       "server_port": 443,
-      "uuid": "622654a4-b666-000b-9260-fb717e05154f",
+      "uuid": "cf1b08a7-55b7-4241-b80a-c59116272b43",
       "tls": {
         "enabled": true,
-        "server_name": "key-master-saver.com",
+        "server_name": "home.asperwild.com",
         "utls": {
           "enabled": true,
-          "fingerprint": "ios"
+          "fingerprint": "chrome"
         },
         "reality": {
           "enabled": true,
-          "public_key": "6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY",
-          "short_id": "1c3e8241a8743df9"
+          "public_key": "DXc-l15XMaLM1zoeGdtkZd-1MymTHrnplcEHxyDvLRQ",
+          "short_id": "d9dbc840ce42cd95"
         }
       },
       "flow": "xtls-rprx-vision"
@@ -61,41 +60,20 @@
     {
       "type": "vless",
       "tag": "GWZ-03",
-      "server": "185.242.247.66",
+      "server": "169.40.34.41",
       "server_port": 443,
-      "uuid": "cf1b08a7-55b7-4241-b80a-c59116272b43",
+      "uuid": "622654a4-b666-000b-9260-fb717e05154f",
       "tls": {
         "enabled": true,
-        "server_name": "home.asperwild.com",
+        "server_name": "key-master-saver.com",
         "utls": {
           "enabled": true,
-          "fingerprint": "chrome"
+          "fingerprint": "ios"
         },
         "reality": {
           "enabled": true,
-          "public_key": "DXc-l15XMaLM1zoeGdtkZd-1MymTHrnplcEHxyDvLRQ",
-          "short_id": "d9dbc840ce42cd95"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-04",
-      "server": "196.245.217.70",
-      "server_port": 443,
-      "uuid": "4201786b-d99b-4147-a5f0-20d47acddb81",
-      "tls": {
-        "enabled": true,
-        "server_name": "8a2e72t.nl11.h1clayd.click",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "firefox"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "VZS639V1i-35g7VXb9EoTYL-Srm7858sxcvFAunncmA",
-          "short_id": "8d0d0679f42ffd98"
+          "public_key": "6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY",
+          "short_id": "1c3e8241a8743df9"
         }
       },
       "flow": "xtls-rprx-vision"
