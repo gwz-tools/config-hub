@@ -1,8 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-11 / 15:21 (Moscow)
-# Количество: 3
+# Date/Time: 2026-11-11 / 21:36 (Moscow)
+# Количество: 1
 
-vless://cf1b08a7-55b7-4241-b80a-c59116272b43@185.242.247.66:443?flow=xtls-rprx-vision&security=reality&sni=home.asperwild.com&fp=chrome&pbk=DXc-l15XMaLM1zoeGdtkZd-1MymTHrnplcEHxyDvLRQ&sid=d9dbc840ce42cd95&encryption=none&type=tcp#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands
-vless://cf1b08a7-55b7-4241-b80a-c59116272b43@185.242.247.66:443?security=reality&encryption=none&pbk=DXc-l15XMaLM1zoeGdtkZd-1MymTHrnplcEHxyDvLRQ&headerType=none&fp=chrome&type=tcp&flow=xtls-rprx-vision&sni=home.asperwild.com&sid=d9dbc840ce42cd95#%F0%9F%87%B3%F0%9F%87%B1 | GWZ | Netherlands 02
-vless://622654a4-b666-000b-9260-fb717e05154f@169.40.34.41:443?encryption=none&flow=xtls-rprx-vision&type=tcp&security=reality&sni=key-master-saver.com&fp=ios&pbk=6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY&sid=1c3e8241a8743df9&spx=/HesarWeb#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA
+vless://622654a4-b666-000b-9260-fb717e05154f@169.40.34.41:443?security=reality&encryption=none&pbk=6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY&headerType=none&fp=ios&type=tcp&flow=xtls-rprx-vision&sni=key-master-saver.com&sid=1c3e8241a8743df9#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA

@@ -7,9 +7,7 @@
       "type": "urltest",
       "tag": "GWZHUB-AUTO",
       "outbounds": [
-        "GWZ-01",
-        "GWZ-02",
-        "GWZ-03"
+        "GWZ-01"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -18,48 +16,6 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "185.242.247.66",
-      "server_port": 443,
-      "uuid": "cf1b08a7-55b7-4241-b80a-c59116272b43",
-      "tls": {
-        "enabled": true,
-        "server_name": "home.asperwild.com",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "DXc-l15XMaLM1zoeGdtkZd-1MymTHrnplcEHxyDvLRQ",
-          "short_id": "d9dbc840ce42cd95"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-02",
-      "server": "185.242.247.66",
-      "server_port": 443,
-      "uuid": "cf1b08a7-55b7-4241-b80a-c59116272b43",
-      "tls": {
-        "enabled": true,
-        "server_name": "home.asperwild.com",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "DXc-l15XMaLM1zoeGdtkZd-1MymTHrnplcEHxyDvLRQ",
-          "short_id": "d9dbc840ce42cd95"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-03",
       "server": "169.40.34.41",
       "server_port": 443,
       "uuid": "622654a4-b666-000b-9260-fb717e05154f",
