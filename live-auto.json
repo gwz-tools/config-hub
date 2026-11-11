@@ -9,7 +9,8 @@
       "outbounds": [
         "GWZ-01",
         "GWZ-02",
-        "GWZ-03"
+        "GWZ-03",
+        "GWZ-04"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -18,27 +19,6 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
-      "server": "154.86.119.227",
-      "server_port": 443,
-      "uuid": "f8d52ece-fad4-478d-875d-df6eed3befa7",
-      "tls": {
-        "enabled": true,
-        "server_name": "be.golangwikito.cfd",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "firefox"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "6sEquzhND4g7HGZptDdnO-B0UjAKib9Pcjkd2_IoC2s",
-          "short_id": "74de1ccddccaa017"
-        }
-      },
-      "flow": "xtls-rprx-vision"
-    },
-    {
-      "type": "vless",
-      "tag": "GWZ-02",
       "server": "169.40.34.41",
       "server_port": 443,
       "uuid": "622654a4-b666-000b-9260-fb717e05154f",
@@ -59,7 +39,49 @@
     },
     {
       "type": "vless",
+      "tag": "GWZ-02",
+      "server": "185.242.247.66",
+      "server_port": 443,
+      "uuid": "cf1b08a7-55b7-4241-b80a-c59116272b43",
+      "tls": {
+        "enabled": true,
+        "server_name": "home.asperwild.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "DXc-l15XMaLM1zoeGdtkZd-1MymTHrnplcEHxyDvLRQ",
+          "short_id": "d9dbc840ce42cd95"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
       "tag": "GWZ-03",
+      "server": "185.242.247.66",
+      "server_port": 443,
+      "uuid": "cf1b08a7-55b7-4241-b80a-c59116272b43",
+      "tls": {
+        "enabled": true,
+        "server_name": "home.asperwild.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "DXc-l15XMaLM1zoeGdtkZd-1MymTHrnplcEHxyDvLRQ",
+          "short_id": "d9dbc840ce42cd95"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-04",
       "server": "196.245.217.70",
       "server_port": 443,
       "uuid": "4201786b-d99b-4147-a5f0-20d47acddb81",
