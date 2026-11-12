@@ -1,6 +1,6 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-12 / 12:16 (Moscow)
+# Date/Time: 2026-11-12 / 14:06 (Moscow)
 # Количество: 7
 
 vless://510a4a35-54ac-41fa-a972-8d010995c8f7@206.166.251.70:52901?encryption=none&flow=xtls-rprx-vision&fp=chrome&pbk=Wllsn04C4xvPzega8LO2P4t-2wsV_YIdDCYO5w_NrSQ&security=reality&sid=8770eaf663&sni=aws.amazon.com&spx=/scOQJVHfs5D0jGg&type=tcp#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA
