@@ -1,10 +1,12 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-12 / 10:08 (Moscow)
-# Количество: 5
+# Date/Time: 2026-11-12 / 12:16 (Moscow)
+# Количество: 7
 
-vless://622654a4-b666-000b-9260-fb717e05154f@169.40.34.41:443?security=reality&encryption=none&pbk=6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY&headerType=none&fp=ios&type=tcp&flow=xtls-rprx-vision&sni=key-master-saver.com&sid=1c3e8241a8743df9#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA
-vless://cda0862a-0f87-4be9-8ed8-1d0c9e382839@195.206.235.222:443?encryption=none&fp=&pbk=l-GzBDuNuhnjxoRlZqKvT7jAt_sbVAxhGFsAttO5kXs&security=reality&sid=361d0dd59c70516f&sni=5d0319t.nl7.h1clayd.click&type=tcp#%F0%9F%87%B1%F0%9F%87%B9 | GWZ | Lithuania
-vless://622654a4-b666-000b-9260-fb717e05154f@169.40.34.41:443?security=reality&encryption=none&pbk=6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY&headerType=none&fp=chrome&type=tcp&flow=xtls-rprx-vision&sni=key-master-saver.com&sid=1c3e8241a8743df9#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA 02
-vless://4201786b-d99b-4147-a5f0-20d47acddb81@195.206.235.215:443?security=reality&encryption=none&pbk=VZS639V1i-35g7VXb9EoTYL-Srm7858sxcvFAunncmA&headerType=none&fp=chrome&type=tcp&flow=xtls-rprx-vision&sni=8a2e72t.nl11.h1clayd.click&sid=8d0d0679f42ffd98#%F0%9F%87%B1%F0%9F%87%B9 | GWZ | Lithuania 02
-vless://d651c9ab-b844-4420-b3d0-20d201ef5f55@38.244.155.67:443?security=reality&encryption=none&pbk=NLXltMEkWIxv9bL2J4XkPGb4oVwGbCkITCTXF-jVxAE&headerType=none&fp=chrome&type=tcp&flow=xtls-rprx-vision&sni=node-eu-1.nztpro.com&sid=2976f793571fb671#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA 03
+vless://510a4a35-54ac-41fa-a972-8d010995c8f7@206.166.251.70:52901?encryption=none&flow=xtls-rprx-vision&fp=chrome&pbk=Wllsn04C4xvPzega8LO2P4t-2wsV_YIdDCYO5w_NrSQ&security=reality&sid=8770eaf663&sni=aws.amazon.com&spx=/scOQJVHfs5D0jGg&type=tcp#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA
+vless://d651c9ab-b844-4420-b3d0-20d201ef5f55@38.244.155.67:443?security=reality&encryption=none&pbk=NLXltMEkWIxv9bL2J4XkPGb4oVwGbCkITCTXF-jVxAE&headerType=none&fp=chrome&type=tcp&flow=xtls-rprx-vision&sni=node-eu-1.nztpro.com&sid=2976f793571fb671#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA 02
+vless://622654a4-b666-000b-9260-fb717e05154f@169.40.34.41:443?security=reality&encryption=none&pbk=6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY&headerType=none&fp=ios&type=tcp&flow=xtls-rprx-vision&sni=key-master-saver.com&sid=1c3e8241a8743df9#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA 03
+vless://4201786b-d99b-4147-a5f0-20d47acddb81@195.206.235.215:443?security=reality&encryption=none&pbk=VZS639V1i-35g7VXb9EoTYL-Srm7858sxcvFAunncmA&headerType=none&fp=chrome&type=tcp&flow=xtls-rprx-vision&sni=8a2e72t.nl11.h1clayd.click&sid=8d0d0679f42ffd98#%F0%9F%87%B1%F0%9F%87%B9 | GWZ | Lithuania
+vless://622654a4-b666-000b-9260-fb717e05154f@169.40.34.41:443?security=reality&encryption=none&pbk=6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY&headerType=none&fp=chrome&type=tcp&flow=xtls-rprx-vision&sni=key-master-saver.com&sid=1c3e8241a8743df9#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA 04
+vless://cda0862a-0f87-4be9-8ed8-1d0c9e382839@195.206.235.222:443?encryption=none&fp=&pbk=l-GzBDuNuhnjxoRlZqKvT7jAt_sbVAxhGFsAttO5kXs&security=reality&sid=361d0dd59c70516f&sni=5d0319t.nl7.h1clayd.click&type=tcp#%F0%9F%87%B1%F0%9F%87%B9 | GWZ | Lithuania 02
+vless://d651c9ab-b844-4420-b3d0-20d201ef5f55@38.244.155.67:443?security=reality&encryption=none&pbk=NLXltMEkWIxv9bL2J4XkPGb4oVwGbCkITCTXF-jVxAE&headerType=none&fp=chrome&type=tcp&flow=xtls-rprx-vision&sni=node-eu-1.nztpro.com&sid=2976f793571fb671#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA 05
