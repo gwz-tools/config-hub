@@ -7,7 +7,9 @@
       "type": "urltest",
       "tag": "GWZHUB-AUTO",
       "outbounds": [
-        "GWZ-01"
+        "GWZ-01",
+        "GWZ-02",
+        "GWZ-03"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "3m",
@@ -16,6 +18,48 @@
     {
       "type": "vless",
       "tag": "GWZ-01",
+      "server": "38.244.155.67",
+      "server_port": 443,
+      "uuid": "d651c9ab-b844-4420-b3d0-20d201ef5f55",
+      "tls": {
+        "enabled": true,
+        "server_name": "node-eu-1.nztpro.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "NLXltMEkWIxv9bL2J4XkPGb4oVwGbCkITCTXF-jVxAE",
+          "short_id": "2976f793571fb671"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-02",
+      "server": "169.40.34.41",
+      "server_port": 443,
+      "uuid": "622654a4-b666-000b-9260-fb717e05154f",
+      "tls": {
+        "enabled": true,
+        "server_name": "key-master-saver.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY",
+          "short_id": "1c3e8241a8743df9"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "type": "vless",
+      "tag": "GWZ-03",
       "server": "169.40.34.41",
       "server_port": 443,
       "uuid": "622654a4-b666-000b-9260-fb717e05154f",

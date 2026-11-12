@@ -1,6 +1,8 @@
 # profile-title: GWZ| VLESS
 # profile-update-interval: 1
-# Date/Time: 2026-11-12 / 01:51 (Moscow)
-# Количество: 1
+# Date/Time: 2026-11-12 / 03:46 (Moscow)
+# Количество: 3
 
-vless://622654a4-b666-000b-9260-fb717e05154f@169.40.34.41:443?security=reality&encryption=none&pbk=6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY&headerType=none&fp=ios&type=tcp&flow=xtls-rprx-vision&sni=key-master-saver.com&sid=1c3e8241a8743df9#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA
+vless://d651c9ab-b844-4420-b3d0-20d201ef5f55@38.244.155.67:443?security=reality&encryption=none&pbk=NLXltMEkWIxv9bL2J4XkPGb4oVwGbCkITCTXF-jVxAE&headerType=none&fp=chrome&type=tcp&flow=xtls-rprx-vision&sni=node-eu-1.nztpro.com&sid=2976f793571fb671#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA
+vless://622654a4-b666-000b-9260-fb717e05154f@169.40.34.41:443?security=reality&encryption=none&pbk=6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY&headerType=none&fp=chrome&type=tcp&flow=xtls-rprx-vision&sni=key-master-saver.com&sid=1c3e8241a8743df9#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA 02
+vless://622654a4-b666-000b-9260-fb717e05154f@169.40.34.41:443?security=reality&encryption=none&pbk=6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY&headerType=none&fp=ios&type=tcp&flow=xtls-rprx-vision&sni=key-master-saver.com&sid=1c3e8241a8743df9#%F0%9F%87%BA%F0%9F%87%B8 | GWZ | USA 03
