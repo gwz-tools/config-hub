@@ -67,14 +67,9 @@
   "igareck_mobile": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-11-12T23:26:15.948992+00:00",
-    "last_check": "2026-11-12T23:26:15.948992+00:00",
+    "last_success": "2026-11-13T06:09:46.638171+00:00",
+    "last_check": "2026-11-13T06:09:46.638171+00:00",
     "history": [
-      {
-        "time": "2026-11-08T13:07:42.829721+00:00",
-        "ok": true,
-        "records": null
-      },
       {
         "time": "2026-11-08T21:54:29.851206+00:00",
         "ok": true,
@@ -129,6 +124,11 @@
         "time": "2026-11-12T23:26:15.948992+00:00",
         "ok": true,
         "records": null
+      },
+      {
+        "time": "2026-11-13T06:09:46.638171+00:00",
+        "ok": true,
+        "records": null
       }
     ],
     "records": 0
@@ -136,14 +136,9 @@
   "igareck_full": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-11-12T23:26:16.076906+00:00",
-    "last_check": "2026-11-12T23:26:16.076906+00:00",
+    "last_success": "2026-11-13T06:09:46.899521+00:00",
+    "last_check": "2026-11-13T06:09:46.899521+00:00",
     "history": [
-      {
-        "time": "2026-11-08T13:07:42.896064+00:00",
-        "ok": true,
-        "records": null
-      },
       {
         "time": "2026-11-08T21:54:30.141356+00:00",
         "ok": true,
@@ -198,6 +193,11 @@
         "time": "2026-11-12T23:26:16.076906+00:00",
         "ok": true,
         "records": null
+      },
+      {
+        "time": "2026-11-13T06:09:46.899521+00:00",
+        "ok": true,
+        "records": null
       }
     ],
     "records": 0
@@ -205,14 +205,9 @@
   "openproxylist_v2ray": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-11-12T23:26:17.104794+00:00",
-    "last_check": "2026-11-12T23:26:17.104794+00:00",
+    "last_success": "2026-11-13T06:09:47.999541+00:00",
+    "last_check": "2026-11-13T06:09:47.999541+00:00",
     "history": [
-      {
-        "time": "2026-11-08T13:07:44.136176+00:00",
-        "ok": true,
-        "records": null
-      },
       {
         "time": "2026-11-08T21:54:31.828471+00:00",
         "ok": true,
@@ -267,6 +262,11 @@
         "time": "2026-11-12T23:26:17.104794+00:00",
         "ok": true,
         "records": null
+      },
+      {
+        "time": "2026-11-13T06:09:47.999541+00:00",
+        "ok": true,
+        "records": null
       }
     ],
     "records": 0
@@ -274,14 +274,9 @@
   "0xradikal_top100": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-11-12T23:26:15.808684+00:00",
-    "last_check": "2026-11-12T23:26:15.808684+00:00",
+    "last_success": "2026-11-13T06:09:46.587767+00:00",
+    "last_check": "2026-11-13T06:09:46.587767+00:00",
     "history": [
-      {
-        "time": "2026-11-08T13:07:42.695399+00:00",
-        "ok": true,
-        "records": null
-      },
       {
         "time": "2026-11-08T21:54:29.607444+00:00",
         "ok": true,
@@ -336,22 +331,22 @@
         "time": "2026-11-12T23:26:15.808684+00:00",
         "ok": true,
         "records": null
+      },
+      {
+        "time": "2026-11-13T06:09:46.587767+00:00",
+        "ok": true,
+        "records": null
       }
     ],
     "records": 0
   },
   "epodonios_vless": {
     "status": "failed",
-    "fail_count": 96,
+    "fail_count": 97,
     "last_success": null,
-    "last_check": "2026-11-12T23:26:16.181657+00:00",
+    "last_check": "2026-11-13T06:09:46.984490+00:00",
     "records": 0,
     "history": [
-      {
-        "time": "2026-11-08T13:07:42.972587+00:00",
-        "ok": false,
-        "records": null
-      },
       {
         "time": "2026-11-08T21:54:30.282702+00:00",
         "ok": false,
@@ -406,21 +401,21 @@
         "time": "2026-11-12T23:26:16.181657+00:00",
         "ok": false,
         "records": null
+      },
+      {
+        "time": "2026-11-13T06:09:46.984490+00:00",
+        "ok": false,
+        "records": null
       }
     ]
   },
   "matinghanbari_vless": {
     "status": "failed",
-    "fail_count": 96,
+    "fail_count": 97,
     "last_success": null,
-    "last_check": "2026-11-12T23:26:16.294827+00:00",
+    "last_check": "2026-11-13T06:09:47.115097+00:00",
     "records": 0,
     "history": [
-      {
-        "time": "2026-11-08T13:07:43.017625+00:00",
-        "ok": false,
-        "records": null
-      },
       {
         "time": "2026-11-08T21:54:30.557084+00:00",
         "ok": false,
@@ -475,21 +470,21 @@
         "time": "2026-11-12T23:26:16.294827+00:00",
         "ok": false,
         "records": null
+      },
+      {
+        "time": "2026-11-13T06:09:47.115097+00:00",
+        "ok": false,
+        "records": null
       }
     ]
   },
   "0xradikal_verified": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-11-12T23:26:16.513981+00:00",
-    "last_check": "2026-11-12T23:26:16.513981+00:00",
+    "last_success": "2026-11-13T06:09:47.305867+00:00",
+    "last_check": "2026-11-13T06:09:47.305867+00:00",
     "records": 0,
     "history": [
-      {
-        "time": "2026-11-08T13:07:43.461799+00:00",
-        "ok": true,
-        "records": null
-      },
       {
         "time": "2026-11-08T21:54:30.956112+00:00",
         "ok": true,
@@ -544,21 +539,21 @@
         "time": "2026-11-12T23:26:16.513981+00:00",
         "ok": true,
         "records": null
+      },
+      {
+        "time": "2026-11-13T06:09:47.305867+00:00",
+        "ok": true,
+        "records": null
       }
     ]
   },
   "aviamasters_verified": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-11-12T23:26:16.729308+00:00",
-    "last_check": "2026-11-12T23:26:16.729308+00:00",
+    "last_success": "2026-11-13T06:09:47.457360+00:00",
+    "last_check": "2026-11-13T06:09:47.457360+00:00",
     "records": 0,
     "history": [
-      {
-        "time": "2026-11-08T13:07:43.747839+00:00",
-        "ok": true,
-        "records": null
-      },
       {
         "time": "2026-11-08T21:54:31.379267+00:00",
         "ok": true,
@@ -613,21 +608,21 @@
         "time": "2026-11-12T23:26:16.729308+00:00",
         "ok": true,
         "records": null
+      },
+      {
+        "time": "2026-11-13T06:09:47.457360+00:00",
+        "ok": true,
+        "records": null
       }
     ]
   },
   "morpheus_best": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-11-12T23:26:17.285988+00:00",
-    "last_check": "2026-11-12T23:26:17.285988+00:00",
+    "last_success": "2026-11-13T06:09:48.197274+00:00",
+    "last_check": "2026-11-13T06:09:48.197274+00:00",
     "records": 0,
     "history": [
-      {
-        "time": "2026-11-08T13:07:44.351037+00:00",
-        "ok": true,
-        "records": null
-      },
       {
         "time": "2026-11-08T21:54:32.171071+00:00",
         "ok": true,
@@ -682,21 +677,21 @@
         "time": "2026-11-12T23:26:17.285988+00:00",
         "ok": true,
         "records": null
+      },
+      {
+        "time": "2026-11-13T06:09:48.197274+00:00",
+        "ok": true,
+        "records": null
       }
     ]
   },
   "morpheus_reality": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-11-12T23:26:19.663921+00:00",
-    "last_check": "2026-11-12T23:26:19.663921+00:00",
+    "last_success": "2026-11-13T06:09:49.452338+00:00",
+    "last_check": "2026-11-13T06:09:49.452338+00:00",
     "records": 0,
     "history": [
-      {
-        "time": "2026-11-08T13:07:46.362249+00:00",
-        "ok": true,
-        "records": null
-      },
       {
         "time": "2026-11-08T21:54:34.207688+00:00",
         "ok": true,
@@ -751,21 +746,21 @@
         "time": "2026-11-12T23:26:19.663921+00:00",
         "ok": true,
         "records": null
+      },
+      {
+        "time": "2026-11-13T06:09:49.452338+00:00",
+        "ok": true,
+        "records": null
       }
     ]
   },
   "au1rxx": {
     "status": "failed",
-    "fail_count": 96,
+    "fail_count": 97,
     "last_success": null,
-    "last_check": "2026-11-12T23:26:19.831561+00:00",
+    "last_check": "2026-11-13T06:09:49.519705+00:00",
     "records": 0,
     "history": [
-      {
-        "time": "2026-11-08T13:07:46.477055+00:00",
-        "ok": false,
-        "records": null
-      },
       {
         "time": "2026-11-08T21:54:34.358077+00:00",
         "ok": false,
@@ -820,21 +815,21 @@
         "time": "2026-11-12T23:26:19.831561+00:00",
         "ok": false,
         "records": null
+      },
+      {
+        "time": "2026-11-13T06:09:49.519705+00:00",
+        "ok": false,
+        "records": null
       }
     ]
   },
   "alirewa_main": {
     "status": "ok",
     "fail_count": 0,
-    "last_success": "2026-11-12T23:26:20.180923+00:00",
-    "last_check": "2026-11-12T23:26:20.180923+00:00",
+    "last_success": "2026-11-13T06:09:49.709647+00:00",
+    "last_check": "2026-11-13T06:09:49.709647+00:00",
     "records": 0,
     "history": [
-      {
-        "time": "2026-11-08T13:07:46.900536+00:00",
-        "ok": true,
-        "records": null
-      },
       {
         "time": "2026-11-08T21:54:34.814703+00:00",
         "ok": true,
@@ -887,6 +882,11 @@
       },
       {
         "time": "2026-11-12T23:26:20.180923+00:00",
+        "ok": true,
+        "records": null
+      },
+      {
+        "time": "2026-11-13T06:09:49.709647+00:00",
         "ok": true,
         "records": null
       }
